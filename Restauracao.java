@@ -1,9 +1,9 @@
-abstract class Restaurcao extends Empresa{
+abstract class Restauracao extends Empresa{
     private int numEmpMesa;
     private float salarioMedAnual;
     private float numMedClientesDiario;
 
-    public Restaurcao(String nome, Localizacao local, String distrito, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario) {
+    public Restauracao(String nome, Localizacao local, String distrito, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario) {
         super(nome, local, distrito);
         this.numEmpMesa = numEmpMesa;
         this.salarioMedAnual = salarioMedAnual;

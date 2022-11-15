@@ -1,4 +1,4 @@
-public class Cafe extends Restaurcao{
+public class Cafe extends Restauracao{
     private float numMedCafes;
 
     public Cafe(String nome, Localizacao local, String distrito, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedCafes) {
