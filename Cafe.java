@@ -5,4 +5,12 @@ public class Cafe extends Restauracao{
         super(nome, local, distrito, numEmpMesa, salarioMedAnual, numMedClientesDiario);
         this.numMedCafes = numMedCafes;
     }
+
+    public float getNumMedCafes() {
+        return numMedCafes;
+    }
+
+    public void setNumMedCafes(float numMedCafes) {
+        this.numMedCafes = numMedCafes;
+    }
 }

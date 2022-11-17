@@ -6,11 +6,13 @@ abstract class Empresa
     private String nome;
     private Localizacao local;
     private String distrito;
+    private float faturacaoMediaAnual;
 
-    public Empresa(String nome, Localizacao local, String distrito) {
+    public Empresa(String nome, Localizacao local, String distrito, float faturacaoMediaAnual) {
         this.nome = nome;
         this.local = local;
         this.distrito = distrito;
+        this.faturacaoMediaAnual = faturacaoMediaAnual;
     }
 
     public String getNome() {
@@ -37,4 +39,11 @@ abstract class Empresa
         this.distrito = distrito;
     }
 
+    public float getFaturacaoMediaAnual() {
+        return faturacaoMediaAnual;
+    }
+
+    public void setFaturacaoMediaAnual(float faturacaoMediaAnual) {
+        this.faturacaoMediaAnual = faturacaoMediaAnual;
+    }
 }
