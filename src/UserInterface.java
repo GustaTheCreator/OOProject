@@ -19,6 +19,7 @@ public class UserInterface{
         frame.getContentPane().setBackground(new Color(255,255,255));
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLayout(new GridBagLayout());
+        frame.setIconImage(new ImageIcon("src/resources/icon.png").getImage());
         GridBagConstraints posicao = new GridBagConstraints();
         ButtonListener buttonActionListener = new ButtonListener();
 
