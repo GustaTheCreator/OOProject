@@ -1,3 +1,5 @@
+package src;
+
 public class Coordenadas {
     private int horas;
     private int minutos;

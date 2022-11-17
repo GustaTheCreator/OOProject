@@ -1,6 +1,8 @@
 /**
  * Empresa
  */
+package src;
+
 abstract class Empresa
 {
     private String nome;

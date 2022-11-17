@@ -1,3 +1,5 @@
+package src;
+
 public class Localizacao {
     private Coordenadas latitude;
     private Coordenadas longitude;
