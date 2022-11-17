@@ -3,8 +3,8 @@ package src;
 public class RestFastFood extends Restaurante{
     private float numMedClientesDrive;
 
-    public RestFastFood(String nome, Localizacao local, String distrito, float faturacaoMediaAnual, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, float numMedClientesDrive) {
-        super(nome, local, distrito, faturacaoMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
+    public RestFastFood(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, float numMedClientesDrive) {
+        super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
         this.numMedClientesDrive = numMedClientesDrive;
     }
 
@@ -15,4 +15,10 @@ public class RestFastFood extends Restaurante{
     public void setNumMedClientesDrive(float numMedClientesDrive) {
         this.numMedClientesDrive = numMedClientesDrive;
     }
+
+    @Override
+    public float receitaAnual() {
+        return 0;
+    }
+    
 }

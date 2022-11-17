@@ -3,8 +3,8 @@ package src;
 public class Pastelaria extends Restauracao {
     private float numMedBolos;
 
-    public Pastelaria(String nome, Localizacao local, String distrito, float faturacaoMediaAnual, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedBolos) {
-        super(nome, local, distrito, faturacaoMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDiario);
+    public Pastelaria(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedBolos) {
+        super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
         this.numMedBolos = numMedBolos;
     }
 
@@ -14,5 +14,8 @@ public class Pastelaria extends Restauracao {
 
     public void setNumMedBolos(float numMedBolos) {
         this.numMedBolos = numMedBolos;
+    }
+    public float receitaAnual(){
+        return numMedBolos*getFaturacaoMedia();
     }
 }

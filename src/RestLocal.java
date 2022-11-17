@@ -2,28 +2,37 @@ package src;
 
 public class RestLocal extends Restaurante{
 
-    private int numMesasEsplanadas;
-    private float custoLicencaAnual;
+    private int numMesasEsplanada;
+    private float custoLiceAnualMesaEsp;
 
-    public RestLocal(String nome, Localizacao local, String distrito, float faturacaoMediaAnual, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, int numMesasEsplanadas, float custoLicencaAnual) {
-        super(nome, local, distrito, faturacaoMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
-        this.numMesasEsplanadas = numMesasEsplanadas;
-        this.custoLicencaAnual = custoLicencaAnual;
+    public RestLocal(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, int numMesasEsplanadas, float custoLiceAnualMesaEsp) {
+        super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
+        this.numMesasEsplanada = numMesasEsplanadas;
+        this.custoLiceAnualMesaEsp = custoLiceAnualMesaEsp;
     }
 
     public int getNumMesasEsplanadas() {
-        return numMesasEsplanadas;
+        return numMesasEsplanada;
     }
 
     public void setNumMesasEsplanadas(int numMesasEsplanadas) {
-        this.numMesasEsplanadas = numMesasEsplanadas;
+        this.numMesasEsplanada = numMesasEsplanadas;
     }
 
-    public float getCustoLicencaAnual() {
-        return custoLicencaAnual;
+    public float getcustoLiceAnualMesaEsp() {
+        return custoLiceAnualMesaEsp;
     }
 
-    public void setCustoLicencaAnual(float custoLicencaAnual) {
-        this.custoLicencaAnual = custoLicencaAnual;
+    public void setcustoLiceAnualMesaEsp(float custoLiceAnualMesaEsp) {
+        this.custoLiceAnualMesaEsp = custoLiceAnualMesaEsp;
+    }
+
+    @Override
+    public float receitaAnual() {
+        return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia();
+    }
+    @Override
+    public float despesaAnual(){
+        return getNumEmpMesa()*getSalarioMedAnual()+numMesasEsplanada*custoLiceAnualMesaEsp;
     }
 }

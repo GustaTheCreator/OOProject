@@ -4,8 +4,8 @@ abstract class Restaurante extends Restauracao{
     private int numDiasFuncAnual;
     private int numMesasInteriores;
 
-    public Restaurante(String nome, Localizacao local, String distrito, float faturacaoMediaAnual, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores) {
-        super(nome, local, distrito, faturacaoMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDiario);
+    public Restaurante(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores) {
+        super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
         this.numDiasFuncAnual = numDiasFuncAnual;
         this.numMesasInteriores = numMesasInteriores;
     }
@@ -26,3 +26,4 @@ abstract class Restaurante extends Restauracao{
         this.numMesasInteriores = numMesasInteriores;
     }
 }
+
