@@ -37,9 +37,9 @@ public class UserInterface{
         UIManager.put("OptionPane.yesButtonText","Sim");
         UIManager.put("OptionPane.noButtonText","Não");
         UIManager.put("OptionPane.cancelButtonText","Cancelar");
-        UIManager.put("OptionPane.questionIcon",new ImageIcon("question.gif")); // os gifs perderam alguma qualidade ao ser
-        UIManager.put("OptionPane.warningIcon",new ImageIcon("warning.gif")); // resized, talvez procurar outros
-        UIManager.put("OptionPane.errorIcon",new ImageIcon("error.gif"));
+        UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif")); // os gifs perderam alguma qualidade ao ser
+        UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/resources/warning.gif")); // resized, talvez procurar outros
+        UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
 
         textoTitulo = new JLabel("<html>St<FONT COLOR=rgb(118,221,221)>★</FONT>rThrive</html>");
         textoTitulo.setFont(new Font(textoTitulo.getFont().getFontName(), Font.BOLD, 100));
@@ -53,7 +53,7 @@ public class UserInterface{
             {
                 this.clicks+=1;
                 if(clicks==2) //clicar duas vezes no textoTitulo do menu?
-                    textoTitulo.setText("<html>St<img src=" + getClass().getResource("star.gif").toString() + "></FONT>rThrive</html>");
+                    textoTitulo.setText("<html>St<img src=" + getClass().getResource("src/resources/star.gif").toString() + "></FONT>rThrive</html>");
             }
         });
 
