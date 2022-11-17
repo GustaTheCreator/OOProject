@@ -22,4 +22,8 @@ abstract class Restauracao extends Empresa{
     public float getNumMedClientesDiario() {
         return numMedClientesDiario;
     }
+    public float despesaAnual(){
+        return numEmpMesa*salarioMedAnual;
+    }
+    
 }
