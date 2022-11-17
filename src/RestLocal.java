@@ -1,7 +1,6 @@
 package src;
 
 public class RestLocal extends Restaurante{
-
     private int numMesasEsplanada;
     private float custoLiceAnualMesaEsp;
 

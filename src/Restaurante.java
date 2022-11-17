@@ -1,6 +1,6 @@
 package src;
 
-abstract class Restaurante extends Restauracao{
+public abstract class Restaurante extends Restauracao{
     private int numDiasFuncAnual;
     private int numMesasInteriores;
 

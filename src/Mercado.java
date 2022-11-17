@@ -1,4 +1,5 @@
 package src;
+
 public class Mercado extends Mercearia{
     private float areaCorredores;
     private String tipo;

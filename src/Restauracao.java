@@ -1,5 +1,6 @@
 package src;
-abstract class Restauracao extends Empresa{
+
+public abstract class Restauracao extends Empresa{
     private int numEmpMesa;
     private float salarioMedAnual;
     private float numMedClientesDiario;
@@ -37,5 +38,5 @@ abstract class Restauracao extends Empresa{
     public float despesaAnual(){
         return numEmpMesa*salarioMedAnual;
     }
-    
+
 }

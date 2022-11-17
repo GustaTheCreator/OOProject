@@ -1,4 +1,5 @@
 package src;
+
 public class Frutaria extends Mercearia{
     private int numProdutos;
 

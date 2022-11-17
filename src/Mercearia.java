@@ -1,5 +1,6 @@
 package src;
-abstract class Mercearia extends Empresa{
+
+public abstract class Mercearia extends Empresa{
     private float custoLimpezaAnual;
 
     public Mercearia(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual) {
