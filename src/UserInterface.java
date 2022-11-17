@@ -53,7 +53,7 @@ public class UserInterface{
             {
                 this.clicks+=1;
                 if(clicks==2) //clicar duas vezes no textoTitulo do menu?
-                    textoTitulo.setText("<html>St<img src=" + getClass().getResource("src/resources/star.gif").toString() + "></FONT>rThrive</html>");
+                    textoTitulo.setText("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
             }
         });
 
