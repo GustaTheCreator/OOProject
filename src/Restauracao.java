@@ -19,6 +19,18 @@ abstract class Restauracao extends Empresa{
         return salarioMedAnual;
     }
 
+    public void setNumEmpMesa(int numEmpMesa) {
+        this.numEmpMesa = numEmpMesa;
+    }
+
+    public void setSalarioMedAnual(float salarioMedAnual) {
+        this.salarioMedAnual = salarioMedAnual;
+    }
+
+    public void setNumMedClientesDiario(float numMedClientesDiario) {
+        this.numMedClientesDiario = numMedClientesDiario;
+    }
+
     public float getNumMedClientesDiario() {
         return numMedClientesDiario;
     }

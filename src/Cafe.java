@@ -15,9 +15,11 @@ public class Cafe extends Restauracao{
     public void setNumMedCafes(float numMedCafes) {
         this.numMedCafes = numMedCafes;
     }
-
+    public float faturacaoAnualPorCafeDia(){
+        return getFaturacaoMedia()/(numMedCafes*365);
+    }
     @Override
     public float receitaAnual() {
-        return numMedCafes*getFaturacaoMedia()/(numMedCafes*365);
+        return numMedCafes*faturacaoAnualPorCafeDia();
     }
 }

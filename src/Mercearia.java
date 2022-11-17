@@ -14,5 +14,4 @@ abstract class Mercearia extends Empresa{
     public void setCustoLimpezaAnual(float custoLimpezaAnual) {
         this.custoLimpezaAnual = custoLimpezaAnual;
     }
-
 }
