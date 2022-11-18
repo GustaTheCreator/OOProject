@@ -1,6 +1,3 @@
-/**
- * Empresa
- */
 package src;
 
 public abstract class Empresa
