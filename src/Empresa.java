@@ -1,7 +1,6 @@
 package src;
 
-public abstract class Empresa
-{
+public abstract class Empresa {
     private String nome;
     private Localizacao local;
     private String distrito;

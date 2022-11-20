@@ -1,27 +1,27 @@
 package src;
 
 public class Localizacao {
-    private Coordenadas latitude;
-    private Coordenadas longitude;
+    private Coordenada latitude;
+    private Coordenada longitude;
 
-    public Localizacao(Coordenadas latitude, Coordenadas longitude) {
+    public Localizacao(Coordenada latitude, Coordenada longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public Coordenadas getLatitude() {
+    public Coordenada getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Coordenadas latitude) {
+    public void setLatitude(Coordenada latitude) {
         this.latitude = latitude;
     }
 
-    public Coordenadas getLongitude() {
+    public Coordenada getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Coordenadas longitude) {
+    public void setLongitude(Coordenada longitude) {
         this.longitude = longitude;
     }
 

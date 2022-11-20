@@ -2,21 +2,31 @@ package src;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class UserInterface extends JFrame{
-    private JPanel menu, consultar, gerir;
-    private JLabel textoTitulo, textoListaConsultar, textoListaGerir;
-    private JButton botaoConsultar, botaoMostrarTodas, botaoGerir, botaoCriar, botaoEditar, botaoApagar,
-    botaoSair, botaoVoltarGerir, botaoVoltarConsultar;
+public class UserInterface extends JFrame {
+    private GestorEmpresas gestor;
+    private JPanel menu, baseDados, filtrar, listar, gerir, voltar;
+    private JLabel textoTitulo;
+    private JButton botaoBaseDados, botaoSair, botaoVoltar, botaoMostrarTodas, botaoCriar, botaoEditar, botaoApagar;
 
     public UserInterface(){
 
+        // criar o gestor que vai funcionar através da GUI
+        gestor = new GestorEmpresas();
+        gestor.addEmpresa("Alma Shopping", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+        gestor.addEmpresa("Coimbra Shopping", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+        gestor.addEmpresa("Tia Adelaide", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+
         // definir o estilo da janela
+        this.setTitle("StarThrive");
+        this.setSize(720, 720);
         this.getContentPane().setBackground(Color.WHITE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridBagLayout());
         this.setIconImage(new ImageIcon("src/resources/icon.png").getImage());
 
         // criar cores e modelos personalizados para toda a interface através do UIManager
@@ -37,6 +47,11 @@ public class UserInterface extends JFrame{
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
         UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
+        UIManager.put("List.background",cinza);
+        UIManager.put("List.foreground",Color.WHITE);
+        UIManager.put("List.selectionBackground",ciano);
+        UIManager.put("List.selectionForeground",cinza);
+
 
         // criar o listener para os clicks nos botões
         ButtonListener buttonPress = new ButtonListener();
@@ -60,91 +75,90 @@ public class UserInterface extends JFrame{
             }
         });
         menu.add(textoTitulo, posicao);
-        botaoConsultar = new JButton("Consultar informção");
+        botaoBaseDados = new JButton("Base de Dados");
         posicao.gridx = 0;
         posicao.gridy = 1;
-        posicao.insets = new Insets(10,10,10,10);
-        botaoConsultar.addActionListener(buttonPress);
-        menu.add(botaoConsultar, posicao);
-        botaoGerir = new JButton("Gerir base de dados");
-        posicao.gridx = 0;
-        posicao.gridy = 2;
-        botaoGerir.addActionListener(buttonPress);
-        menu.add(botaoGerir, posicao);
+        botaoBaseDados.addActionListener(buttonPress);
+        menu.add(botaoBaseDados, posicao);
         botaoSair = new JButton("Terminar Sessão");
         posicao.gridx = 0;
-        posicao.gridy = 3;
+        posicao.gridy = 2;
         botaoSair.addActionListener(buttonPress);
         menu.add(botaoSair,posicao);
 
-        // construir o painel para consultar
-        consultar = new JPanel();
-        consultar.setLayout(new GridBagLayout());
-        textoListaConsultar = new JLabel("<html><FONT COLOR=rgb(118,221,221)>★</FONT> Lista de Empresas</html>");
-        textoListaConsultar.setFont(new Font(textoTitulo.getFont().getFontName(), Font.BOLD, 50));
+        // construir o painel para filtrar as empresas com as diferentes opções do enunciado
+        filtrar = new JPanel();
+        filtrar.setLayout(new GridBagLayout());
+        botaoMostrarTodas = new JButton("Mostrar todas");
+        posicao.insets = new Insets(0,0,30,50);
         posicao.gridx = 0;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,0,40,0);
-        consultar.add(textoListaConsultar, posicao);
-        botaoMostrarTodas = new JButton("Mostrar todas");
-        posicao.gridx = 0;
-        posicao.gridy = 1;
-        posicao.insets = new Insets(10,2,10,2);
-        consultar.add(botaoMostrarTodas, posicao);
-        botaoVoltarConsultar= new JButton("Voltar ao menu");
-        posicao.gridx = 0;
-        posicao.gridy = 2;
-        botaoVoltarConsultar.addActionListener(buttonPress);
-        consultar.add(botaoVoltarConsultar, posicao);
+        filtrar.add(botaoMostrarTodas, posicao);
 
-        // construir o painel para gerir
+        // construir o painel com a lista e a funcionalidade de dar scroll caso fica demasiado grande
+        listar = new JPanel();
+        listar.setLayout(new GridBagLayout());
+        ArrayList<Empresa> registo = gestor.getEmpresas();
+        DefaultListModel<String> elementos = new DefaultListModel<String>();
+        for (Empresa empresa : registo){
+            elementos.addElement(empresa.getNome());
+        }
+        JList<String> lista = new JList<String>(elementos);
+        JScrollPane scroller = new JScrollPane(lista);
+        posicao.gridx = 1;
+        posicao.gridy = 0;
+        listar.add(scroller);
+
+        // construir o painel para gerir as empresas (criar/editar/apagar)
         gerir = new JPanel();
         gerir.setLayout(new GridBagLayout());
-        textoListaGerir = new JLabel("<html><FONT COLOR=rgb(118,221,221)>★</FONT> Lista de Empresas</html>");
-        textoListaGerir.setFont(new Font(textoTitulo.getFont().getFontName(), Font.BOLD, 50));
+        botaoCriar = new JButton("Criar");
+        posicao.insets = new Insets(0,50,30,0);
         posicao.gridx = 0;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,0,40,0);
-        gerir.add(textoListaGerir, posicao);
-        botaoCriar = new JButton("Criar");
-        posicao.gridx = 0;
-        posicao.gridy = 1;
-        posicao.insets = new Insets(10,2,10,2);
         gerir.add(botaoCriar, posicao);
         botaoEditar = new JButton("Editar");
         posicao.gridx = 0;
-        posicao.gridy = 2;
+        posicao.gridy = 1;
         gerir.add(botaoEditar, posicao);
         botaoApagar = new JButton("Apagar");
         posicao.gridx = 0;
-        posicao.gridy = 3;
+        posicao.gridy = 2;
         gerir.add(botaoApagar, posicao);
-        botaoVoltarGerir= new JButton("Voltar ao menu");
+
+        // construir o painel com o botão para voltar ao menu;
+        voltar = new JPanel();
+        voltar.setLayout(new GridBagLayout());
+        botaoVoltar= new JButton("←");
+        botaoVoltar.setFont(new Font(botaoVoltar.getFont().getFontName(), Font.BOLD, 25));
+        posicao.insets = new Insets(0,0,100,0);
         posicao.gridx = 0;
-        posicao.gridy = 4;
-        botaoVoltarGerir.addActionListener(buttonPress);
-        gerir.add(botaoVoltarGerir, posicao);
+        posicao.gridy = 3;
+        botaoVoltar.addActionListener(buttonPress);
+        voltar.add(botaoVoltar, posicao);
+
+        // criar o painel base de dados que contém todos os outros
+        baseDados = new JPanel();
+        baseDados.setLayout(new BorderLayout());
+        baseDados.add(voltar,BorderLayout.NORTH);
+        baseDados.add(filtrar,BorderLayout.WEST);
+        baseDados.add(listar,BorderLayout.CENTER);
+        baseDados.add(gerir,BorderLayout.EAST);
 
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
         // logo o menu depois de estar tudo construído
-        this.add(menu,BorderLayout.CENTER);
+        this.add(menu);
     }
 
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
-            if(evento.getSource() == botaoConsultar) {
-                mostrarConsultar();
+            if(evento.getSource() == botaoBaseDados) {
+                mostrarBaseDados();
             }
-            if(evento.getSource() == botaoGerir) {
-                mostrarGerir();
-            }
-            if(evento.getSource() == botaoVoltarConsultar) {
-                mostrarMenu(1);
-            }
-            if(evento.getSource() == botaoVoltarGerir) {
-                mostrarMenu(2);
+            if(evento.getSource() == botaoVoltar) {
+                mostrarMenu();
             }
             if(evento.getSource() == botaoSair) { // confirmar saída e terminar
                 if(JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende sair?", null, JOptionPane.YES_NO_OPTION) == 0){
@@ -154,28 +168,18 @@ public class UserInterface extends JFrame{
         }
     }
 
-    private void mostrarMenu(int lastPage){
-        switch (lastPage) {
-            case 1 -> this.remove(consultar);
-            case 2 -> this.remove(gerir);
-        }
-        this.add(menu,BorderLayout.CENTER);
+    //tentar metar tudo num painel e só botão de voltar separado
+    private void mostrarMenu(){
+        this.remove(baseDados);
+        this.add(menu);
         this.validate();
         this.repaint();
     }
 
-    private void mostrarConsultar(){
+    private void mostrarBaseDados(){
         this.remove(menu);
-        this.add(consultar,BorderLayout.CENTER);
+        this.add(baseDados);
         this.validate();
         this.repaint();
     }
-
-    private void mostrarGerir(){
-        this.remove(menu);
-        this.add(gerir,BorderLayout.CENTER);
-        this.validate();
-        this.repaint();
-    }
-
 }

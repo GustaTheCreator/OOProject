@@ -1,12 +1,12 @@
 package src;
 
-public class Coordenadas {
+public class Coordenada {
     private int horas;
     private int minutos;
     private int segundos;
     private char direcao;
 
-    public Coordenadas(int horas, int minutos, int segundos, char direcao) {
+    public Coordenada(int horas, int minutos, int segundos, char direcao) {
         this.horas = horas;
         this.minutos = minutos;
         this.segundos = segundos;
