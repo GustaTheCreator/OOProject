@@ -22,8 +22,10 @@ public class RestFastFood extends Restaurante{
         this.numMedClientesDrive = numMedClientesDrive;
     }
     @Override
-    public float receitaAnual(){return (getNumMesasInteriores()*getFaturacaoMedia()+numMedClientesDrive*FaturacaoMediaPClienteDrive)*getNumDiasFuncAnual();}//FaturacaoMedia por caada mesa por dia
+    public float receitaAnual(){
+        return (getNumMesasInteriores()*getFaturacaoMedia()+numMedClientesDrive*FaturacaoMediaPClienteDrive)*getNumDiasFuncAnual();
+    }//FaturacaoMedia por cada mesa por dia
     @Override
     public float despesaAnual(){return getNumEmpMesa()*getSalarioMedAnual();}
-    
+
 }

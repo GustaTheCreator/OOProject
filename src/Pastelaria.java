@@ -18,6 +18,7 @@ public class Pastelaria extends Restauracao {
     public float faturaAnualPBoloPDia(){
         return getFaturacaoMedia()/365;
     }
+    @Override
     public float receitaAnual(){
         return numMedBolos*getFaturacaoMedia();
     }//FaturacaoMedia anual por bolo

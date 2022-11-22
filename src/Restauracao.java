@@ -1,5 +1,4 @@
 package src;
-
 public abstract class Restauracao extends Empresa{
     private int numEmpMesa;
     private float salarioMedAnual;
@@ -15,23 +14,16 @@ public abstract class Restauracao extends Empresa{
     public int getNumEmpMesa() {
         return numEmpMesa;
     }
-
     public float getSalarioMedAnual() {
         return salarioMedAnual;
     }
-
     public void setNumEmpMesa(int numEmpMesa) {
         this.numEmpMesa = numEmpMesa;
     }
-
     public void setSalarioMedAnual(float salarioMedAnual) {
         this.salarioMedAnual = salarioMedAnual;
     }
-
-    public void setNumMedClientesDiario(float numMedClientesDiario) {
-        this.numMedClientesDiario = numMedClientesDiario;
-    }
-
+    public void setNumMedClientesDiario(float numMedClientesDiario) {this.numMedClientesDiario = numMedClientesDiario;}
     public float getNumMedClientesDiario() {
         return numMedClientesDiario;
     }

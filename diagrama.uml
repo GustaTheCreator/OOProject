@@ -3,85 +3,108 @@
   <ID>JAVA</ID>
   <OriginalElement>src.RestLocal</OriginalElement>
   <nodes>
-    <node x="-67.0" y="1457.0">src.Mercado</node>
-    <node x="489.75" y="1694.968609865471">src.RestLocal</node>
-    <node x="613.0" y="1457.0">src.Cafe</node>
-    <node x="654.7207747023351" y="840.0">src.Localizacao</node>
-    <node x="995.1524663677128" y="784.9999999999999">src.Coordenadas</node>
-    <node x="228.28363228699573" y="1694.968609865471">src.RestFastFood</node>
-    <node x="102.0929333539508" y="1154.0">src.Mercearia</node>
-    <node x="370.0" y="1457.0">src.Restaurante</node>
-    <node x="393.1588449049019" y="1154.0">src.Restauracao</node>
-    <node x="861.0" y="1457.0">src.Pastelaria</node>
-    <node x="257.14558527910947" y="763.0">src.Empresa</node>
-    <node x="162.0" y="1457.0">src.Frutaria</node>
+    <node x="237.8378929714172" y="292.0">src.Cafe</node>
+    <node x="214.14558527910947" y="-22.0">src.Restauracao</node>
+    <node x="-164.10441472089053" y="496.0">src.RestLocal</node>
+    <node x="620.6455852791095" y="857.0">src.Frutaria</node>
+    <node x="1221.026751198392" y="299.1390134529148">src.Coordenada</node>
+    <node x="828.6455852791096" y="824.0">src.Mercado</node>
+    <node x="1087.8658767589302" y="1000.5">src.GestorEmpresas</node>
+    <node x="-5.1621070285827955" y="281.0">src.Restaurante</node>
+    <node x="1082.6455852791096" y="-49.5">src.Localizacao</node>
+    <node x="461.8378929714171" y="292.0">src.Pastelaria</node>
+    <node x="107.89558527910947" y="496.0">src.RestFastFood</node>
+    <node x="708.3955852791096" y="653.0">src.Mercearia</node>
+    <node x="827.1455852791096" y="160.0">src.Empresa</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="src.RestFastFood" target="src.Restaurante" relationship="GENERALIZATION">
-      <point x="3.677130042660792E-4" y="-60.49960986547103" />
-      <point x="350.784" y="1659.0" />
-      <point x="481.5" y="1659.0" />
-      <point x="0.0" y="82.5" />
-    </edge>
     <edge source="src.Mercearia" target="src.Empresa" relationship="GENERALIZATION">
-      <point x="6.664604919137673E-5" y="-49.5" />
-      <point x="217.593" y="1129.0" />
-      <point x="363.146" y="1129.0" />
-      <point x="4.1472089054650496E-4" y="170.5" />
+      <point x="-115.49958527910948" y="0.0" />
+      <point x="688.0" y="713.5" />
+      <point x="688.0" y="363.5" />
+      <point x="-105.99958527910945" y="0.0" />
     </edge>
-    <edge source="src.Pastelaria" target="src.Restauracao" relationship="GENERALIZATION">
-      <point x="0.0" y="-60.5" />
-      <point x="963.5" y="1432.0" />
-      <point x="518.159" y="1432.0" />
-      <point x="1.5509509807998256E-4" y="126.5" />
+    <edge source="src.RestFastFood" target="src.Restaurante" relationship="GENERALIZATION">
+      <point x="4.1472089054650496E-4" y="-104.5" />
+      <point x="249.39600000000002" y="471.0" />
+      <point x="106.33800000000002" y="471.0" />
+      <point x="1.0702858281774752E-4" y="82.5" />
     </edge>
     <edge source="src.Mercado" target="src.Mercearia" relationship="GENERALIZATION">
-      <point x="0.0" y="-104.5" />
-      <point x="37.5" y="1432.0" />
-      <point x="217.593" y="1432.0" />
-      <point x="6.664604919137673E-5" y="49.5" />
-    </edge>
-    <edge source="src.Restauracao" target="src.Empresa" relationship="GENERALIZATION">
-      <point x="1.5509509807998256E-4" y="-126.5" />
-      <point x="518.159" y="1129.0" />
-      <point x="363.146" y="1129.0" />
-      <point x="4.1472089054650496E-4" y="170.5" />
+      <point x="-104.49958527910945" y="-86.0" />
+      <point x="684.0" y="831.5" />
+      <point x="684.0" y="766.5" />
+      <point x="-115.49958527910948" y="53.0" />
     </edge>
     <edge source="src.Frutaria" target="src.Mercearia" relationship="GENERALIZATION">
-      <point x="0.0" y="-71.5" />
-      <point x="256.0" y="1432.0" />
-      <point x="217.593" y="1432.0" />
-      <point x="6.664604919137673E-5" y="49.5" />
-    </edge>
-    <edge source="src.RestLocal" target="src.Restaurante" relationship="GENERALIZATION">
-      <point x="0.0" y="-104.49960986547103" />
-      <point x="615.75" y="1659.0" />
-      <point x="481.5" y="1659.0" />
-      <point x="0.0" y="82.5" />
+      <point x="-55.307585279109475" y="-60.5" />
+      <point x="659.338" y="785.5" />
+      <point x="684.0" y="785.5" />
+      <point x="684.0" y="766.5" />
+      <point x="-115.49958527910948" y="53.0" />
     </edge>
     <edge source="src.Cafe" target="src.Restauracao" relationship="GENERALIZATION">
-      <point x="0.0" y="-71.5" />
-      <point x="727.0" y="1432.0" />
-      <point x="518.159" y="1432.0" />
-      <point x="1.5509509807998256E-4" y="126.5" />
+      <point x="1.0702858278932581E-4" y="-71.5" />
+      <point x="339.83799999999997" y="256.0" />
+      <point x="339.14599999999996" y="256.0" />
+      <point x="4.1472089051808325E-4" y="126.5" />
     </edge>
-    <edge source="src.Localizacao" target="src.Coordenadas" relationship="TO_ONE">
-      <point x="112.5" y="-1.1368683772161603E-13" />
-      <point x="-83.5" y="0.0" />
-    </edge>
-    <edge source="src.Restaurante" target="src.Restauracao" relationship="GENERALIZATION">
-      <point x="0.0" y="-82.5" />
-      <point x="481.5" y="1432.0" />
-      <point x="518.159" y="1432.0" />
-      <point x="1.5509509807998256E-4" y="126.5" />
+    <edge source="src.GestorEmpresas" target="src.Coordenada" relationship="CREATE">
+      <point x="52.16087443946185" y="-49.5" />
+      <point x="-0.0" y="148.5" />
     </edge>
     <edge source="src.Empresa" target="src.Localizacao" relationship="TO_ONE">
-      <point x="106.0" y="0.0" />
-      <point x="-112.5" y="0.0" />
+      <point x="-0.0" y="-203.5" />
+      <point x="933.1455852791096" y="44.0" />
+      <point x="-110.5" y="-0.0" />
+    </edge>
+    <edge source="src.GestorEmpresas" target="src.Empresa" relationship="TO_MANY">
+      <point x="-74.22029147982062" y="-49.5" />
+      <point x="1178.1455852791096" y="363.5" />
+      <point x="106.0" y="-0.0" />
+    </edge>
+    <edge source="src.Pastelaria" target="src.Restauracao" relationship="GENERALIZATION">
+      <point x="1.0702858291011808E-4" y="-71.5" />
+      <point x="564.338" y="256.0" />
+      <point x="339.14599999999996" y="256.0" />
+      <point x="4.1472089051808325E-4" y="126.5" />
+    </edge>
+    <edge source="src.Restauracao" target="src.Empresa" relationship="GENERALIZATION">
+      <point x="125.00041472089053" y="0.0" />
+      <point x="688.0" y="104.5" />
+      <point x="688.0" y="363.5" />
+      <point x="-105.99958527910945" y="0.0" />
+    </edge>
+    <edge source="src.Localizacao" target="src.Coordenada" relationship="TO_ONE">
+      <point x="-0.0" y="-93.5" />
+      <point x="1193.1455852791096" y="447.6390134529148" />
+      <point x="83.5" y="-0.0" />
+    </edge>
+    <edge source="src.GestorEmpresas" target="src.Localizacao" relationship="CREATE">
+      <point x="153.16087443946185" y="-49.5" />
+      <point x="1405.526751198392" y="44.0" />
+      <point x="110.5" y="-0.0" />
+    </edge>
+    <edge source="src.GestorEmpresas" target="src.Frutaria" relationship="CREATE">
+      <point x="-164.5" y="-0.0" />
+      <point x="714.6455852791095" y="1050.0" />
+      <point x="-0.0" y="60.5" />
+    </edge>
+    <edge source="src.RestLocal" target="src.Restaurante" relationship="GENERALIZATION">
+      <point x="4.1472089048966154E-4" y="-104.5" />
+      <point x="-38.10400000000004" y="471.0" />
+      <point x="106.33800000000002" y="471.0" />
+      <point x="1.0702858281774752E-4" y="82.5" />
+    </edge>
+    <edge source="src.Restaurante" target="src.Restauracao" relationship="GENERALIZATION">
+      <point x="1.0702858281774752E-4" y="-82.5" />
+      <point x="106.33800000000002" y="256.0" />
+      <point x="339.14599999999996" y="256.0" />
+      <point x="4.1472089051808325E-4" y="126.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="0.5762273901808785" showDependencies="true" x="548.0" y="1332.6322869955156" />
+  <settings layout="Hierarchic" zoom="0.46098191214470285" showDependencies="true" x="41.138452914797426" y="516.2247757847533" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>

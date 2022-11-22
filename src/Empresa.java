@@ -57,4 +57,9 @@ public abstract class Empresa {
 
     abstract public float despesaAnual();
     abstract public float receitaAnual();
+
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
