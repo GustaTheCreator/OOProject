@@ -11,7 +11,8 @@ public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private JPanel menu, baseDados, filtrar, listar, gerir, voltar;
     private JLabel textoTitulo;
-    private JButton botaoBaseDados, botaoSair, botaoVoltar, botaoMostrarTodas, botaoCriar, botaoEditar, botaoApagar;
+    private DefaultListModel<Empresa> elementos;
+    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltar, botaoCriar, botaoEditar, botaoApagar;
 
     public UserInterface(){
 
@@ -39,8 +40,14 @@ public class UserInterface extends JFrame {
         UIManager.put("Button.font",new Font("Arial", Font.BOLD, 16));
         UIManager.put("Button.background",cinza);
         UIManager.put("Button.focus", new Color(0, 0, 0, 0));
-        UIManager.put("Button.border",new CompoundBorder(new LineBorder(cinza), new EmptyBorder(5, 15, 5, 15)));
+        UIManager.put("Button.border",new CompoundBorder(new LineBorder(ciano,3), new EmptyBorder(5, 15, 5, 15)));
         UIManager.put("Button.select", ciano);
+        UIManager.put("ComboBox.background",cinza);
+        UIManager.put("ComboBox.foreground",Color.WHITE);
+        UIManager.put("ComboBox.disabledBackground",cinza);
+        UIManager.put("ComboBox.disabledForeground",Color.WHITE);
+        UIManager.put("ComboBox.selectionBackground",cinza);
+        UIManager.put("ComboBox.selectionForeground",Color.WHITE);
         UIManager.put("OptionPane.yesButtonText","Sim");
         UIManager.put("OptionPane.noButtonText","Não");         // os gifs perderam alguma qualidade ao
         UIManager.put("OptionPane.cancelButtonText","Cancelar"); // ser resized, talvez procurar outros
@@ -54,56 +61,65 @@ public class UserInterface extends JFrame {
 
 
         // criar o listener para os clicks nos botões
-        ButtonListener buttonPress = new ButtonListener();
-        // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado ao painel
+        InteracoesBotao premirBotao = new InteracoesBotao();
+        // criar o listener para a caixa com os filtros
+        InteracoesCaixa selecElemento = new InteracoesCaixa();
+        // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado
         GridBagConstraints posicao = new GridBagConstraints();
 
         //construir o painel do menu
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
-        textoTitulo = new JLabel("<html>St<FONT COLOR=rgb(118,221,221)>★</FONT>rThrive</html>");
+        textoTitulo = new JLabel("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
         textoTitulo.setFont(new Font(textoTitulo.getFont().getFontName(), Font.BOLD, 100));
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,40,0);
-        textoTitulo.addMouseListener(new MouseAdapter(){ //clicar duas vezes no titulo do menu!
-            private int clicks=0;
-            public void mouseClicked(MouseEvent evento){
-                this.clicks+=1;
-                if(clicks==2)
-                    textoTitulo.setText("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
-            }
-        });
         menu.add(textoTitulo, posicao);
         botaoBaseDados = new JButton("Base de Dados");
         posicao.gridx = 0;
         posicao.gridy = 1;
-        botaoBaseDados.addActionListener(buttonPress);
+        botaoBaseDados.addActionListener(premirBotao);
         menu.add(botaoBaseDados, posicao);
-        botaoSair = new JButton("Terminar Sessão");
+        botaoOpcoes = new JButton("Opções");
         posicao.gridx = 0;
         posicao.gridy = 2;
-        botaoSair.addActionListener(buttonPress);
+        botaoOpcoes.addActionListener(premirBotao);
+        menu.add(botaoOpcoes, posicao);
+        botaoSair = new JButton("Terminar Sessão");
+        posicao.gridx = 0;
+        posicao.gridy = 3;
+        botaoSair.addActionListener(premirBotao);
         menu.add(botaoSair,posicao);
 
         // construir o painel para filtrar as empresas com as diferentes opções do enunciado
         filtrar = new JPanel();
         filtrar.setLayout(new GridBagLayout());
-        botaoMostrarTodas = new JButton("Mostrar todas");
-        posicao.insets = new Insets(0,0,30,50);
-        posicao.gridx = 0;
-        posicao.gridy = 0;
-        filtrar.add(botaoMostrarTodas, posicao);
+        String[] opcoes = {
+            "Mostrar todas",
+            "Maior receita anual",
+            "Menor despesa anual",
+            "Maior lucro anual",
+            "Restaurantes clientes/dia"
+        };
+        JComboBox<String> caixaFiltros = new JComboBox<String>(opcoes);
+        caixaFiltros.addActionListener(selecElemento);
+        caixaFiltros.setBorder(new CompoundBorder(new LineBorder(ciano,3), new EmptyBorder(5, 15, 5, 15)));
+        posicao.insets = new Insets(200,0,200,0);
+        filtrar.add(caixaFiltros);
 
         // construir o painel com a lista e a funcionalidade de dar scroll caso fica demasiado grande
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
+        elementos = new DefaultListModel<Empresa>();
+        JList<Empresa> lista = new JList<Empresa>(elementos);
+        // por default criamos a lista a mostrar todas as empresas para quando o utlizadar aceder à base de dados
         ArrayList<Empresa> registo = gestor.getEmpresas();
-        DefaultListModel<String> elementos = new DefaultListModel<String>();
         for (Empresa empresa : registo){
-            elementos.addElement(empresa.getNome());
+            elementos.addElement(empresa);
         }
-        JList<String> lista = new JList<String>(elementos);
+        lista.setBorder(new CompoundBorder(new LineBorder(ciano,3), new EmptyBorder(5, 15, 5, 15)));
+        lista.setFont(new Font("Arial",Font.BOLD,16));
         JScrollPane scroller = new JScrollPane(lista);
         posicao.gridx = 1;
         posicao.gridy = 0;
@@ -129,19 +145,18 @@ public class UserInterface extends JFrame {
         // construir o painel com o botão para voltar ao menu;
         voltar = new JPanel();
         voltar.setLayout(new GridBagLayout());
-        botaoVoltar= new JButton("←");
-        botaoVoltar.setFont(new Font(botaoVoltar.getFont().getFontName(), Font.BOLD, 25));
-        posicao.insets = new Insets(0,0,100,0);
+        botaoVoltar = new JButton("←");
+        posicao.insets = new Insets(0,50,0,50);
         posicao.gridx = 0;
         posicao.gridy = 3;
-        botaoVoltar.addActionListener(buttonPress);
+        botaoVoltar.addActionListener(premirBotao);
         voltar.add(botaoVoltar, posicao);
 
         // criar o painel base de dados que contém todos os outros
         baseDados = new JPanel();
         baseDados.setLayout(new BorderLayout());
-        baseDados.add(voltar,BorderLayout.NORTH);
-        baseDados.add(filtrar,BorderLayout.WEST);
+        baseDados.add(voltar,BorderLayout.WEST);
+        baseDados.add(filtrar,BorderLayout.NORTH);
         baseDados.add(listar,BorderLayout.CENTER);
         baseDados.add(gerir,BorderLayout.EAST);
 
@@ -151,7 +166,7 @@ public class UserInterface extends JFrame {
         this.add(menu);
     }
 
-    private class ButtonListener implements ActionListener {
+    private class InteracoesBotao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
             if(evento.getSource() == botaoBaseDados) {
@@ -165,6 +180,12 @@ public class UserInterface extends JFrame {
                     System.exit(0);
                 }
             }
+        }
+    }
+
+    private class InteracoesCaixa implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evento) {
         }
     }
 
