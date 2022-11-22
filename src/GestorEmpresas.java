@@ -13,12 +13,12 @@ public class GestorEmpresas {
         return empresas;
     }
 
-    public void addEmpresa(String nome, int horasLat,int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    public void addEmpresa(String nome,String tipo, int horasLat,int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
     {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
         Localizacao local = new Localizacao(lat, longi);
-        Frutaria empresa = new Frutaria(nome, local, distrito, mediaAnual, custoEmpregados, numProdutos);
+        Frutaria empresa = new Frutaria(nome,tipo,local, distrito, mediaAnual, custoEmpregados, numProdutos);
         this.empresas.add(empresa);
     }
 

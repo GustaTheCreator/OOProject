@@ -4,9 +4,9 @@ public class RestLocal extends Restaurante{
     private int numMesasEsplanada;
     private float custoLiceAnualMesaEsp;
 
-    public RestLocal(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, int numMesasEsplanadas, float custoLiceAnualMesaEsp) {
-        super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
-        this.numMesasEsplanada = numMesasEsplanadas;
+    public RestLocal(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, int numMesasEsplanada, float custoLiceAnualMesaEsp) {
+        super(nome, tipo, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
+        this.numMesasEsplanada = numMesasEsplanada;
         this.custoLiceAnualMesaEsp = custoLiceAnualMesaEsp;
     }
 

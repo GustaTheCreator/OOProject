@@ -3,8 +3,8 @@ package src;
 public class Frutaria extends Mercearia{
     private int numProdutos;
 
-    public Frutaria(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, int numProdutos) {
-        super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);
+    public Frutaria(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, int numProdutos) {
+        super(nome, tipo, local, distrito, faturacaoMedia, custoLimpezaAnual);
         this.numProdutos = numProdutos;
     }
 
@@ -18,9 +18,6 @@ public class Frutaria extends Mercearia{
 
     @Override
     public float receitaAnual() {
-        return numProdutos*getFaturacaoMedia();
-    }
-    public float despesaAnual(){
-        return getCustoLimpezaAnual();
-    }
+        return numProdutos*getFaturacaoMedia();} //faturacaoMedia é a faturacao media anual por produto
+
 }

@@ -3,8 +3,8 @@ package src;
 public class Cafe extends Restauracao{
     private float numMedCafes;
 
-    public Cafe(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedCafes) {
-        super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
+    public Cafe(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedCafes) {
+        super(nome, tipo, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
         this.numMedCafes = numMedCafes;
     }
 
@@ -15,11 +15,7 @@ public class Cafe extends Restauracao{
     public void setNumMedCafes(float numMedCafes) {
         this.numMedCafes = numMedCafes;
     }
-    public float faturacaoAnualPorCafeDia(){
-        return getFaturacaoMedia()/(numMedCafes*365);
-    }
     @Override
     public float receitaAnual() {
-        return numMedCafes*faturacaoAnualPorCafeDia();
-    }
+        return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por cafe
 }

@@ -2,12 +2,14 @@ package src;
 
 public abstract class Empresa {
     private String nome;
+    private String tipo;
     private Localizacao local;
     private String distrito;
     private float faturacaoMedia;
 
-    public Empresa(String nome, Localizacao local, String distrito, float faturacaoMedia) {
+    public Empresa(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia) {
         this.nome = nome;
+        this.tipo = tipo;
         this.local = local;
         this.distrito = distrito;
         this.faturacaoMedia = faturacaoMedia;
@@ -44,6 +46,15 @@ public abstract class Empresa {
     public void setFaturacaoMedia(float faturacaoMedia) {
         this.faturacaoMedia = faturacaoMedia;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     abstract public float despesaAnual();
     abstract public float receitaAnual();
 }

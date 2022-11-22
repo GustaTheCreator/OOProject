@@ -17,9 +17,9 @@ public class UserInterface extends JFrame {
 
         // criar o gestor que vai funcionar através da GUI
         gestor = new GestorEmpresas();
-        gestor.addEmpresa("Alma Shopping", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
-        gestor.addEmpresa("Coimbra Shopping", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
-        gestor.addEmpresa("Tia Adelaide", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+        gestor.addEmpresa("Alma Shopping","Frutaria", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+        gestor.addEmpresa("Coimbra Shopping","Frutaria", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+        gestor.addEmpresa("Tia Adelaide","Frutaria", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
 
         // definir o estilo da janela
         this.setTitle("StarThrive");
