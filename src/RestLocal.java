@@ -28,7 +28,7 @@ public class RestLocal extends Restaurante{
 
     @Override
     public float receitaAnual() {
-        return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia();
+        return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia()*getNumDiasFuncAnual();//FaturacaoMedia por caada mesa por dia
     }
     @Override
     public float despesaAnual(){

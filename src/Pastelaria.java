@@ -15,7 +15,10 @@ public class Pastelaria extends Restauracao {
     public void setNumMedBolos(float numMedBolos) {
         this.numMedBolos = numMedBolos;
     }
+    public float faturaAnualPBoloPDia(){
+        return getFaturacaoMedia()/365;
+    }
     public float receitaAnual(){
         return numMedBolos*getFaturacaoMedia();
-    }
+    }//FaturacaoMedia anual por bolo
 }
