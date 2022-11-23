@@ -6,13 +6,18 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.table.*;
 
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
-    private JPanel menu, baseDados, filtrar, listar, gerir, voltar;
+    private JPanel menu, baseDados, filtrar, listar, voltar;
     private JLabel textoTitulo;
-    private DefaultListModel<Empresa> elementos;
-    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltar, botaoCriar, botaoEditar, botaoApagar;
+    private JComboBox<String> caixaFiltros, caixaOrdem;
+    private JTable tabela;
+    private DefaultTableModel elementos;
+    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltar;
 
     public UserInterface(){
 
@@ -32,32 +37,35 @@ public class UserInterface extends JFrame {
 
         // criar cores e modelos personalizados para toda a interface através do UIManager
         Color cinza = new Color(55,55,55);
-        Color ciano =  new Color(118,221,221);
+        Color azul =  new Color(118,221,221);
+        Color invisivel = new Color(0,0,0,0);
         UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("Panel.background",Color.WHITE);
         UIManager.put("Button.foreground",Color.WHITE);
         UIManager.put("Button.preferredSize",new Dimension(300, 50));
-        UIManager.put("Button.font",new Font("Arial", Font.BOLD, 16));
+        UIManager.put("Button.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("Button.background",cinza);
-        UIManager.put("Button.focus", new Color(0, 0, 0, 0));
-        UIManager.put("Button.border",new CompoundBorder(new LineBorder(ciano,3), new EmptyBorder(5, 15, 5, 15)));
-        UIManager.put("Button.select", ciano);
+        UIManager.put("Button.focus",invisivel);
+        UIManager.put("Button.select",azul);
+        UIManager.put("Button.selectForeground",azul);
+        UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("ComboBox.background",cinza);
         UIManager.put("ComboBox.foreground",Color.WHITE);
-        UIManager.put("ComboBox.disabledBackground",cinza);
-        UIManager.put("ComboBox.disabledForeground",Color.WHITE);
-        UIManager.put("ComboBox.selectionBackground",cinza);
-        UIManager.put("ComboBox.selectionForeground",Color.WHITE);
+        UIManager.put("ComboBox.selectionBackground",azul);
+        UIManager.put("ComboBox.selectionForeground",cinza);
         UIManager.put("OptionPane.yesButtonText","Sim");
         UIManager.put("OptionPane.noButtonText","Não");         // os gifs perderam alguma qualidade ao
         UIManager.put("OptionPane.cancelButtonText","Cancelar"); // ser resized, talvez procurar outros
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
         UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
-        UIManager.put("List.background",cinza);
-        UIManager.put("List.foreground",Color.WHITE);
-        UIManager.put("List.selectionBackground",ciano);
-        UIManager.put("List.selectionForeground",cinza);
+        UIManager.put("Table.background",cinza);
+        UIManager.put("Table.foreground",Color.WHITE);
+        UIManager.put("Table.selectionBackground",azul);
+        UIManager.put("Table.selectionForeground",cinza);
+        UIManager.put("Table.focusCellBackground",azul);
+        UIManager.put("Table.focusCellForeground",cinza);
+        UIManager.put("Table.font",new Font("Arial", Font.BOLD, 15));
 
 
         // criar o listener para os clicks nos botões
@@ -95,70 +103,65 @@ public class UserInterface extends JFrame {
         // construir o painel para filtrar as empresas com as diferentes opções do enunciado
         filtrar = new JPanel();
         filtrar.setLayout(new GridBagLayout());
-        String[] opcoes = {
-            "Mostrar todas",
-            "Maior receita anual",
-            "Menor despesa anual",
-            "Maior lucro anual",
-            "Restaurantes clientes/dia"
-        };
-        JComboBox<String> caixaFiltros = new JComboBox<String>(opcoes);
+        String[] filtros = {"Todas","Restauração","Mercearias"};
+        caixaFiltros = new JComboBox<String>(filtros);
+        caixaFiltros.setLayout(new GridBagLayout());
+        caixaFiltros.setUI(new BasicComboBoxUI());
+        caixaFiltros.setBorder(new EmptyBorder(5, 15, 5, 15));
         caixaFiltros.addActionListener(selecElemento);
-        caixaFiltros.setBorder(new CompoundBorder(new LineBorder(ciano,3), new EmptyBorder(5, 15, 5, 15)));
-        posicao.insets = new Insets(200,0,200,0);
-        filtrar.add(caixaFiltros);
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,100,40,0);
+        filtrar.add(caixaFiltros,posicao);
+        String[] ordem = {"Nome ↑","Nome ↓","Distrito ↑","Distrito ↓","Despesa anual ↑","Despesa anual ↓","Receita anual ↑","Receita anual ↓","Lucro anual ↑","Lucro anual ↓"};
+        caixaOrdem = new JComboBox<String>(ordem);
+        caixaOrdem.setLayout(new GridBagLayout());
+        caixaOrdem.setUI(new BasicComboBoxUI());
+        caixaOrdem.setBorder(new EmptyBorder(5, 15, 5, 15));
+        caixaOrdem.addActionListener(selecElemento);
+        posicao.gridx = 1;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,75,40,0);
+        filtrar.add(caixaOrdem,posicao);
 
-        // construir o painel com a lista e a funcionalidade de dar scroll caso fica demasiado grande
+        // construir o painel com a tabela e a funcionalidade de dar scroll caso fica demasiado grande
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
-        elementos = new DefaultListModel<Empresa>();
-        JList<Empresa> lista = new JList<Empresa>(elementos);
-        // por default criamos a lista a mostrar todas as empresas para quando o utlizadar aceder à base de dados
+        // por default criamos a tabela a mostrar todas as empresas na primeira vez que o utlizadar aceder à base de dados
+        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa anual", "Receita anual", "Lucro"};
+        elementos = new DefaultTableModel(colunas, 0){
+            @Override
+            public boolean isCellEditable(int fila, int coluna) {
+                return (coluna == 0 || coluna == 1 || coluna == 2 || coluna == 3 || coluna == 4);
+            }
+        };
         ArrayList<Empresa> registo = gestor.getEmpresas();
         for (Empresa empresa : registo){
-            elementos.addElement(empresa);
+            elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.getFaturacaoMedia()});
         }
-        lista.setBorder(new CompoundBorder(new LineBorder(ciano,3), new EmptyBorder(5, 15, 5, 15)));
-        lista.setFont(new Font("Arial",Font.BOLD,16));
-        JScrollPane scroller = new JScrollPane(lista);
+		tabela = new JTable(elementos);
+        tabela.setFillsViewportHeight(true);
+        JScrollPane scroller = new JScrollPane(tabela);
         posicao.gridx = 1;
         posicao.gridy = 0;
         listar.add(scroller);
 
-        // construir o painel para gerir as empresas (criar/editar/apagar)
-        gerir = new JPanel();
-        gerir.setLayout(new GridBagLayout());
-        botaoCriar = new JButton("Criar");
-        posicao.insets = new Insets(0,50,30,0);
-        posicao.gridx = 0;
-        posicao.gridy = 0;
-        gerir.add(botaoCriar, posicao);
-        botaoEditar = new JButton("Editar");
-        posicao.gridx = 0;
-        posicao.gridy = 1;
-        gerir.add(botaoEditar, posicao);
-        botaoApagar = new JButton("Apagar");
-        posicao.gridx = 0;
-        posicao.gridy = 2;
-        gerir.add(botaoApagar, posicao);
-
         // construir o painel com o botão para voltar ao menu;
         voltar = new JPanel();
         voltar.setLayout(new GridBagLayout());
-        botaoVoltar = new JButton("←");
-        posicao.insets = new Insets(0,50,0,50);
+        botaoVoltar = new JButton("◄");
+        posicao.insets = new Insets(0,0,0,50);
         posicao.gridx = 0;
         posicao.gridy = 3;
         botaoVoltar.addActionListener(premirBotao);
         voltar.add(botaoVoltar, posicao);
 
-        // criar o painel base de dados que contém todos os outros
+        // criar o painel base de dados que contém todos os outros que pertecem a essa parte do programa
         baseDados = new JPanel();
         baseDados.setLayout(new BorderLayout());
         baseDados.add(voltar,BorderLayout.WEST);
         baseDados.add(filtrar,BorderLayout.NORTH);
         baseDados.add(listar,BorderLayout.CENTER);
-        baseDados.add(gerir,BorderLayout.EAST);
 
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
@@ -180,12 +183,61 @@ public class UserInterface extends JFrame {
                     System.exit(0);
                 }
             }
+            if(evento.getSource() == botaoOpcoes){
+                mudarTema();
+            }
         }
     }
 
     private class InteracoesCaixa implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
+            requestFocusInWindow();
+            if(evento.getSource() == caixaFiltros){
+                Integer caixaSelect = caixaFiltros.getSelectedIndex();
+                if(caixaSelect==0){
+                    System.out.println("teste0");
+                }
+                if(caixaSelect==1){
+                    System.out.println("teste1");
+                }
+                if(caixaSelect==2){
+                    System.out.println("teste2");
+                }
+            }
+            else{
+                Integer caixaSelect = caixaOrdem.getSelectedIndex();
+                if(caixaSelect==0){
+                    System.out.println("teste0");
+                }
+                if(caixaSelect==1){
+                    System.out.println("teste1");
+                }
+                if(caixaSelect==2){
+                    System.out.println("teste2");
+                }
+                if(caixaSelect==3){
+                    System.out.println("teste3");
+                }
+                if(caixaSelect==4){
+                    System.out.println("teste4");
+                }
+                if(caixaSelect==5){
+                    System.out.println("teste5");
+                }
+                if(caixaSelect==6){
+                    System.out.println("teste6");
+                }
+                if(caixaSelect==7){
+                    System.out.println("teste7");
+                }
+                if(caixaSelect==8){
+                    System.out.println("teste8");
+                }
+                if(caixaSelect==9){
+                    System.out.println("teste9");
+                }
+            }
         }
     }
 
@@ -202,5 +254,31 @@ public class UserInterface extends JFrame {
         this.add(baseDados);
         this.validate();
         this.repaint();
+    }
+
+    private void mudarTema(){
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        Color windowsGrey = new Color(240,240,240);
+        UIManager.put("Button.foreground",new ColorUIResource(Color.BLACK));
+        botaoOpcoes.setForeground(Color.BLACK);
+        botaoSair.setForeground(Color.BLACK);
+        botaoVoltar.setForeground(Color.BLACK);
+        botaoBaseDados.setForeground(Color.BLACK);
+        caixaFiltros.setForeground(Color.BLACK);
+        caixaFiltros.setBackground(windowsGrey);
+        caixaOrdem.setForeground(Color.BLACK);
+        caixaOrdem.setBackground(windowsGrey);
+        tabela.setBackground(Color.WHITE);
+        tabela.setForeground(Color.BLACK);
+        SwingUtilities.updateComponentTreeUI(this);
+        SwingUtilities.updateComponentTreeUI(tabela);
+        SwingUtilities.updateComponentTreeUI(botaoVoltar);
+        SwingUtilities.updateComponentTreeUI(caixaFiltros);
+        SwingUtilities.updateComponentTreeUI(caixaOrdem);
     }
 }
