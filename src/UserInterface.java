@@ -33,9 +33,9 @@ public class UserInterface extends JFrame {
         // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado
         posicao = new GridBagConstraints();
         //temporario
-        gestor.addEmpresa("Alma Shopping","Frutaria", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
-        gestor.addEmpresa("Coimbra Shopping","Frutaria", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
-        gestor.addEmpresa("Tia Adelaide","Frutaria", 30, 12, 20, 'N', 10, 5, 45, 'E', "Coimbra", 315321.32f, 139232f, 104);
+        gestor.addFrutaria("Shopping",30, 12, 20, 'N', 10, 5, 20, 'E', "Coimbra", 53321.32f, 13032f, 13);
+        gestor.addRestaurante("Zé Bananas",10, 22, 20, 'S', 15, 8, 45, 'E', "Lisboa", 121.32f, 20232f, 21);
+        gestor.addCafe("Tia Adelaide",20, 12, 20, 'E', 5, 10, 30, 'E', "Aveiro", 10321.32f, 30232f, 7);
         // construir a aparencia da janela tendo em conta o tema que o utilizador escolheu na última vez que usou o programa
         construirAparencia();
         //construir o painel do menu
@@ -106,22 +106,18 @@ public class UserInterface extends JFrame {
         Integer caixaSelect = caixaFiltros.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
+        String tipos[]= {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado"};
         if(caixaSelect==0){
             for (Empresa empresa : registo){
-                elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.getFaturacaoMedia()});
+                elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
             }
         }
-        if(caixaSelect==1){
+        else{
             for (Empresa empresa : registo){
-                if(empresa.getTipo().equals("Restaurante")){
-                    elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.getFaturacaoMedia()});
-                }
-            }
-        }
-        if(caixaSelect==2){
-            for (Empresa empresa : registo){
-                if(empresa.getTipo().equals("Frutaria")){
-                    elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.getFaturacaoMedia()});
+                System.out.println(tipos[caixaSelect]);
+                System.out.println(empresa.getSubCategoria());
+                if(empresa.getTipo().equals(tipos[caixaSelect]) || empresa.getCategoria().equals(tipos[caixaSelect]) || empresa.getSubCategoria().equals(tipos[caixaSelect])){
+                    elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
                 }
             }
         }
@@ -130,17 +126,15 @@ public class UserInterface extends JFrame {
     private void mudarTema(){
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.put("Button.select",new Color(118,221,221));
-            Color windowsGrey = new Color(240,240,240);
             UIManager.put("Button.foreground",new ColorUIResource(Color.BLACK));
             botaoOpcoes.setForeground(Color.BLACK);
             botaoSair.setForeground(Color.BLACK);
             botaoVoltar.setForeground(Color.BLACK);
             botaoBaseDados.setForeground(Color.BLACK);
             caixaFiltros.setForeground(Color.BLACK);
-            caixaFiltros.setBackground(windowsGrey);
+            caixaFiltros.setBackground(Color.WHITE);
             caixaOrdem.setForeground(Color.BLACK);
-            caixaOrdem.setBackground(windowsGrey);
+            caixaOrdem.setBackground(Color.WHITE);
             tabela.setBackground(Color.WHITE);
             tabela.setForeground(Color.BLACK);
             SwingUtilities.updateComponentTreeUI(this);
@@ -187,8 +181,8 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
         UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
-        UIManager.put("Table.background",cinza);
-        UIManager.put("Table.foreground",Color.WHITE);
+        //UIManager.put("Table.background",cinza);
+        //UIManager.put("Table.foreground",Color.WHITE);
         UIManager.put("Table.selectionBackground",azul);
         UIManager.put("Table.selectionForeground",cinza);
         UIManager.put("Table.focusCellBackground",azul);
@@ -244,7 +238,7 @@ public class UserInterface extends JFrame {
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
         // por default criamos a tabela a mostrar todas as empresas na primeira vez que o utlizadar aceder à base de dados
-        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa anual", "Receita anual", "Lucro"};
+        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa", "Receita", "Lucro"};
         elementos = new DefaultTableModel(colunas, 0){
             @Override
             public boolean isCellEditable(int fila, int coluna) {
@@ -253,9 +247,11 @@ public class UserInterface extends JFrame {
         };
         ArrayList<Empresa> registo = gestor.getEmpresas();
         for (Empresa empresa : registo){
-            elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.getFaturacaoMedia()});
+            elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
         }
 		tabela = new JTable(elementos);
+        tabela.getColumnModel().getColumn(0).setPreferredWidth(125);
+        tabela.getColumnModel().getColumn(5).setPreferredWidth(110);
         tabela.setFillsViewportHeight(true);
         JScrollPane scroller = new JScrollPane(tabela);
         posicao.gridx = 1;
@@ -266,7 +262,16 @@ public class UserInterface extends JFrame {
     private void construirFiltrar(){
         filtrar = new JPanel();
         filtrar.setLayout(new GridBagLayout());
-        String[] filtros = {"Todas","Restauração","Mercearias"};
+        String filtros[]= {"Todas", // 0
+                            "Restauração (Categoria)", // 1
+                                "  Pastelaria", // 2
+                                "  Cafe", // 3
+                                "  Restaurante (Sub-Categoria)", // 4
+                                    "      Restaurante Fast-Food", // 5
+                                    "      Restaurante Local", // 6
+                            "Mercearia (Categoria)", // 7
+                                "  Frutaria", // 8
+                                "  Mercado (Sub-Categoria)"}; // 9
         caixaFiltros = new JComboBox<String>(filtros);
         caixaFiltros.setLayout(new GridBagLayout());
         caixaFiltros.setUI(new BasicComboBoxUI());
@@ -276,7 +281,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,100,40,0);
         filtrar.add(caixaFiltros,posicao);
-        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro anual ↓","Lucro anual ↑"};
+        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
         caixaOrdem = new JComboBox<String>(ordem);
         caixaOrdem.setLayout(new GridBagLayout());
         caixaOrdem.setUI(new BasicComboBoxUI());

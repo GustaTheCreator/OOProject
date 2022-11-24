@@ -3,8 +3,9 @@ package src;
 public class Frutaria extends Mercearia{
     private int numProdutos;
 
-    public Frutaria(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, int numProdutos) {
-        super(nome, tipo, local, distrito, faturacaoMedia, custoLimpezaAnual);
+    public Frutaria(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, int numProdutos) {
+        super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);
+        this.tipo = "Frutaria";
         this.numProdutos = numProdutos;
     }
 

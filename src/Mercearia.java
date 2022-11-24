@@ -3,8 +3,10 @@ package src;
 public abstract class Mercearia extends Empresa{
     private float custoLimpezaAnual;
 
-    public Mercearia(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual) {
-        super(nome, tipo, local, distrito, faturacaoMedia);
+    public Mercearia(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual) {
+        super(nome, local, distrito, faturacaoMedia);
+        this.tipo = "Mercearia";
+        this.categoria = "Mercearia";
         this.custoLimpezaAnual = custoLimpezaAnual;
     }
 

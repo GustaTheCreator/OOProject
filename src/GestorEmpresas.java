@@ -14,17 +14,32 @@ public class GestorEmpresas {
         return empresas;
     }
 
-    public void addEmpresa(String nome,String tipo, int horasLat,int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    public void addFrutaria(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
     {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
         Localizacao local = new Localizacao(lat, longi);
-        Frutaria empresa = new Frutaria(nome,tipo,local, distrito, mediaAnual, custoEmpregados, numProdutos);
+        Frutaria empresa = new Frutaria(nome, local, distrito, mediaAnual, custoEmpregados, numProdutos);
+        this.empresas.add(empresa);
+    }
+    public void addCafe(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    {
+        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
+        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
+        Localizacao local = new Localizacao(lat, longi);
+        Cafe empresa = new Cafe(nome, local, distrito, segundosLong, direcaoLong, mediaAnual, custoEmpregados, numProdutos);
+        this.empresas.add(empresa);
+    }
+    public void addRestaurante(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    {
+        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
+        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
+        Localizacao local = new Localizacao(lat, longi);
+        RestFastFood empresa = new RestFastFood(nome, local, distrito, direcaoLat, horasLong, minutosLong, mediaAnual, segundosLong, direcaoLong, custoEmpregados, numProdutos);
         this.empresas.add(empresa);
     }
 
     public void ordenarLista(int opcao){
-        //opcao 1 - ordenar por nome
         if(opcao==0){
             empresas.sort((atual, proximo) -> atual.getNome().compareTo(proximo.getNome()));
         }
@@ -47,17 +62,24 @@ public class GestorEmpresas {
             Collections.reverse(empresas);
         }
         if(opcao==6){
-            empresas.sort((atual, proximo) -> Float.compare(atual.getFaturacaoMedia(), proximo.getFaturacaoMedia()));
+            empresas.sort((atual, proximo) -> Float.compare(atual.receitaAnual(), proximo.receitaAnual()));
         }
         if(opcao==7){
-            empresas.sort((atual, proximo) -> Float.compare(atual.getFaturacaoMedia(), proximo.getFaturacaoMedia()));
+            empresas.sort((atual, proximo) -> Float.compare(atual.receitaAnual(), proximo.receitaAnual()));
             Collections.reverse(empresas);
         }
         if(opcao==8){
-            empresas.sort((atual, proximo) -> atual.getNome().compareTo(proximo.getNome()));
+            empresas.sort((atual, proximo) -> Float.compare(atual.despesaAnual(), proximo.despesaAnual()));
         }
         if(opcao==9){
-            empresas.sort((atual, proximo) -> atual.getNome().compareTo(proximo.getNome()));
+            empresas.sort((atual, proximo) -> Float.compare(atual.despesaAnual(), proximo.despesaAnual()));
+            Collections.reverse(empresas);
+        }
+        if(opcao==10){
+            empresas.sort((atual, proximo) -> Float.compare(atual.lucro(), proximo.lucro()));
+        }
+        if(opcao==11){
+            empresas.sort((atual, proximo) -> Float.compare(atual.lucro(), proximo.lucro()));
             Collections.reverse(empresas);
         }
     }

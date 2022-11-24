@@ -2,14 +2,18 @@ package src;
 
 public abstract class Empresa {
     private String nome;
-    private String tipo;
+    protected String tipo;
+    protected String subCategoria;
+    protected String categoria;
     private Localizacao local;
     private String distrito;
     private float faturacaoMedia;
 
-    public Empresa(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia) {
+    public Empresa(String nome,Localizacao local, String distrito, float faturacaoMedia) {
         this.nome = nome;
-        this.tipo = tipo;
+        this.tipo = "Empresa";
+        this.subCategoria = "Nenhuma";
+        this.categoria = "Nenhuma";
         this.local = local;
         this.distrito = distrito;
         this.faturacaoMedia = faturacaoMedia;
@@ -21,6 +25,14 @@ public abstract class Empresa {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public String getSubCategoria() {
+        return subCategoria;
     }
 
     public Localizacao getLocal() {
@@ -57,6 +69,19 @@ public abstract class Empresa {
 
     abstract public float despesaAnual();
     abstract public float receitaAnual();
+
+    public float lucro(){
+        return receitaAnual() - despesaAnual();
+    }
+
+    public String lucroSimNao()
+    {
+        Float lucro = receitaAnual() - despesaAnual();
+        if(lucro > 0)
+            return "Sim | " + lucro;
+        else
+            return "Não | " + lucro;
+    }
 
     @Override
     public String toString() {

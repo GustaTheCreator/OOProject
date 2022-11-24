@@ -4,8 +4,10 @@ public abstract class Restauracao extends Empresa{
     private float salarioMedAnual;
     private float numMedClientesDiario;
 
-    public Restauracao(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario) {
-        super(nome, tipo, local, distrito, faturacaoMedia);
+    public Restauracao(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario) {
+        super(nome, local, distrito, faturacaoMedia);
+        this.tipo = "Restauração";
+        this.categoria = "Restauração";
         this.numEmpMesa = numEmpMesa;
         this.salarioMedAnual = salarioMedAnual;
         this.numMedClientesDiario = numMedClientesDiario;

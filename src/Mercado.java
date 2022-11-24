@@ -4,10 +4,10 @@ public class Mercado extends Mercearia{
     private float areaCorredores;
     private String tipo;//mini,super ou hipermercado
 
-    public Mercado(String nome, String tipo, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, float areaCorredores, String tipo1) {
-        super(nome, tipo, local, distrito, faturacaoMedia, custoLimpezaAnual);
+    public Mercado(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, float areaCorredores, String tipo1) {
+        super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);
         this.areaCorredores = areaCorredores;
-        this.tipo = tipo;
+        this.tipo = "Mercado";
     }
 
     public float getAreaCorredores() {
