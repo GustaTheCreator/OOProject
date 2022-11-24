@@ -78,9 +78,9 @@ public abstract class Empresa {
     {
         Float lucro = receitaAnual() - despesaAnual();
         if(lucro > 0)
-            return "Sim | " + lucro;
+            return "Sim / " + lucro;
         else
-            return "Não | " + lucro;
+            return "Não / " + lucro;
     }
 
     @Override

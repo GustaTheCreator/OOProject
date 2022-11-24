@@ -1,25 +1,21 @@
 package src;
 
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.*;
 
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private GridBagConstraints posicao;
-    private JPanel menu, baseDados, filtrar, listar, voltar;
+    private JPanel menu, baseDados, filtrar, listar, voltar, gerir;
     private JLabel textoTitulo;
     private JComboBox<String> caixaFiltros, caixaOrdem;
     private JTable tabela;
     private DefaultTableModel elementos;
     private InteracoesCaixa selecElemento;
-    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltar;
+    private JButton botaoBaseDados, botaoSair, botaoVoltar,botaoCriar, botaoApagar, botaoEditar;
     private InteracoesBotao premirBotao;
 
     public UserInterface(){
@@ -32,27 +28,29 @@ public class UserInterface extends JFrame {
         // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado
         posicao = new GridBagConstraints();
         //temporario
-        gestor.addFrutaria("Shopping",30, 12, 20, 'N', 10, 5, 20, 'O', "Coimbra", 53321.32f, 13032f, 13);
-        gestor.addRestaurante("Zé Bananas",10, 22, 20, 'S', 15, 8, 45, 'N', "Lisboa", 121.32f, 20232f, 21);
-        gestor.addCafe("Tia Adelaide",20, 12, 20, 'E', 5, 10, 30, 'S', "Aveiro", 10321.32f, 30232f, 7);
-        gestor.addCafe("Moelas",40, 42, 6, 'O', 7, 12, 23, 'E', "Porto", 721.32f, 30232f, 7);
-        gestor.addMinimercado("Moelas",40, 42, 6, 'O', 7, 12, 23, 'E', "Porto", 721.32f, 30232f, 7);
+        gestor.addFrutaria("Shopping",30, 12, 20, 'N', 10, 5, 20, 'O', "Coimbra", 4321.32f, 13032f, 13);
+        gestor.addRestaurante("Zé Bananas",10, 22, 20, 'S', 15, 8, 45, 'N', "Lisboa", 50.32f, 20232f, 8);
+        gestor.addCafe("Tia Adelaide",20, 12, 20, 'E', 5, 10, 30, 'S', "Aveiro", 10321.32f, 30232f, 5);
+        gestor.addCafe("Moelas",40, 42, 6, 'O', 7, 12, 23, 'E', "Poiares", 721.32f, 30232f, 7);
+        gestor.addMinimercado("Macaco",40, 42, 6, 'O', 7, 12, 23, 'E', "Penafiel", 721.32f, 30232f, 3);
         // construir a aparencia da janela tendo em conta o tema que o utilizador escolheu na última vez que usou o programa
         construirAparencia();
         //construir o painel do menu
         construirMenu();
-        // construir o painel para filtrar as empresas com as diferentes opções do enunciado
-        construirFiltrar();
-        // construir o painel com a tabela
-        construirListar();
         // construir o painel com o botão para voltar ao menu;
         construirVoltar();
+        // construir o painel para filtrar as empresas com as diferentes opções do enunciado
+        construirFiltrar();
+        // construir o painel para gerir as empresas (criar/editar/apagar)
+        construirGerir();
+        // construir o painel com a tabela
+        construirListar();
         // criar o painel base de dados que contém o painel para voltar ao menu e os paineis relacionados com a tabela
         construirBaseDados();
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
         // logo o menu depois de estar tudo construído
-        this.add(menu);
+        add(menu);
     }
 
     private class InteracoesBotao implements ActionListener {
@@ -60,9 +58,6 @@ public class UserInterface extends JFrame {
         public void actionPerformed(ActionEvent evento) {
             if(evento.getSource() == botaoBaseDados) {
                 mostrarBaseDados();
-            }
-            if(evento.getSource() == botaoOpcoes){
-                mudarTema();
             }
             if(evento.getSource() == botaoVoltar) {
                 mostrarMenu();
@@ -90,17 +85,17 @@ public class UserInterface extends JFrame {
 
     //tentar metar tudo num painel e só botão de voltar separado
     private void mostrarMenu(){
-        this.remove(baseDados);
-        this.add(menu);
-        this.validate();
-        this.repaint();
+        remove(baseDados);
+        add(menu,BorderLayout.CENTER);
+        validate();
+        repaint();
     }
 
     private void mostrarBaseDados(){
-        this.remove(menu);
-        this.add(baseDados);
-        this.validate();
-        this.repaint();
+        remove(menu);
+        add(baseDados,BorderLayout.CENTER);
+        validate();
+        repaint();
     }
 
     private void recarregarTabela(){
@@ -122,81 +117,60 @@ public class UserInterface extends JFrame {
         }
     }
 
-    private void mudarTema(){
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.put("Button.foreground",new ColorUIResource(Color.BLACK));
-            botaoOpcoes.setForeground(Color.BLACK);
-            botaoSair.setForeground(Color.BLACK);
-            botaoVoltar.setForeground(Color.BLACK);
-            botaoBaseDados.setForeground(Color.BLACK);
-            caixaFiltros.setForeground(Color.BLACK);
-            caixaFiltros.setBackground(Color.WHITE);
-            caixaOrdem.setForeground(Color.BLACK);
-            caixaOrdem.setBackground(Color.WHITE);
-            tabela.setBackground(Color.WHITE);
-            tabela.setForeground(Color.BLACK);
-            SwingUtilities.updateComponentTreeUI(this);
-            SwingUtilities.updateComponentTreeUI(tabela);
-            SwingUtilities.updateComponentTreeUI(botaoVoltar);
-            SwingUtilities.updateComponentTreeUI(caixaFiltros);
-            SwingUtilities.updateComponentTreeUI(caixaOrdem);
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Não foi possível alterar o tema, irá permanecer o anterior!",null, JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void construirAparencia(){
         // definir o estilo da janela
-        this.setTitle("StarThrive");
-        this.setSize(720, 720);
-        this.getContentPane().setBackground(Color.WHITE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setLayout(new GridBagLayout());
-        this.setIconImage(new ImageIcon("src/resources/icon.png").getImage());
+        setTitle("StarThrive");
+        setSize(720, 720);
+        getContentPane().setBackground(Color.WHITE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLayout(new BorderLayout());
+        setIconImage(new ImageIcon("src/resources/icon.png").getImage());
 
         // criar cores e modelos personalizados para toda a interface através do UIManager
-        Color cinza = new Color(55,55,55);
-        Color azul =  new Color(118,221,221);
         Color invisivel = new Color(0,0,0,0);
         UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("Panel.background",Color.WHITE);
-        UIManager.put("Button.foreground",Color.WHITE);
-        UIManager.put("Button.preferredSize",new Dimension(300, 50));
-        UIManager.put("Button.font",new Font("Arial", Font.BOLD, 15));
-        UIManager.put("Button.background",cinza);
         UIManager.put("Button.focus",invisivel);
-        UIManager.put("Button.select",azul);
-        UIManager.put("Button.selectForeground",azul);
         UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
-        UIManager.put("ComboBox.background",cinza);
-        UIManager.put("ComboBox.foreground",Color.WHITE);
-        UIManager.put("ComboBox.selectionBackground",azul);
-        UIManager.put("ComboBox.selectionForeground",cinza);
+        UIManager.put("Button.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("OptionPane.yesButtonText","Sim");
-        UIManager.put("OptionPane.noButtonText","Não");         // os gifs perderam alguma qualidade ao
-        UIManager.put("OptionPane.cancelButtonText","Cancelar"); // ser resized, talvez procurar outros
+        UIManager.put("OptionPane.noButtonText","Não");
+        UIManager.put("OptionPane.cancelButtonText","Cancelar");
+        UIManager.put("OptionPane.yesButtonText","Sim");
+        UIManager.put("OptionPane.noButtonText","Não");
+        UIManager.put("OptionPane.cancelButtonText","Cancelar");
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
         UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
-        //UIManager.put("Table.background",cinza);
-        //UIManager.put("Table.foreground",Color.WHITE);
-        UIManager.put("Table.selectionBackground",azul);
-        UIManager.put("Table.selectionForeground",cinza);
-        UIManager.put("Table.focusCellBackground",azul);
-        UIManager.put("Table.focusCellForeground",cinza);
     }
 
     private void construirVoltar(){
         voltar = new JPanel();
         voltar.setLayout(new GridBagLayout());
-        botaoVoltar = new JButton("◄");
-        posicao.insets = new Insets(0,0,0,50);
         posicao.gridx = 0;
-        posicao.gridy = 3;
+        posicao.gridy = 0;
+        botaoVoltar = new JButton("◄");
+        posicao.insets = new Insets(0,0,0,0);
         botaoVoltar.addActionListener(premirBotao);
         voltar.add(botaoVoltar, posicao);
+    }
+
+    private void construirGerir(){
+        gerir = new JPanel();
+        gerir.setLayout(new GridBagLayout());
+        botaoCriar = new JButton("Criar");
+        posicao.insets = new Insets(0,0,30,50);
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        gerir.add(botaoCriar, posicao);
+        botaoEditar = new JButton("Editar");
+        posicao.gridx = 0;
+        posicao.gridy = 1;
+        gerir.add(botaoEditar, posicao);
+        botaoApagar = new JButton("Apagar");
+        posicao.gridx = 0;
+        posicao.gridy = 2;
+        gerir.add(botaoApagar, posicao);
     }
 
     private void construirMenu(){
@@ -213,35 +187,39 @@ public class UserInterface extends JFrame {
         posicao.gridy = 1;
         botaoBaseDados.addActionListener(premirBotao);
         menu.add(botaoBaseDados, posicao);
-        botaoOpcoes = new JButton("Opções");
-        posicao.gridx = 0;
-        posicao.gridy = 2;
-        botaoOpcoes.addActionListener(premirBotao);
-        menu.add(botaoOpcoes, posicao);
         botaoSair = new JButton("Terminar Sessão");
         posicao.gridx = 0;
-        posicao.gridy = 3;
+        posicao.gridy = 2;
         botaoSair.addActionListener(premirBotao);
         menu.add(botaoSair,posicao);
     }
 
     private void construirBaseDados(){
         baseDados = new JPanel();
-        baseDados.setLayout(new BorderLayout());
-        baseDados.add(voltar,BorderLayout.WEST);
-        baseDados.add(filtrar,BorderLayout.NORTH);
-        baseDados.add(listar,BorderLayout.CENTER);
+        baseDados.setLayout(new GridBagLayout());
+        posicao.gridx = 1;
+        posicao.gridy = 0;
+        baseDados.add(filtrar,posicao);
+        posicao.gridx = 0;
+        posicao.gridy = 1;
+        baseDados.add(voltar,posicao);
+        posicao.gridx = 2;
+        posicao.gridy = 1;
+        baseDados.add(gerir,posicao);
+        posicao.gridx = 1;
+        posicao.gridy = 1;
+        baseDados.add(listar,posicao);
     }
 
     private void construirListar(){
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
         // por default criamos a tabela a mostrar todas as empresas na primeira vez que o utlizadar aceder à base de dados
-        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa", "Receita", "Lucro"};
+        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa", "Receita", "Lucro / Diferença"};
         elementos = new DefaultTableModel(colunas, 0){
             @Override
             public boolean isCellEditable(int fila, int coluna) {
-                return (coluna == 0 || coluna == 1 || coluna == 2 || coluna == 3 || coluna == 4);
+                return false; //return (coluna == 0 || coluna == 1 || coluna == 2 || coluna == 3 || coluna == 4);
             }
         };
         ArrayList<Empresa> registo = gestor.getEmpresas();
@@ -250,12 +228,23 @@ public class UserInterface extends JFrame {
         }
 		tabela = new JTable(elementos);
         tabela.getColumnModel().getColumn(0).setPreferredWidth(125);
+        tabela.getColumnModel().getColumn(1).setPreferredWidth(125);
         tabela.getColumnModel().getColumn(5).setPreferredWidth(110);
         tabela.setFillsViewportHeight(true);
+        DefaultTableCellRenderer justificarCentro = new DefaultTableCellRenderer();
+        ((DefaultTableCellRenderer)tabela.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        justificarCentro.setHorizontalAlignment(JLabel.CENTER);
+        for(int x=0;x<6;x++){
+            tabela.getColumnModel().getColumn(x).setCellRenderer( justificarCentro );
+           }
         JScrollPane scroller = new JScrollPane(tabela);
         posicao.gridx = 1;
         posicao.gridy = 0;
-        listar.add(scroller);
+        posicao.fill = GridBagConstraints.BOTH;
+        posicao.weightx = 1;
+        posicao.weighty = 0;
+        posicao.insets = new Insets(0,0,0,0);
+        listar.add(scroller,posicao);
     }
 
     private void construirFiltrar(){
@@ -275,23 +264,31 @@ public class UserInterface extends JFrame {
                             "    Hipermercado", // 11
                             "    Supermercado"}; // 12
         caixaFiltros = new JComboBox<String>(filtros);
-        caixaFiltros.setLayout(new GridBagLayout());
-        caixaFiltros.setUI(new BasicComboBoxUI());
-        caixaFiltros.setBorder(new EmptyBorder(5, 15, 5, 15));
         caixaFiltros.addActionListener(selecElemento);
-        posicao.gridx = 0;
-        posicao.gridy = 0;
-        posicao.insets = new Insets(0,100,40,0);
-        filtrar.add(caixaFiltros,posicao);
-        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
-        caixaOrdem = new JComboBox<String>(ordem);
-        caixaOrdem.setLayout(new GridBagLayout());
-        caixaOrdem.setUI(new BasicComboBoxUI());
-        caixaOrdem.setBorder(new EmptyBorder(5, 15, 5, 15));
-        caixaOrdem.addActionListener(selecElemento);
         posicao.gridx = 1;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,75,40,0);
+        posicao.insets = new Insets(0,10,40,0);
+        JLabel textoFiltrar = new JLabel("Filtrar:");
+        textoFiltrar.setFont(new Font("Arial", Font.BOLD, 15));
+		textoFiltrar.setLabelFor( caixaFiltros );
+        filtrar.add(caixaFiltros,posicao);
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,0,42,0);
+        filtrar.add(textoFiltrar,posicao);
+        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
+        caixaOrdem = new JComboBox<String>(ordem);
+        caixaOrdem.addActionListener(selecElemento);
+        posicao.gridx = 3;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,10,40,0);
+        JLabel textoOrdenar = new JLabel("Ordenar:");
+        textoOrdenar.setFont(new Font("Arial", Font.BOLD, 15));
+		textoOrdenar.setLabelFor( caixaOrdem );
         filtrar.add(caixaOrdem,posicao);
+        posicao.gridx = 2;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,40,42,0);
+        filtrar.add(textoOrdenar,posicao);
     }
 }
