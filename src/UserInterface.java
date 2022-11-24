@@ -23,7 +23,6 @@ public class UserInterface extends JFrame {
     private InteracoesBotao premirBotao;
 
     public UserInterface(){
-
         // criar o gestor que vai funcionar através da GUI
         gestor = new GestorEmpresas();
         // criar o listener para os clicks nos botões
@@ -33,9 +32,11 @@ public class UserInterface extends JFrame {
         // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado
         posicao = new GridBagConstraints();
         //temporario
-        gestor.addFrutaria("Shopping",30, 12, 20, 'N', 10, 5, 20, 'E', "Coimbra", 53321.32f, 13032f, 13);
-        gestor.addRestaurante("Zé Bananas",10, 22, 20, 'S', 15, 8, 45, 'E', "Lisboa", 121.32f, 20232f, 21);
-        gestor.addCafe("Tia Adelaide",20, 12, 20, 'E', 5, 10, 30, 'E', "Aveiro", 10321.32f, 30232f, 7);
+        gestor.addFrutaria("Shopping",30, 12, 20, 'N', 10, 5, 20, 'O', "Coimbra", 53321.32f, 13032f, 13);
+        gestor.addRestaurante("Zé Bananas",10, 22, 20, 'S', 15, 8, 45, 'N', "Lisboa", 121.32f, 20232f, 21);
+        gestor.addCafe("Tia Adelaide",20, 12, 20, 'E', 5, 10, 30, 'S', "Aveiro", 10321.32f, 30232f, 7);
+        gestor.addCafe("Moelas",40, 42, 6, 'O', 7, 12, 23, 'E', "Porto", 721.32f, 30232f, 7);
+        gestor.addMinimercado("Moelas",40, 42, 6, 'O', 7, 12, 23, 'E', "Porto", 721.32f, 30232f, 7);
         // construir a aparencia da janela tendo em conta o tema que o utilizador escolheu na última vez que usou o programa
         construirAparencia();
         //construir o painel do menu
@@ -106,7 +107,7 @@ public class UserInterface extends JFrame {
         Integer caixaSelect = caixaFiltros.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
-        String tipos[]= {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado"};
+        String tipos[]= {"Todas","Restauração","Pastelaria","Café","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
         if(caixaSelect==0){
             for (Empresa empresa : registo){
                 elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
@@ -114,8 +115,6 @@ public class UserInterface extends JFrame {
         }
         else{
             for (Empresa empresa : registo){
-                System.out.println(tipos[caixaSelect]);
-                System.out.println(empresa.getSubCategoria());
                 if(empresa.getTipo().equals(tipos[caixaSelect]) || empresa.getCategoria().equals(tipos[caixaSelect]) || empresa.getSubCategoria().equals(tipos[caixaSelect])){
                     elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
                 }
@@ -264,14 +263,17 @@ public class UserInterface extends JFrame {
         filtrar.setLayout(new GridBagLayout());
         String filtros[]= {"Todas", // 0
                             "Restauração (Categoria)", // 1
-                                "  Pastelaria", // 2
-                                "  Cafe", // 3
-                                "  Restaurante (Sub-Categoria)", // 4
-                                    "      Restaurante Fast-Food", // 5
-                                    "      Restaurante Local", // 6
+                            "  Pastelaria", // 2
+                            "  Café", // 3
+                            "  Restaurante (Sub-Categoria)", // 4
+                            "      Restaurante Fast-Food", // 5
+                            "      Restaurante Local", // 6
                             "Mercearia (Categoria)", // 7
-                                "  Frutaria", // 8
-                                "  Mercado (Sub-Categoria)"}; // 9
+                            "  Frutaria", // 8
+                            "  Mercado (Sub-Categoria)", // 9
+                            "    Minimercado", // 10
+                            "    Hipermercado", // 11
+                            "    Supermercado"}; // 12
         caixaFiltros = new JComboBox<String>(filtros);
         caixaFiltros.setLayout(new GridBagLayout());
         caixaFiltros.setUI(new BasicComboBoxUI());

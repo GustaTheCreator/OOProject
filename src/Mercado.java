@@ -1,13 +1,13 @@
 package src;
 
-public class Mercado extends Mercearia{
+abstract class Mercado extends Mercearia{
     private float areaCorredores;
-    private String tipo;//mini,super ou hipermercado
 
-    public Mercado(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, float areaCorredores, String tipo1) {
+    public Mercado(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, float areaCorredores) {
         super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);
         this.areaCorredores = areaCorredores;
         this.tipo = "Mercado";
+        this.subCategoria = "Mercado";
     }
 
     public float getAreaCorredores() {
