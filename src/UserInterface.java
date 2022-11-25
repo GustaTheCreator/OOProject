@@ -129,6 +129,7 @@ public class UserInterface extends JFrame {
                         UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
                     if(caixaSelect==1)
                         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    personalizarUI();
                     SwingUtilities.updateComponentTreeUI(menu);
                     SwingUtilities.updateComponentTreeUI(baseDados);
                     SwingUtilities.updateComponentTreeUI(opcoes);
@@ -199,6 +200,10 @@ public class UserInterface extends JFrame {
         setIconImage(new ImageIcon("src/resources/icon.png").getImage());
 
         // criar cores e modelos personalizados para toda a interface através do UIManager
+        personalizarUI();
+    }
+
+    private void personalizarUI(){
         Color invisivel = new Color(0,0,0,0);
         UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("Panel.background",Color.WHITE);
