@@ -1,10 +1,12 @@
 package src;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.*;
+
 
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
@@ -207,11 +209,14 @@ public class UserInterface extends JFrame {
 
     private void personalizarUI() {
         Color invisivel = new Color(0,0,0,0);
-        UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("Panel.background",Color.WHITE);
         UIManager.put("Button.focus",invisivel);
-        UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("Button.font",new Font("Arial", Font.BOLD, 15));
+        UIManager.put("CheckBox.font",new Font("Arial", Font.BOLD, 15));
+        UIManager.put("CheckBox.focus",invisivel);
+        UIManager.put("CheckBox.background",Color.WHITE);
+        UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
+        UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("OptionPane.yesButtonText","Sim");
         UIManager.put("OptionPane.noButtonText","Não");
         UIManager.put("OptionPane.cancelButtonText","Cancelar");
@@ -423,7 +428,7 @@ public class UserInterface extends JFrame {
         opcoes.setLayout(new GridBagLayout());
         posicao.gridx = 0;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,100,3,0);
+        posicao.insets = new Insets(0,100,23,0);
         posicao.fill = GridBagConstraints.NONE;
         JLabel textoTema = new JLabel("Tema:");
         textoTema.setFont(new Font("Arial", Font.BOLD, 15));
@@ -434,8 +439,34 @@ public class UserInterface extends JFrame {
         opcoes.add(textoTema,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,450,3,0);
+        posicao.insets = new Insets(0,450,23,0);
         opcoes.add(caixaTema,posicao);
+        JCheckBox caixaConfirmar = new JCheckBox("Confirmar antes de sair   ");
+        caixaConfirmar.setHorizontalTextPosition(SwingConstants.LEFT);
+        caixaConfirmar.setSelected(true);
+        caixaConfirmar.setSize(new DimensionUIResource(50, HEIGHT));
+        caixaConfirmar.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento) {
+                if (caixaConfirmar.isSelected() && getWindowListeners().length == 0) {
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    System.out.println("here");
+                    addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            terminar();
+                        }
+                    });
+                }
+                else if (getWindowListeners().length != 0){
+                    removeWindowListener(getWindowListeners()[0]);
+                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                }
+            }
+        });
+        posicao.gridx = 0;
+        posicao.gridy = 1;
+        posicao.insets = new Insets(0,515,23,0);
+        opcoes.add(caixaConfirmar,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,0,600);
