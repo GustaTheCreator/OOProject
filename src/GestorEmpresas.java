@@ -42,7 +42,7 @@ public class GestorEmpresas {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
         Localizacao local = new Localizacao(lat, longi);
-        RestLocal empresa = new RestLocal(nome, local, distrito, direcaoLat, horasLong, minutosLong, mediaAnual, segundosLong, direcaoLong, custoEmpregados, numProdutos);
+        RestLocal empresa = new RestLocal(nome, local, distrito, custoEmpregados, horasLong, custoEmpregados, mediaAnual, segundosLong, numProdutos, numProdutos, custoEmpregados);
         this.empresas.add(empresa);
     }
 
