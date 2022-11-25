@@ -2,6 +2,7 @@ package src;
 
 public abstract class Empresa {
     private String nome;
+
     protected String tipo;
     protected String subCategoria;
     protected String categoria;
@@ -59,12 +60,12 @@ public abstract class Empresa {
         this.faturacaoMedia = faturacaoMedia;
     }
 
-    public String getTipo() {
+    public String getTipoDeMercado() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoDeMercado(String tipoDeMercado) {
+        this.tipo = tipoDeMercado;
     }
 
     abstract public double despesaAnual();
