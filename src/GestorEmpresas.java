@@ -1,7 +1,7 @@
 package src;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
+import java.io.*;
 
 public class GestorEmpresas {
     private ArrayList<Empresa> empresas;
@@ -30,7 +30,7 @@ public class GestorEmpresas {
         Cafe empresa = new Cafe(nome, local, distrito, segundosLong, direcaoLong, mediaAnual, custoEmpregados, numProdutos);
         this.empresas.add(empresa);
     }
-    public void addRestaurante(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    public void addRestFastFood(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
     {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
@@ -92,6 +92,55 @@ public class GestorEmpresas {
                 Collections.reverse(empresas);
             }
         }
+    }
+
+    public void carregarDados(){
+        try {
+            File file = new File("src/data/StarThrive.txt");
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String linha = scanner.nextLine();
+                String[] dados = linha.split("/");
+                switch (dados[0]) {
+                    case "Frutaria" -> {
+                        addFrutaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                    }
+                    case "Cafe" -> {
+                        addCafe(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                    }
+                    case "Restaurante" -> {
+                        addRestFastFood(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                    }
+                    case "Minimercado" -> {
+                        addMinimercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                    }
+                }
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro a carregar.");
+            e.printStackTrace();
+        }
+    }
+
+    //  create txt file and save empresas
+    public void guardarDados(){
+        try {
+            File file = new File("src/data/StarThrive.txt");
+            file.createNewFile();
+            FileWriter writer = new FileWriter("src/data/StarThrive.txt");
+            for (Empresa empresa : empresas) {
+                writer.write(empresa.getTipo()+"/"+empresa.toString()+"\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Erro a guardar.");
+            e.printStackTrace();
+        }
+    }
+
+    public void remove(int indexLinha) {
+        empresas.remove(indexLinha);
     }
 }
 

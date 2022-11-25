@@ -21,4 +21,9 @@ public class Frutaria extends Mercearia{
     public float receitaAnual() {
         return numProdutos*getFaturacaoMedia();} //faturacaoMedia é a faturacao media anual por produto
 
+    @Override
+    public String toString() {
+        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getNumProdutos();
+    }
+
 }

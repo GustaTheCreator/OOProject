@@ -5,7 +5,7 @@ public class Cafe extends Restauracao{
 
     public Cafe(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedCafes) {
         super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
-        this.tipo = "Café";
+        this.tipo = "Cafe";
         this.numMedCafes = numMedCafes;
     }
 
@@ -24,4 +24,9 @@ public class Cafe extends Restauracao{
     @Override
     public float receitaAnual() {
         return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por cafe
+
+    @Override
+    public String toString() {
+        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getNumEmpMesa()+"/"+getSalarioMedAnual()+"/"+getNumMedClientesDiario()+"/"+getNumMedCafes();
+    }
 }

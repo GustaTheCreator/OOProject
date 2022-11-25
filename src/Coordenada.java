@@ -17,6 +17,11 @@ public class Coordenada {
         return horas;
     }
 
+    @Override
+    public String toString() {
+        return horas + "/" + minutos + "/" + segundos + "/" + direcao;
+    }
+
     public void setHoras(int horas) {
         this.horas = horas;
     }

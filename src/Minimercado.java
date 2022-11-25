@@ -7,4 +7,9 @@ public class Minimercado extends Mercado{
         this.tipo = "Minimercado";
     }
 
+    @Override
+    public String toString() {
+        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getAreaCorredores();
+    }
+
 }

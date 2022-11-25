@@ -45,6 +45,11 @@ public class Localizacao {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return latitude + "/" + longitude;
+    }
 }
 
 
