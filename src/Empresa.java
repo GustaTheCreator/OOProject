@@ -7,9 +7,9 @@ public abstract class Empresa {
     protected String categoria;
     private Localizacao local;
     private String distrito;
-    private float faturacaoMedia;
+    private double faturacaoMedia;
 
-    public Empresa(String nome,Localizacao local, String distrito, float faturacaoMedia) {
+    public Empresa(String nome,Localizacao local, String distrito, double faturacaoMedia) {
         this.nome = nome;
         this.tipo = "Empresa";
         this.subCategoria = "Nenhuma";
@@ -51,11 +51,11 @@ public abstract class Empresa {
         this.distrito = distrito;
     }
 
-    public float getFaturacaoMedia() {
+    public double getFaturacaoMedia() {
         return faturacaoMedia;
     }
 
-    public void setFaturacaoMedia(float faturacaoMedia) {
+    public void setFaturacaoMedia(double faturacaoMedia) {
         this.faturacaoMedia = faturacaoMedia;
     }
 
@@ -67,16 +67,16 @@ public abstract class Empresa {
         this.tipo = tipo;
     }
 
-    abstract public float despesaAnual();
-    abstract public float receitaAnual();
+    abstract public double despesaAnual();
+    abstract public double receitaAnual();
 
-    public float lucro(){
+    public double lucro(){
         return receitaAnual() - despesaAnual();
     }
 
     public String lucroSimNao()
     {
-        Float lucro = receitaAnual() - despesaAnual();
+        Double lucro = receitaAnual() - despesaAnual();
         if(lucro > 0)
             return "Sim / " + lucro;
         else

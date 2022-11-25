@@ -1,32 +1,32 @@
 package src;
 
 public class RestFastFood extends Restaurante{
-    private float numMedClientesDrive;
-    private float FaturacaoMediaPClienteDrive;
+    private double numMedClientesDrive;
+    private double FaturacaoMediaPClienteDrive;
 
-    public RestFastFood(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, float numMedClientesDrive, float faturacaoMediaPClienteDrive) {
+    public RestFastFood(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, double numMedClientesDrive, double faturacaoMediaPClienteDrive) {
         super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
         this.numMedClientesDrive = numMedClientesDrive;
         this.FaturacaoMediaPClienteDrive = faturacaoMediaPClienteDrive;
         this.tipo = "Restaurante Fast-Food";
     }
-    public float getFaturacaoMediaPClienteDrive() {
+    public double getFaturacaoMediaPClienteDrive() {
         return FaturacaoMediaPClienteDrive;
     }
-    public void setFaturacaoMediaPClienteDrive(float faturacaoMediaPClienteDrive) {
+    public void setFaturacaoMediaPClienteDrive(double faturacaoMediaPClienteDrive) {
         this.FaturacaoMediaPClienteDrive = faturacaoMediaPClienteDrive;
     }
-    public float getNumMedClientesDrive() {
+    public double getNumMedClientesDrive() {
         return numMedClientesDrive;
     }
-    public void setNumMedClientesDrive(float numMedClientesDrive) {
+    public void setNumMedClientesDrive(double numMedClientesDrive) {
         this.numMedClientesDrive = numMedClientesDrive;
     }
     @Override
-    public float receitaAnual(){
+    public double receitaAnual(){
         return (getNumMesasInteriores()*getFaturacaoMedia()+numMedClientesDrive*FaturacaoMediaPClienteDrive)*getNumDiasFuncAnual();
     }//FaturacaoMedia por cada mesa por dia
     @Override
-    public float despesaAnual(){return getNumEmpMesa()*getSalarioMedAnual();}
+    public double despesaAnual(){return getNumEmpMesa()*getSalarioMedAnual();}
 
 }

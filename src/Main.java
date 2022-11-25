@@ -2,7 +2,10 @@ package src;
 
 public class Main {
     public static void main(String[] args) {
-        UserInterface GUI = new UserInterface();
-        GUI.setVisible(true);
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                UserInterface GUI = new UserInterface();
+                GUI.setVisible(true);
+        }});
     }
 }

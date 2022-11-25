@@ -9,13 +9,12 @@ import javax.swing.table.*;
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private GridBagConstraints posicao;
-    private JPanel menu, baseDados, filtrar, listar, voltar, gerir;
-    private JLabel textoTitulo;
-    private JComboBox<String> caixaFiltros, caixaOrdem;
+    private JPanel menu, baseDados, opcoes, filtrar, listar, voltarBD, voltarOpc, gerir;
+    private JComboBox<String> caixaFiltros, caixaOrdem, caixaTema;
     private JTable tabela;
     private DefaultTableModel elementos;
     private InteracoesCaixa selecElemento;
-    private JButton botaoBaseDados, botaoSair, botaoVoltar,botaoCriar, botaoApagar, botaoEditar, botaoGuardar;
+    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltarBD, botaoVoltarOpc, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar;
     private InteracoesBotao premirBotao;
     private boolean alteracoesPorGuardar;
 
@@ -35,16 +34,10 @@ public class UserInterface extends JFrame {
         construirAparencia();
         //construir o painel do menu
         construirMenu();
-        // construir o painel com o botão para voltar ao menu;
-        construirVoltar();
-        // construir o painel para filtrar as empresas com as diferentes opções do enunciado e o botao de guardar
-        construirFiltrar();
-        // construir o painel para gerir as empresas (criar/editar/apagar)
-        construirGerir();
-        // construir o painel com a tabela
-        construirListar();
         // criar o painel base de dados que contém todos os anteriores
         construirBaseDados();
+        // criar o painel onde se podem configurar as opções do programa
+        construirOpcoes();
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
         // logo o menu depois de estar tudo construído
@@ -54,24 +47,59 @@ public class UserInterface extends JFrame {
     private class InteracoesBotao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
+
             if(evento.getSource() == botaoBaseDados) {
                 mostrarBaseDados();
             }
-            if(evento.getSource() == botaoVoltar) {
+            if(evento.getSource() == botaoOpcoes) {
+                mostrarOpcoes();
+            }
+            if(evento.getSource() == botaoVoltarBD || evento.getSource() == botaoVoltarOpc) {
                 mostrarMenu();
             }
             if(evento.getSource() == botaoCriar) {
-                alteracoesPorGuardar = true;
+                int indexLinha = tabela.getSelectedRow();
+                if(indexLinha == -1) {
+                    JOptionPane.showMessageDialog(null, "Deve selecionar uma coluna da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    recarregarTabela();
+                    alteracoesPorGuardar = true;
+                }
             }
             if(evento.getSource() == botaoEditar) {
-                alteracoesPorGuardar = true;
+                int indexLinha = tabela.getSelectedRow();
+                if(indexLinha == -1) {
+                    JOptionPane.showMessageDialog(null, "Deve selecionar uma empresa da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    recarregarTabela();
+                    alteracoesPorGuardar = true;
+                }
             }
             if(evento.getSource() == botaoApagar) {
                 int indexLinha = tabela.getSelectedRow();
-                gestor.remove(indexLinha);
-                recarregarTabela();
-                alteracoesPorGuardar = true;
-                botaoGuardar.setEnabled(true);
+                if(indexLinha == -1) {
+                    JOptionPane.showMessageDialog(null, "Deve selecionar uma coluna da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    if(JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende apagar a empresa selecionada?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                        gestor.remove(indexLinha);
+                        recarregarTabela();
+                        alteracoesPorGuardar = true;
+                        botaoGuardar.setEnabled(true);
+                    }
+                }
+            }
+            if(evento.getSource() == botaoDetalhes) {
+                int indexLinha = tabela.getSelectedRow();
+                if(indexLinha == -1) {
+                    JOptionPane.showMessageDialog(null, "Deve selecionar uma coluna da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    String detalhes = gestor.getEmpresas().get(indexLinha).toString();
+                    JOptionPane.showMessageDialog(null, detalhes,null, JOptionPane.OK_OPTION);
+                }
             }
             if(evento.getSource() == botaoGuardar) {
                 gestor.guardarDados();
@@ -92,14 +120,30 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == caixaOrdem){
                 Integer caixaSelect = caixaOrdem.getSelectedIndex();
                 gestor.ordenarLista(caixaSelect);
+                recarregarTabela();
             }
-            recarregarTabela();
+            if(evento.getSource() == caixaTema){
+                Integer caixaSelect = caixaTema.getSelectedIndex();
+                try{
+                    if(caixaSelect==0)
+                        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                    if(caixaSelect==1)
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    SwingUtilities.updateComponentTreeUI(menu);
+                    SwingUtilities.updateComponentTreeUI(baseDados);
+                    SwingUtilities.updateComponentTreeUI(opcoes);
+                }
+                catch(Exception e){
+                    JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema selecionado, irá permanecer o atual!",null, JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 
     //tentar metar tudo num painel e só botão de voltar separado
     private void mostrarMenu(){
         remove(baseDados);
+        remove(opcoes);
         add(menu,BorderLayout.CENTER);
         validate();
         repaint();
@@ -108,6 +152,13 @@ public class UserInterface extends JFrame {
     private void mostrarBaseDados(){
         remove(menu);
         add(baseDados,BorderLayout.CENTER);
+        validate();
+        repaint();
+    }
+
+    private void mostrarOpcoes(){
+        remove(menu);
+        add(opcoes,BorderLayout.CENTER);
         validate();
         repaint();
     }
@@ -136,8 +187,13 @@ public class UserInterface extends JFrame {
         setTitle("StarThrive");
         setSize(720, 720);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        // cria um listener personalizado para quando o utilizador tenta fechar o programa de qualquer forma
-        addWindowListener(construirEventoTerminar());
+        // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
+        addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e) {
+                terminar();
+            }
+        });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon("src/resources/icon.png").getImage());
@@ -159,14 +215,14 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.cancelButtonMnemonic", "0");
         UIManager.put("OptionPane.noButtonMnemonic", "0");
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
-        UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/resources/warning.gif"));
+        UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
     }
 
     private void construirMenu(){
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
-        textoTitulo = new JLabel("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
+        JLabel textoTitulo = new JLabel("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
         textoTitulo.setFont(new Font(textoTitulo.getFont().getFontName(), Font.BOLD, 100));
         posicao.gridx = 0;
         posicao.gridy = 0;
@@ -177,43 +233,60 @@ public class UserInterface extends JFrame {
         posicao.gridy = 1;
         botaoBaseDados.addActionListener(premirBotao);
         menu.add(botaoBaseDados, posicao);
-        botaoSair = new JButton("Sair do Programa");
+        botaoOpcoes = new JButton("Opções");
         posicao.gridx = 0;
         posicao.gridy = 2;
+        botaoOpcoes.addActionListener(premirBotao);
+        menu.add(botaoOpcoes, posicao);
+        botaoSair = new JButton("Sair do Programa");
+        posicao.gridx = 0;
+        posicao.gridy = 3;
         botaoSair.addActionListener(premirBotao);
         menu.add(botaoSair,posicao);
     }
 
     private void construirVoltar(){
-        voltar = new JPanel();
-        voltar.setLayout(new GridBagLayout());
+        voltarBD = new JPanel();
+        voltarBD.setLayout(new GridBagLayout());
         posicao.gridx = 0;
         posicao.gridy = 0;
-        botaoVoltar = new JButton("◄");
+        botaoVoltarBD = new JButton("◄");
         posicao.insets = new Insets(0,0,0,0);
-        botaoVoltar.addActionListener(premirBotao);
-        voltar.add(botaoVoltar, posicao);
+        botaoVoltarBD.addActionListener(premirBotao);
+        voltarBD.add(botaoVoltarBD, posicao);
+        voltarOpc = new JPanel();
+        voltarOpc.setLayout(new GridBagLayout());
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        botaoVoltarOpc = new JButton("◄");
+        posicao.insets = new Insets(0,0,0,0);
+        botaoVoltarOpc.addActionListener(premirBotao);
+        voltarOpc.add(botaoVoltarOpc, posicao);
     }
 
     private void construirGerir(){
         gerir = new JPanel();
         gerir.setLayout(new GridBagLayout());
         botaoCriar = new JButton("Criar");
-        posicao.insets = new Insets(0,0,30,50);
         posicao.gridx = 0;
-        posicao.gridy = 0;
+        posicao.gridy = 1;
         botaoCriar.addActionListener(premirBotao);
         gerir.add(botaoCriar, posicao);
         botaoEditar = new JButton("Editar");
         posicao.gridx = 0;
-        posicao.gridy = 1;
+        posicao.gridy = 2;
         botaoEditar.addActionListener(premirBotao);
         gerir.add(botaoEditar, posicao);
         botaoApagar = new JButton("Apagar");
         posicao.gridx = 0;
-        posicao.gridy = 2;
+        posicao.gridy = 3;
         botaoApagar.addActionListener(premirBotao);
         gerir.add(botaoApagar, posicao);
+        botaoDetalhes = new JButton("Detalhes");
+        posicao.gridx = 0;
+        posicao.gridy = 4;
+        botaoDetalhes.addActionListener(premirBotao);
+        gerir.add(botaoDetalhes, posicao);
     }
 
 
@@ -229,10 +302,19 @@ public class UserInterface extends JFrame {
             }
         };
         ArrayList<Empresa> registo = gestor.getEmpresas();
+        gestor.ordenarLista(0);
         for (Empresa empresa : registo){
             elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
         }
-		tabela = new JTable(elementos);
+		tabela = new JTable(elementos){
+        public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
+        {
+            // Fazer um clique na tabela selecionar a linha toda (remove a borda de foco no elemento da coluna selecionado)
+            JComponent Jcomponente = (JComponent)super.prepareRenderer(renderer, row, column);
+            if (isRowSelected(row))
+                Jcomponente.setBorder(null);
+            return Jcomponente;
+        }};
         tabela.setFillsViewportHeight(true);
         DefaultTableCellRenderer justificarCentro = new DefaultTableCellRenderer();
         ((DefaultTableCellRenderer)tabela.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
@@ -304,6 +386,14 @@ public class UserInterface extends JFrame {
     }
 
     private void construirBaseDados(){
+        // construir o painel com o botão para voltar ao menu;
+        construirVoltar();
+        // construir o painel para filtrar as empresas com as diferentes opções do enunciado e o botao de guardar
+        construirFiltrar();
+        // construir o painel para gerir as empresas (criar/editar/apagar)
+        construirGerir();
+        // construir o painel com a tabela
+        construirListar();
         baseDados = new JPanel();
         baseDados.setLayout(new GridBagLayout());
         posicao.gridx = 1;
@@ -311,7 +401,7 @@ public class UserInterface extends JFrame {
         baseDados.add(filtrar,posicao);
         posicao.gridx = 0;
         posicao.gridy = 1;
-        baseDados.add(voltar,posicao);
+        baseDados.add(voltarBD,posicao);
         posicao.gridx = 2;
         posicao.gridy = 1;
         baseDados.add(gerir,posicao);
@@ -320,10 +410,35 @@ public class UserInterface extends JFrame {
         baseDados.add(listar,posicao);
     }
 
+    private void construirOpcoes()
+    {
+        opcoes = new JPanel();
+        opcoes.setLayout(new GridBagLayout());
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,100,3,0);
+        posicao.fill = GridBagConstraints.NONE;
+        JLabel textoTema = new JLabel("Tema:");
+        textoTema.setFont(new Font("Arial", Font.BOLD, 15));
+        String[] temas = {"Original","Nativo do Sistema (Experimental)"};
+        caixaTema = new JComboBox<String>(temas);
+        caixaTema.addActionListener(selecElemento);
+        textoTema.setLabelFor(caixaTema);
+        opcoes.add(textoTema,posicao);
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,450,3,0);
+        opcoes.add(caixaTema,posicao);
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,0,0,600);
+        opcoes.add(voltarOpc,posicao);
+    }
+
     private void terminar(){
         int resposta;
         if(alteracoesPorGuardar){
-            resposta = JOptionPane.showConfirmDialog(null, "Existem alterações por guardar.\nDeseja guardar antes de sair?", null, JOptionPane.YES_NO_CANCEL_OPTION);
+            resposta = JOptionPane.showConfirmDialog(null, "Existem alterações por guardar.\nDeseja guardar antes de sair?\n ", null, JOptionPane.YES_NO_CANCEL_OPTION);
             if(resposta==JOptionPane.YES_OPTION){
                 gestor.guardarDados();
                 System.exit(0);
@@ -337,15 +452,5 @@ public class UserInterface extends JFrame {
             if(resposta==JOptionPane.YES_OPTION)
                 System.exit(0);
         }
-    }
-
-    private WindowListener construirEventoTerminar(){
-        WindowListener eventoTerminar = new WindowAdapter(){
-            @Override
-            public void windowClosing(WindowEvent e) {
-                terminar();
-            }
-        };
-        return eventoTerminar;
     }
 }

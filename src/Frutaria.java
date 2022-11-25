@@ -3,7 +3,7 @@ package src;
 public class Frutaria extends Mercearia{
     private int numProdutos;
 
-    public Frutaria(String nome, Localizacao local, String distrito, float faturacaoMedia, float custoLimpezaAnual, int numProdutos) {
+    public Frutaria(String nome, Localizacao local, String distrito, double faturacaoMedia, double custoLimpezaAnual, int numProdutos) {
         super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);
         this.tipo = "Frutaria";
         this.numProdutos = numProdutos;
@@ -18,7 +18,7 @@ public class Frutaria extends Mercearia{
     }
 
     @Override
-    public float receitaAnual() {
+    public double receitaAnual() {
         return numProdutos*getFaturacaoMedia();} //faturacaoMedia é a faturacao media anual por produto
 
     @Override

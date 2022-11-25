@@ -1,4 +1,4 @@
-Frutaria/Shopping/30/12/20/N/10/5/20/O/Coimbra/4321.32/13032.0/13
+Frutaria/Shopping/30/12/20/N/10/5/20/O/Coimbra/4321/13032/13
 Cafe/Tia Adelaide/20/12/20/E/5/10/30/S/Aveiro/30.0/83/10322/30232.0/5
 Cafe/Moelas/40/42/6/O/7/12/23/E/Poiares/23.0/69/721/30232.0/7
 Minimercado/Macaco/40/42/6/O/7/12/23/E/Penafiel/721.32/30232.0/3

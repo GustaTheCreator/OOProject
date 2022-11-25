@@ -1,28 +1,28 @@
 package src;
 
 public class Cafe extends Restauracao{
-    private float numMedCafes;
+    private double numMedCafes;
 
-    public Cafe(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, float numMedCafes) {
+    public Cafe(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario, double numMedCafes) {
         super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
         this.tipo = "Cafe";
         this.numMedCafes = numMedCafes;
     }
 
-    public float getNumMedCafes() {
+    public double getNumMedCafes() {
         return numMedCafes;
     }
 
-    public void setNumMedCafes(float numMedCafes) {
+    public void setNumMedCafes(double numMedCafes) {
         this.numMedCafes = numMedCafes;
     }
 
-    public float faturaAnualPCafePDia(){
+    public double faturaAnualPCafePDia(){
         return getFaturacaoMedia()/365;
     }
 
     @Override
-    public float receitaAnual() {
+    public double receitaAnual() {
         return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por cafe
 
     @Override

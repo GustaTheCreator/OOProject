@@ -1,10 +1,10 @@
 package src;
 public abstract class Restauracao extends Empresa{
     private int numEmpMesa;
-    private float salarioMedAnual;
-    private float numMedClientesDiario;
+    private double salarioMedAnual;
+    private double numMedClientesDiario;
 
-    public Restauracao(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario) {
+    public Restauracao(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario) {
         super(nome, local, distrito, faturacaoMedia);
         this.tipo = "Restauração";
         this.categoria = "Restauração";
@@ -16,20 +16,20 @@ public abstract class Restauracao extends Empresa{
     public int getNumEmpMesa() {
         return numEmpMesa;
     }
-    public float getSalarioMedAnual() {
+    public double getSalarioMedAnual() {
         return salarioMedAnual;
     }
     public void setNumEmpMesa(int numEmpMesa) {
         this.numEmpMesa = numEmpMesa;
     }
-    public void setSalarioMedAnual(float salarioMedAnual) {
+    public void setSalarioMedAnual(double salarioMedAnual) {
         this.salarioMedAnual = salarioMedAnual;
     }
-    public void setNumMedClientesDiario(float numMedClientesDiario) {this.numMedClientesDiario = numMedClientesDiario;}
-    public float getNumMedClientesDiario() {
+    public void setNumMedClientesDiario(double numMedClientesDiario) {this.numMedClientesDiario = numMedClientesDiario;}
+    public double getNumMedClientesDiario() {
         return numMedClientesDiario;
     }
-    public float despesaAnual(){
+    public double despesaAnual(){
         return numEmpMesa*salarioMedAnual;
     }
 

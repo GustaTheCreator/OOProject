@@ -2,9 +2,9 @@ package src;
 
 public class RestLocal extends Restaurante{
     private int numMesasEsplanada;
-    private float custoLiceAnualMesaEsp;
+    private double custoLiceAnualMesaEsp;
 
-    public RestLocal(String nome, Localizacao local, String distrito, float faturacaoMedia, int numEmpMesa, float salarioMedAnual, float numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, int numMesasEsplanada, float custoLiceAnualMesaEsp) {
+    public RestLocal(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores, int numMesasEsplanada, double custoLiceAnualMesaEsp) {
         super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario, numDiasFuncAnual, numMesasInteriores);
         this.numMesasEsplanada = numMesasEsplanada;
         this.custoLiceAnualMesaEsp = custoLiceAnualMesaEsp;
@@ -19,20 +19,20 @@ public class RestLocal extends Restaurante{
         this.numMesasEsplanada = numMesasEsplanadas;
     }
 
-    public float getcustoLiceAnualMesaEsp() {
+    public double getcustoLiceAnualMesaEsp() {
         return custoLiceAnualMesaEsp;
     }
 
-    public void setcustoLiceAnualMesaEsp(float custoLiceAnualMesaEsp) {
+    public void setcustoLiceAnualMesaEsp(double custoLiceAnualMesaEsp) {
         this.custoLiceAnualMesaEsp = custoLiceAnualMesaEsp;
     }
 
     @Override
-    public float receitaAnual() {
+    public double receitaAnual() {
         return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia()*getNumDiasFuncAnual();//FaturacaoMedia por caada mesa por dia
     }
     @Override
-    public float despesaAnual(){
+    public double despesaAnual(){
         return getNumEmpMesa()*getSalarioMedAnual()+numMesasEsplanada*custoLiceAnualMesaEsp;
     }
 }

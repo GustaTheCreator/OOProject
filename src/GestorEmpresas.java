@@ -14,7 +14,7 @@ public class GestorEmpresas {
         return empresas;
     }
 
-    public void addFrutaria(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    public void addFrutaria(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoEmpregados, int numProdutos)
     {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
@@ -22,7 +22,7 @@ public class GestorEmpresas {
         Frutaria empresa = new Frutaria(nome, local, distrito, mediaAnual, custoEmpregados, numProdutos);
         this.empresas.add(empresa);
     }
-    public void addCafe(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    public void addCafe(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoEmpregados, int numProdutos)
     {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
@@ -30,7 +30,7 @@ public class GestorEmpresas {
         Cafe empresa = new Cafe(nome, local, distrito, segundosLong, direcaoLong, mediaAnual, custoEmpregados, numProdutos);
         this.empresas.add(empresa);
     }
-    public void addRestFastFood(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos)
+    public void addRestFastFood(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoEmpregados, int numProdutos)
     {
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
@@ -38,7 +38,7 @@ public class GestorEmpresas {
         RestFastFood empresa = new RestFastFood(nome, local, distrito, direcaoLat, horasLong, minutosLong, mediaAnual, segundosLong, direcaoLong, custoEmpregados, numProdutos);
         this.empresas.add(empresa);
     }
-    public void addMinimercado(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, float mediaAnual, float custoEmpregados, int numProdutos){
+    public void addMinimercado(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,int minutosLong, int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoEmpregados, int numProdutos){
         Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
         Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
         Localizacao local = new Localizacao(lat, longi);
@@ -71,24 +71,24 @@ public class GestorEmpresas {
                 Collections.reverse(empresas);
             }
             case 6 -> {
-                empresas.sort((atual, proximo) -> Float.compare(atual.receitaAnual(), proximo.receitaAnual()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.receitaAnual(), proximo.receitaAnual()));
             }
             case 7 -> {
-                empresas.sort((atual, proximo) -> Float.compare(atual.receitaAnual(), proximo.receitaAnual()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.receitaAnual(), proximo.receitaAnual()));
                 Collections.reverse(empresas);
             }
             case 8 -> {
-                empresas.sort((atual, proximo) -> Float.compare(atual.despesaAnual(), proximo.despesaAnual()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.despesaAnual(), proximo.despesaAnual()));
             }
             case 9 -> {
-                empresas.sort((atual, proximo) -> Float.compare(atual.despesaAnual(), proximo.despesaAnual()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.despesaAnual(), proximo.despesaAnual()));
                 Collections.reverse(empresas);
             }
             case 10 -> {
-                empresas.sort((atual, proximo) -> Float.compare(atual.lucro(), proximo.lucro()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.lucro(), proximo.lucro()));
             }
             case 11 -> {
-                empresas.sort((atual, proximo) -> Float.compare(atual.lucro(), proximo.lucro()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.lucro(), proximo.lucro()));
                 Collections.reverse(empresas);
             }
         }
@@ -103,16 +103,16 @@ public class GestorEmpresas {
                 String[] dados = linha.split("/");
                 switch (dados[0]) {
                     case "Frutaria" -> {
-                        addFrutaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                        addFrutaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
                     }
                     case "Cafe" -> {
-                        addCafe(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                        addCafe(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
                     }
                     case "Restaurante" -> {
-                        addRestFastFood(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                        addRestFastFood(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
                     }
                     case "Minimercado" -> {
-                        addMinimercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Float.parseFloat(dados[11]), Float.parseFloat(dados[12]), Integer.parseInt(dados[13]));
+                        addMinimercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
                     }
                 }
             }
