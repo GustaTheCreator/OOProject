@@ -126,6 +126,9 @@ public class UserInterface extends JFrame {
                 gestor.ordenarLista(caixaSelect);
                 recarregarTabela();
             }
+            if(evento.getSource() == caixaFiltros) {
+                recarregarTabela();
+            }
             if(evento.getSource() == caixaTema) {
                 Integer caixaSelect = caixaTema.getSelectedIndex();
                 try{
@@ -441,7 +444,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,450,23,0);
         opcoes.add(caixaTema,posicao);
-        JCheckBox caixaConfirmar = new JCheckBox("Confirmar antes de sair   ");
+        JCheckBox caixaConfirmar = new JCheckBox("Confirmar antes de sair:   ");
         caixaConfirmar.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaConfirmar.setSelected(true);
         caixaConfirmar.setSize(new DimensionUIResource(50, HEIGHT));
