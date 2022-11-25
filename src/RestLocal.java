@@ -26,10 +26,9 @@ public class RestLocal extends Restaurante{
     public void setcustoLiceAnualMesaEsp(double custoLiceAnualMesaEsp) {
         this.custoLiceAnualMesaEsp = custoLiceAnualMesaEsp;
     }
-
     @Override
     public double receitaAnual() {
-        return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia()*getNumDiasFuncAnual();//FaturacaoMedia por caada mesa por dia
+        return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia()*getNumDiasFuncAnual();//FaturacaoMedia por cada mesa por dia
     }
     @Override
     public double despesaAnual(){

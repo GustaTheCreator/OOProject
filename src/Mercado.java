@@ -18,16 +18,11 @@ abstract class Mercado extends Mercearia{
         this.areaCorredores = areaCorredores;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     @Override
     public double receitaAnual() {
         return areaCorredores*getFaturacaoMedia();}//faturacaoMedia é a faturacao media anual por m^2
-
+    @Override
+    public String toString() {
+        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getAreaCorredores();
+    }
 }

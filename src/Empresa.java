@@ -60,11 +60,11 @@ public abstract class Empresa {
         this.faturacaoMedia = faturacaoMedia;
     }
 
-    public String getTipoDeMercado() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipoDeMercado(String tipoDeMercado) {
+    public void setTipo(String tipoDeMercado) {
         this.tipo = tipoDeMercado;
     }
 
