@@ -65,6 +65,7 @@ public class UserInterface extends JFrame {
                 else{
                     recarregarTabela();
                     alteracoesPorGuardar = true;
+                    botaoGuardar.setEnabled(true);
                 }
             }
             if(evento.getSource() == botaoEditar) {
@@ -75,6 +76,7 @@ public class UserInterface extends JFrame {
                 else{
                     recarregarTabela();
                     alteracoesPorGuardar = true;
+                    botaoGuardar.setEnabled(true);
                 }
             }
             if(evento.getSource() == botaoApagar) {

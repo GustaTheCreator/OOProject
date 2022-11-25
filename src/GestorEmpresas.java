@@ -125,6 +125,7 @@ public class GestorEmpresas {
 
     //  create txt file and save empresas
     public void guardarDados(){
+        ordenarLista(0); // ordenar pela opção defalt para que a lista seja carrega por essa ordem na proxima sessão
         try {
             File file = new File("src/data/StarThrive.txt");
             file.createNewFile();
