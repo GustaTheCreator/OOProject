@@ -3,7 +3,7 @@ package src;
 import java.util.*;
 import java.io.*;
 
-public class GestorEmpresas {
+public class GestorEmpresas implements Serializable {
     private ArrayList<Empresa> empresas;
 
     public GestorEmpresas() {
@@ -88,17 +88,17 @@ public class GestorEmpresas {
                 Collections.reverse(empresas);
             }
             case 2 -> {
-                empresas.sort((atual, proximo) -> atual.getTipo().compareToIgnoreCase(proximo.getTipo()));
+                empresas.sort((atual, proximo) -> atual.getDistrito().compareToIgnoreCase(proximo.getDistrito()));
             }
             case 3 -> {
-                empresas.sort((atual, proximo) -> atual.getTipo().compareToIgnoreCase(proximo.getTipo()));
+                empresas.sort((atual, proximo) -> atual.getDistrito().compareToIgnoreCase(proximo.getDistrito()));
                 Collections.reverse(empresas);
             }
             case 4 -> {
-                empresas.sort((atual, proximo) -> atual.getDistrito().compareToIgnoreCase(proximo.getDistrito()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.despesaAnual(), proximo.despesaAnual()));
             }
             case 5 -> {
-                empresas.sort((atual, proximo) -> atual.getDistrito().compareToIgnoreCase(proximo.getDistrito()));
+                empresas.sort((atual, proximo) -> Double.compare(atual.despesaAnual(), proximo.despesaAnual()));
                 Collections.reverse(empresas);
             }
             case 6 -> {
@@ -109,16 +109,9 @@ public class GestorEmpresas {
                 Collections.reverse(empresas);
             }
             case 8 -> {
-                empresas.sort((atual, proximo) -> Double.compare(atual.despesaAnual(), proximo.despesaAnual()));
-            }
-            case 9 -> {
-                empresas.sort((atual, proximo) -> Double.compare(atual.despesaAnual(), proximo.despesaAnual()));
-                Collections.reverse(empresas);
-            }
-            case 10 -> {
                 empresas.sort((atual, proximo) -> Double.compare(atual.lucro(), proximo.lucro()));
             }
-            case 11 -> {
+            case 9 -> {
                 empresas.sort((atual, proximo) -> Double.compare(atual.lucro(), proximo.lucro()));
                 Collections.reverse(empresas);
             }
