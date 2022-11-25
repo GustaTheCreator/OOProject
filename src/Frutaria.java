@@ -1,6 +1,6 @@
 package src;
 
-public class Frutaria extends Mercearia{
+public class Frutaria extends Mercearia {
     private int numProdutos;
 
     public Frutaria(String nome, Localizacao local, String distrito, double faturacaoMedia, double custoLimpezaAnual, int numProdutos) {

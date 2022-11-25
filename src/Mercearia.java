@@ -1,6 +1,6 @@
 package src;
 
-public abstract class Mercearia extends Empresa{
+public abstract class Mercearia extends Empresa {
     private double custoLimpezaAnual;
 
     public Mercearia(String nome, Localizacao local, String distrito, double faturacaoMedia, double custoLimpezaAnual) {
@@ -18,7 +18,7 @@ public abstract class Mercearia extends Empresa{
         this.custoLimpezaAnual = custoLimpezaAnual;
     }
     @Override
-    public double despesaAnual(){
+    public double despesaAnual() {
         return getCustoLimpezaAnual();
     }
 }

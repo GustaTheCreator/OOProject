@@ -6,6 +6,7 @@ public class Main {
             public void run() {
                 UserInterface GUI = new UserInterface();
                 GUI.setVisible(true);
-        }});
+            }
+        });
     }
 }

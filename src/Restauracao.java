@@ -1,5 +1,5 @@
 package src;
-public abstract class Restauracao extends Empresa{
+public abstract class Restauracao extends Empresa {
     private int numEmpMesa;
     private double salarioMedAnual;
     private double numMedClientesDiario;
@@ -29,7 +29,7 @@ public abstract class Restauracao extends Empresa{
     public double getNumMedClientesDiario() {
         return numMedClientesDiario;
     }
-    public double despesaAnual(){
+    public double despesaAnual() {
         return numEmpMesa*salarioMedAnual;
     }
 

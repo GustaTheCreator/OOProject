@@ -1,6 +1,6 @@
 package src;
 
-public class RestFastFood extends Restaurante{
+public class RestFastFood extends Restaurante {
     private double numMedClientesDrive;
     private double FaturacaoMediaPClienteDrive;
 
@@ -23,10 +23,10 @@ public class RestFastFood extends Restaurante{
         this.numMedClientesDrive = numMedClientesDrive;
     }
     @Override
-    public double receitaAnual(){
+    public double receitaAnual() {
         return (getNumMesasInteriores()*getFaturacaoMedia()+numMedClientesDrive*FaturacaoMediaPClienteDrive)*getNumDiasFuncAnual();
     }//FaturacaoMedia por cada mesa por dia
     @Override
-    public double despesaAnual(){return getNumEmpMesa()*getSalarioMedAnual();}
+    public double despesaAnual() {return getNumEmpMesa()*getSalarioMedAnual();}
 
 }

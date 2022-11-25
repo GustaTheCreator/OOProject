@@ -1,6 +1,6 @@
 package src;
 
-public class RestLocal extends Restaurante{
+public class RestLocal extends Restaurante {
     private int numMesasEsplanada;
     private double custoLiceAnualMesaEsp;
 
@@ -31,7 +31,7 @@ public class RestLocal extends Restaurante{
         return (numMesasEsplanada + getNumMesasInteriores())*getFaturacaoMedia()*getNumDiasFuncAnual();//FaturacaoMedia por cada mesa por dia
     }
     @Override
-    public double despesaAnual(){
+    public double despesaAnual() {
         return getNumEmpMesa()*getSalarioMedAnual()+numMesasEsplanada*custoLiceAnualMesaEsp;
     }
 }

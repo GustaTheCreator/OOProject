@@ -39,7 +39,7 @@ public class Localizacao {
             if (latitude.getDirecao() != 'S')
                 return false;
         }
-        if (longitude.getDirecao() != 'W'){
+        if (longitude.getDirecao() != 'W') {
             if(longitude.getDirecao() != 'E')
                 return false;
         }

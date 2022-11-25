@@ -71,7 +71,7 @@ public abstract class Empresa {
     abstract public double despesaAnual();
     abstract public double receitaAnual();
 
-    public double lucro(){
+    public double lucro() {
         return receitaAnual() - despesaAnual();
     }
 

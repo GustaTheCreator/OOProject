@@ -18,7 +18,7 @@ public class UserInterface extends JFrame {
     private InteracoesBotao premirBotao;
     private boolean alteracoesPorGuardar;
 
-    public UserInterface(){
+    public UserInterface() {
         // criar o gestor que vai funcionar através da GUI e tenta carregar dados a partir dos ficheiros
         gestor = new GestorEmpresas();
         gestor.carregarDados();
@@ -85,7 +85,7 @@ public class UserInterface extends JFrame {
                     JOptionPane.showMessageDialog(null, "Deve selecionar uma coluna da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    if(JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende apagar a empresa selecionada?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    if(JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende apagar a empresa selecionada?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         gestor.remove(indexLinha);
                         recarregarTabela();
                         alteracoesPorGuardar = true;
@@ -119,12 +119,12 @@ public class UserInterface extends JFrame {
         @Override
         public void actionPerformed(ActionEvent evento) {
             requestFocusInWindow();
-            if(evento.getSource() == caixaOrdem){
+            if(evento.getSource() == caixaOrdem) {
                 Integer caixaSelect = caixaOrdem.getSelectedIndex();
                 gestor.ordenarLista(caixaSelect);
                 recarregarTabela();
             }
-            if(evento.getSource() == caixaTema){
+            if(evento.getSource() == caixaTema) {
                 Integer caixaSelect = caixaTema.getSelectedIndex();
                 try{
                     if(caixaSelect==0)
@@ -136,7 +136,7 @@ public class UserInterface extends JFrame {
                     SwingUtilities.updateComponentTreeUI(baseDados);
                     SwingUtilities.updateComponentTreeUI(opcoes);
                 }
-                catch(Exception e){
+                catch(Exception e) {
                     JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema selecionado, irá permanecer o atual!",null, JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -144,7 +144,7 @@ public class UserInterface extends JFrame {
     }
 
     //tentar metar tudo num painel e só botão de voltar separado
-    private void mostrarMenu(){
+    private void mostrarMenu() {
         remove(baseDados);
         remove(opcoes);
         add(menu,BorderLayout.CENTER);
@@ -152,46 +152,46 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
-    private void mostrarBaseDados(){
+    private void mostrarBaseDados() {
         remove(menu);
         add(baseDados,BorderLayout.CENTER);
         validate();
         repaint();
     }
 
-    private void mostrarOpcoes(){
+    private void mostrarOpcoes() {
         remove(menu);
         add(opcoes,BorderLayout.CENTER);
         validate();
         repaint();
     }
 
-    private void recarregarTabela(){
+    private void recarregarTabela() {
         Integer caixaSelect = caixaFiltros.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
         String tipos[]= {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
-        if(caixaSelect==0){
-            for (Empresa empresa : registo){
+        if(caixaSelect==0) {
+            for (Empresa empresa : registo) {
                 elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
             }
         }
         else{
-            for (Empresa empresa : registo){
-                if(empresa.getTipo().equals(tipos[caixaSelect]) || empresa.getCategoria().equals(tipos[caixaSelect]) || empresa.getSubCategoria().equals(tipos[caixaSelect])){
+            for (Empresa empresa : registo) {
+                if(empresa.getTipo().equals(tipos[caixaSelect]) || empresa.getCategoria().equals(tipos[caixaSelect]) || empresa.getSubCategoria().equals(tipos[caixaSelect])) {
                     elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
                 }
             }
         }
     }
 
-    private void construirAparencia(){
+    private void construirAparencia() {
         // definir o estilo da janela
         setTitle("StarThrive");
         setSize(720, 720);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
-        addWindowListener(new WindowAdapter(){
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 terminar();
@@ -205,7 +205,7 @@ public class UserInterface extends JFrame {
         personalizarUI();
     }
 
-    private void personalizarUI(){
+    private void personalizarUI() {
         Color invisivel = new Color(0,0,0,0);
         UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("Panel.background",Color.WHITE);
@@ -226,11 +226,11 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
     }
 
-    private void construirMenu(){
+    private void construirMenu() {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
         JLabel textoTitulo = new JLabel("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
-        textoTitulo.setFont(new Font(textoTitulo.getFont().getFontName(), Font.BOLD, 100));
+        textoTitulo.setFont(new Font("Arial", Font.BOLD, 100));
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,40,0);
@@ -252,7 +252,7 @@ public class UserInterface extends JFrame {
         menu.add(botaoSair,posicao);
     }
 
-    private void construirVoltar(){
+    private void construirVoltar() {
         voltarBD = new JPanel();
         voltarBD.setLayout(new GridBagLayout());
         posicao.gridx = 0;
@@ -271,7 +271,7 @@ public class UserInterface extends JFrame {
         voltarOpc.add(botaoVoltarOpc, posicao);
     }
 
-    private void construirGerir(){
+    private void construirGerir() {
         gerir = new JPanel();
         gerir.setLayout(new GridBagLayout());
         botaoCriar = new JButton("Criar");
@@ -297,12 +297,12 @@ public class UserInterface extends JFrame {
     }
 
 
-    private void construirListar(){
+    private void construirListar() {
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
         // por default criamos a tabela a mostrar todas as empresas na primeira vez que o utlizadar aceder à base de dados
         String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa", "Receita", "Lucro / Diferença"};
-        elementos = new DefaultTableModel(colunas, 0){
+        elementos = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int fila, int coluna) {
                 return false; //return (coluna == 0 || coluna == 1 || coluna == 2 || coluna == 3 || coluna == 4);
@@ -310,10 +310,10 @@ public class UserInterface extends JFrame {
         };
         ArrayList<Empresa> registo = gestor.getEmpresas();
         gestor.ordenarLista(0);
-        for (Empresa empresa : registo){
+        for (Empresa empresa : registo) {
             elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
         }
-		tabela = new JTable(elementos){
+		tabela = new JTable(elementos) {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
         {
             // Fazer um clique na tabela selecionar a linha toda (remove a borda de foco no elemento da coluna selecionado)
@@ -326,7 +326,7 @@ public class UserInterface extends JFrame {
         DefaultTableCellRenderer justificarCentro = new DefaultTableCellRenderer();
         ((DefaultTableCellRenderer)tabela.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
         justificarCentro.setHorizontalAlignment(JLabel.CENTER);
-        for(int x=0;x<6;x++){
+        for(int x=0;x<6;x++) {
             tabela.getColumnModel().getColumn(x).setCellRenderer(justificarCentro);
         }
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -340,7 +340,7 @@ public class UserInterface extends JFrame {
         listar.add(scroller,posicao);
     }
 
-    private void construirFiltrar(){
+    private void construirFiltrar() {
         filtrar = new JPanel();
         filtrar.setLayout(new GridBagLayout());
         String filtros[]= {"Todas", // 0
@@ -392,7 +392,7 @@ public class UserInterface extends JFrame {
         filtrar.add(botaoGuardar, posicao);
     }
 
-    private void construirBaseDados(){
+    private void construirBaseDados() {
         // construir o painel com o botão para voltar ao menu;
         construirVoltar();
         // construir o painel para filtrar as empresas com as diferentes opções do enunciado e o botao de guardar
@@ -442,15 +442,15 @@ public class UserInterface extends JFrame {
         opcoes.add(voltarOpc,posicao);
     }
 
-    private void terminar(){
+    private void terminar() {
         int resposta;
-        if(alteracoesPorGuardar){
+        if(alteracoesPorGuardar) {
             resposta = JOptionPane.showConfirmDialog(null, "Existem alterações por guardar.\nDeseja guardar antes de sair?\n ", null, JOptionPane.YES_NO_CANCEL_OPTION);
-            if(resposta==JOptionPane.YES_OPTION){
+            if(resposta==JOptionPane.YES_OPTION) {
                 gestor.guardarDados();
                 System.exit(0);
             }
-            if(resposta==JOptionPane.NO_OPTION){
+            if(resposta==JOptionPane.NO_OPTION) {
                 System.exit(0);
             }
         }

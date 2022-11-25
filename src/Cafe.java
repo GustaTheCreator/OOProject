@@ -1,6 +1,6 @@
 package src;
 
-public class Cafe extends Restauracao{
+public class Cafe extends Restauracao {
     private double numMedCafes;
 
     public Cafe(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario, double numMedCafes) {
@@ -17,7 +17,7 @@ public class Cafe extends Restauracao{
         this.numMedCafes = numMedCafes;
     }
 
-    public double faturaAnualPCafePDia(){
+    public double faturaAnualPCafePDia() {
         return getFaturacaoMedia()/365;
     }
 
