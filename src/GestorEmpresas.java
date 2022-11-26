@@ -118,63 +118,100 @@ public class GestorEmpresas implements Serializable {
         }
     }
 
-    public void carregarDados() {
-        try {
-            File file = new File("src/data/StarThrive.txt");
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String linha = scanner.nextLine();
-                String[] dados = linha.split("/");
-                switch (dados[0]) {
-                    case "Cafe" -> {
-                        addCafe(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Pastelaria" -> {
-                        addPastelaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Restaurante Fast-Food" -> {
-                        addRestFastFood(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Restaurante Local" -> {
-                        addRestLocal(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Frutaria" -> {
-                        addFrutaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Minimercado" -> {
-                        addMiniMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Supermercado" -> {
-                        addSuperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-                    case "Hipermercado" -> {
-                        addHiperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
-                    }
-
-                }
+    @SuppressWarnings("unchecked")
+    public String carregarDadosObjeto() {
+        File ficheiro = new File("src/data/StarThrive.dat"); // se o ficheiro de objetos não estiver criado ou ocorrer um erro
+        if(ficheiro.exists() && ficheiro.isFile()) {         // durante o carregamento então recorre ao ficheiro de texto
+            try {
+                FileInputStream fis = new FileInputStream(ficheiro);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                this.empresas = (ArrayList<Empresa>)ois.readObject();
+                ois.close();
+                return "Os dados foram carregados do ficheiro de objetos com sucesso!";
+            } catch (FileNotFoundException ex) {
+                return "Foi encontrado um ficheiro de objetos mas ocorreu um erro ao tentar aceder-lhe!" + carregarDadosTexto();
+            } catch (ClassNotFoundException ex) {
+                return "Foi encontrado um ficheiro de objetos mas ocorreu um erro ao tentar converter a sua informação, é possível que esteja corrompido!" + carregarDadosTexto();
+            } catch (IOException ex) {
+                empresas.clear();
+                return "Foi encontrado um ficheiro de objetos mas ocorreu um erro durante a leitura!" + carregarDadosTexto();
             }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Erro a carregar.");
-            e.printStackTrace();
         }
+        else
+            return "Não foi encontrado um ficheiro de objetos para carregar dados!" + carregarDadosTexto();
+    }
+
+    public String carregarDadosTexto() {
+        File ficheiro = new File("src/data/StarThrive.txt");
+        if(ficheiro.exists() && ficheiro.isFile()) {
+            try {
+                FileReader fr = new FileReader(ficheiro);
+                BufferedReader br = new BufferedReader(fr);
+                String linha;
+                while((linha = br.readLine()) != null) {
+                    String[] dados = linha.split("/");
+                    switch (dados[0]) {
+                        case "Cafe" -> {
+                            addCafe(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Pastelaria" -> {
+                            addPastelaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Restaurante Fast-Food" -> {
+                            addRestFastFood(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Restaurante Local" -> {
+                            addRestLocal(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Frutaria" -> {
+                            addFrutaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Minimercado" -> {
+                            addMiniMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Supermercado" -> {
+                            addSuperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                        case "Hipermercado" -> {
+                            addHiperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        }
+                    }
+                }
+                br.close();
+                return "\nO programa procurou um ficheiro de texto e carregou os dados desse ficheiro com sucesso!";
+            } catch (FileNotFoundException ex) {
+                return "\nO programa procurou um ficheiro de texto mas ocorreu um erro ao tentar aceder-lhe!";
+            } catch (IOException ex) {
+                empresas.clear();
+                return "\nO programa procurou um ficheiro de texto mas ocorreu um erro durante a leitura!";
+            } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException ex) {
+                empresas.clear();
+                return "\nO programa procurou um ficheiro de texto mas ocorreu um erro ao tentar converter a sua informação, é possível que haja dados inválidos!";
+            }
+        }
+        else
+            return "\nO programa procurou um ficheiro de texto mas este também não foi encontrado!\nSe for a primeira vez que utiliza o programa, um ficheiro de objetos será criado a primeira vez que guardar!";
     }
 
     //  create txt file and save empresas
     public void guardarDados() {
-        ordenarLista(0); // ordenar pela opção defalt para que a lista seja carrega por essa ordem na proxima sessão
+        ordenarLista(0); // ordenar pela opção default para que a lista seja carregada por essa ordem na proxima sessão
+        File ficheiro = new File("src/data/StarThrive.dat");
         try {
-            File file = new File("src/data/StarThrive.txt");
-            file.createNewFile();
-            FileWriter writer = new FileWriter("src/data/StarThrive.txt");
-            for (Empresa empresa : empresas) {
-                writer.write(empresa.getTipo() + "/" + empresa.toString() + "\n");
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Erro a guardar.");
-            e.printStackTrace();
+        FileOutputStream fos = new FileOutputStream(ficheiro);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(empresas);
+        oos.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Erro a criar ficheiro.");
+        } catch (IOException ex) {
+            ficheiro.delete(); // apagar ficheiro criado pois é possível que tenha ficado corrompido
+            System.out.println("Erro a escrever para o ficheiro.");
+            ex.printStackTrace();
         }
     }
-    public void remove(int indexLinha) {empresas.remove(indexLinha);}
+
+    public void remove(int indexLinha) {
+        empresas.remove(indexLinha);
+    }
 }

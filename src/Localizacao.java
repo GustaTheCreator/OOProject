@@ -1,6 +1,8 @@
 package src;
 
-public class Localizacao {
+import java.io.Serializable;
+
+public class Localizacao implements Serializable{
     private Coordenada latitude;
     private Coordenada longitude;
 

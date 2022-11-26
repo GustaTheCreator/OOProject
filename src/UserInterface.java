@@ -21,9 +21,6 @@ public class UserInterface extends JFrame {
     private boolean alteracoesPorGuardar;
 
     public UserInterface() {
-        // criar o gestor que vai funcionar através da GUI e tenta carregar dados a partir dos ficheiros
-        gestor = new GestorEmpresas();
-        gestor.carregarDados();
         // criar o listener para os clicks nos botões
         premirBotao = new InteracoesBotao();
         // criar o listener para as comboBox
@@ -34,6 +31,10 @@ public class UserInterface extends JFrame {
         alteracoesPorGuardar = false;
         // construir a aparencia da janela
         construirAparencia();
+        // criar o gestor que vai funcionar através da GUI e tenta carregar dados a partir dos ficheiros
+        gestor = new GestorEmpresas();
+        // utiliza o gestor para carregar os dados e informa do output do carregamento
+        carregarDados();
         //construir o painel do menu
         construirMenu();
         // criar o painel base de dados que contém todos os anteriores
@@ -232,6 +233,14 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
         UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
+    }
+
+    private void carregarDados() {
+        String informacao = gestor.carregarDadosObjeto();
+        // Se os dados forem carregados de um ficheiro objeto não se mostra a mensagem pois esta é a situação ótima de
+        // carregamento dos dados, sendo a que aconteceria mais vezes durante o uso normal do programa iria se tornar irritante
+        if(informacao.compareTo("Os dados foram carregados do ficheiro de objetos com sucesso!") != 0)
+            JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.OK_OPTION);
     }
 
     private void construirMenu() {

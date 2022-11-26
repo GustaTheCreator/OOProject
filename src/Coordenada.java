@@ -1,6 +1,8 @@
 package src;
 
-public class Coordenada {
+import java.io.Serializable;
+
+public class Coordenada implements Serializable {
     private int horas;
     private int minutos;
     private int segundos;

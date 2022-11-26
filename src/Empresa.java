@@ -1,6 +1,8 @@
 package src;
 
-public abstract class Empresa {
+import java.io.Serializable;
+
+public abstract class Empresa  implements Serializable {
     private String nome;
 
     protected String tipo;
