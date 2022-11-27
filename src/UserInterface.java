@@ -62,6 +62,8 @@ public class UserInterface extends JFrame {
             }
             if(evento.getSource() == botaoCriar) {
                 mostrarCriar();
+                alteracoesPorGuardar = true;
+                botaoGuardar.setEnabled(true);
             }
             if(evento.getSource() == botaoEditar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -70,6 +72,8 @@ public class UserInterface extends JFrame {
                 }
                 else{
                     mostrarEditar();
+                    alteracoesPorGuardar = true;
+                    botaoGuardar.setEnabled(true);
                 }
             }
             if(evento.getSource() == botaoApagar) {
@@ -81,8 +85,14 @@ public class UserInterface extends JFrame {
                     if(JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende apagar a empresa selecionada?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         gestor.remove(indexLinha);
                         recarregarTabela();
-                        alteracoesPorGuardar = true;
-                        botaoGuardar.setEnabled(true);
+                        if(caixaAutoGuardar.isSelected()) {
+                            gestor.guardarDados();
+                        }
+                        else
+                        {
+                            alteracoesPorGuardar = true;
+                            botaoGuardar.setEnabled(true);
+                        }
                     }
                 }
             }
@@ -515,7 +525,7 @@ public class UserInterface extends JFrame {
         opcoes.add(caixaConfirmar,posicao);
         caixaAutoGuardar = new JCheckBox("Guardar automaticamente depois de criar, editar ou apagar:   ");
         caixaAutoGuardar.setHorizontalTextPosition(SwingConstants.LEFT);
-        caixaAutoGuardar.setSelected(true);
+        caixaAutoGuardar.setSelected(false);
         caixaAutoGuardar.setSize(new DimensionUIResource(50, HEIGHT));
         caixaAutoGuardar.addActionListener(premirBotao);
         posicao.gridx = 0;
