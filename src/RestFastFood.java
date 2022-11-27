@@ -38,9 +38,15 @@ public class RestFastFood extends Restaurante {
     }
     @Override
     public String toString() {
-        return getNome() + "/" + getTipo() + "/" + getLocal() + "/" + getDistrito() + "/" + getFaturacaoMediaPClienteDrive() + "/" + getNumMedClientesDrive() + "/"
-                + getNumEmpMesa() + "/" + getSalarioMedAnual() + "/" + getNumMedClientesDiario() + "/" + getNumDiasFuncAnual() + "/" + getNumMesasInteriores()
-                + "/" + getFaturacaoMedia() + "/" + getSubCategoria() + "/" + getCategoria();
+        return super.toString()+
+                "faturacao media por cada mesa por dia: "+ faturacaoMedia+"\n"+
+                "numero de empregados de mesa: "+this.numEmpMesa +"\n"+
+                "salario medio anual: "+this.salarioMedAnual+"\n"+
+                "numero medio de clientes diario: "+this.numMedClientesDiario+"\n"+
+                "numero medio de clientes drive: "+this.numMedClientesDrive+"\n"+
+                "faturacao media por cliente drive: "+this.FaturacaoMediaPClienteDrive+"\n"+
+                "numero de dias de funcionamento anual: "+this.numDiasFuncAnual+"\n"+
+                "numero de mesas interiores: "+this.numMesasInteriores+"\n";
     }
     public boolean verifica(){
         return verificaEmpresa() && numMedClientesDrive>0 && FaturacaoMediaPClienteDrive>0 && getNumEmpMesa()>0

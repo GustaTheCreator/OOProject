@@ -26,8 +26,13 @@ public class Pastelaria extends Restauracao {
     }//FaturacaoMedia anual por bolo
     @Override
     public String toString() {
-        return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/"+faturaAnualPBoloPDia()+"/"+getNumEmpMesa()+
-                "/"+getSalarioMedAnual()+"/"+getNumMedClientesDiario()+"/"+getNumMedBolos();
+        return super.toString()+
+                "faturacao media:"+ faturacaoMedia+"\n"+
+                "faturacao medial anual por bolo por dia: "+faturaAnualPBoloPDia()+"\n"+
+                "numero medio de empregados de mesa: "+this.numEmpMesa +"\n"+
+                "salario medio anual: "+this.salarioMedAnual+"\n"+
+                "numero medio de clientes diario: "+this.numMedClientesDiario+"\n"+
+                "numero medio de bolos vendidos diariamente: "+this.numMedBolos+"\n";
     }
     public boolean verifica(){
         return verificaEmpresa() && numMedBolos>0 && faturaAnualPBoloPDia()>0 && getNumEmpMesa()>0

@@ -36,9 +36,16 @@ public class RestLocal extends Restaurante {
     }
     @Override
     public String toString() {
-        return getNome() + "/" + getTipo() + "/" + getLocal() + "/" + getDistrito() + "/" + getCustoLiceAnualMesaEsp() + "/" + getNumMesasEsplanadas() + "/"
-                + getNumEmpMesa() + "/" + getSalarioMedAnual() + "/" + getNumMedClientesDiario() + "/" + getNumDiasFuncAnual() + "/" + getNumMesasInteriores()
-                + "/" + getFaturacaoMedia() + "/" + getSubCategoria() + "/" + getCategoria();
+        return super.toString()+
+                "faturacao media por cada mesa por dia: "+ faturacaoMedia+"\n"+
+                "numero de empregados de mesa: "+this.numEmpMesa +"\n"+
+                "salario medio anual: "+this.salarioMedAnual+"\n"+
+                "numero medio de clientes diario: "+this.numMedClientesDiario+"\n"+
+                "numero de dias de funcionamento anual: "+this.numDiasFuncAnual+"\n"+
+                "numero de mesas interiores: "+this.numMesasInteriores+"\n"+
+                "numero de mesas de esplanada: "+this.numMesasEsplanada+"\n"+
+                "custo de licenca anual por cada mesa de esplanada: "+this.custoLiceAnualMesaEsp+"\n";
+
     }
     public boolean verifica(){
         return verificaEmpresa() && numMesasEsplanada>0 && custoLiceAnualMesaEsp>0 && getNumEmpMesa()>0

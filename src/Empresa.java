@@ -85,13 +85,14 @@ public abstract class Empresa implements Serializable {
             if (this.distrito.equals(distrito)) {bool = true;}}
         if (!bool) return false;
         String [] splited = this.distrito.split(" ");
-        if (this.distrito.equals(distritos[1]))
+        if (this.distrito.equals(distritos[0]))
             this.distrito = "Viana do Castelo";
         else if (splited.length==2)
-            this.distrito = splited[0].substring(0,1).toUpperCase()+splited[0].substring(1).toLowerCase()+" "+splited[1].substring(0,1).toUpperCase()+splited[1].substring(1).toLowerCase();
+            this.distrito = splited[0].substring(0,1).toUpperCase()+splited[0].substring(1).toLowerCase()+
+                    " "+splited[1].substring(0,1).toUpperCase()+splited[1].substring(1).toLowerCase();
         else
             this.distrito = splited[0].substring(0,1).toUpperCase()+splited[0].substring(1).toLowerCase();
-        return !(this.faturacaoMedia < 0);
+        return !(this.faturacaoMedia < 0) && this.local.verificaCoordenadas();
     }
     abstract public boolean verifica();
     public String lucroSimNao()
@@ -101,5 +102,13 @@ public abstract class Empresa implements Serializable {
             return "Sim / " + lucro;
         else
             return "Não / " + lucro;
+    }
+    public String ToString(){
+        return "nome:" + nome + "\n" +
+                "tipo:" + tipo + "\n" +
+                "subCategoria:" + subCategoria + "\n" +
+                "categoria:" + categoria + "\n" +
+                "local:" + local + "\n" +
+                "distrito:" + distrito + "\n";
     }
 }
