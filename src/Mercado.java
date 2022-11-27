@@ -20,14 +20,14 @@ abstract class Mercado extends Mercearia {
 
     @Override
     public double receitaAnual() {
-        return areaCorredores*getFaturacaoMedia();}//faturacaoMedia é a faturacao media anual por m^2
+        return areaCorredores*getFaturacaoMedia();}//faturacaoMedia é a Faturação média anual por m^2
     @Override
     public String toString() {
         return super.toString()+
-                "faturacao media"+ faturacaoMedia+"\n"+
-                "faturacao medial anual por m^2: "+receitaAnual()+"\n"+
-                "area dos corredores: "+this.areaCorredores +"\n"+
-                "custo de limpeza anual: "+this.custoLimpezaAnual+"\n";
+                "Faturação média: "+ faturacaoMedia+"\n\n"+
+                "Faturação média anual por m^2: "+receitaAnual()+"\n\n"+
+                "Área dos corredores: "+this.areaCorredores +"\n\n"+
+                "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
     }
     public boolean verifica(){
         return verificaEmpresa() && areaCorredores>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;

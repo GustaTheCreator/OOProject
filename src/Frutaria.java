@@ -19,15 +19,15 @@ public class Frutaria extends Mercearia {
 
     @Override
     public double receitaAnual() {
-        return numProdutos*getFaturacaoMedia();} //faturacaoMedia é a faturacao media anual por produto
+        return numProdutos*getFaturacaoMedia();} //faturacaoMedia é a Faturação média anual por produto
 
     @Override
     public String toString() {
         return super.toString()+
-                "faturacao media"+ faturacaoMedia+"\n"+
-                "faturacao medial anual por produto: "+receitaAnual()+"\n"+
-                "numero de produtos: "+this.numProdutos +"\n"+
-                "custo de limpeza anual: "+this.custoLimpezaAnual+"\n";
+                "Faturação média: "+ faturacaoMedia+"\n\n"+
+                "Faturação média anual por produto: "+receitaAnual()+"\n\n"+
+                "Número de produtos: "+this.numProdutos +"\n\n"+
+                "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
     }
     public boolean verifica(){
         return verificaEmpresa() && numProdutos>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;

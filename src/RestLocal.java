@@ -37,14 +37,14 @@ public class RestLocal extends Restaurante {
     @Override
     public String toString() {
         return super.toString()+
-                "faturacao media por cada mesa por dia: "+ faturacaoMedia+"\n"+
-                "numero de empregados de mesa: "+this.numEmpMesa +"\n"+
-                "salario medio anual: "+this.salarioMedAnual+"\n"+
-                "numero medio de clientes diario: "+this.numMedClientesDiario+"\n"+
-                "numero de dias de funcionamento anual: "+this.numDiasFuncAnual+"\n"+
-                "numero de mesas interiores: "+this.numMesasInteriores+"\n"+
-                "numero de mesas de esplanada: "+this.numMesasEsplanada+"\n"+
-                "custo de licenca anual por cada mesa de esplanada: "+this.custoLiceAnualMesaEsp+"\n";
+                "Faturação média por cada mesa por dia: "+ faturacaoMedia+"\n\n"+
+                "Número de empregados de mesa: "+this.numEmpMesa +"\n\n"+
+                "Salário médio anual: "+this.salarioMedAnual+"\n\n"+
+                "Número médio de clientes diário: "+this.numMedClientesDiario+"\n\n"+
+                "Número de dias de funcionamento anual: "+this.numDiasFuncAnual+"\n\n"+
+                "Número de mesas interiores: "+this.numMesasInteriores+"\n\n"+
+                "Número de mesas de esplanada: "+this.numMesasEsplanada+"\n\n"+
+                "custo de licenca anual por cada mesa de esplanada: "+this.custoLiceAnualMesaEsp+"\n\n";
 
     }
     public boolean verifica(){

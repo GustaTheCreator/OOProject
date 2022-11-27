@@ -14,7 +14,7 @@ public class UserInterface extends JFrame {
     private JPanel menu, baseDados, opcoes, filtrar, listar,  gerir, criarEditar, voltarBD, voltarOpc, voltarCE;
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE;
     private JCheckBox caixaConfirmar,caixaAutoGuardar;
-    private JComboBox<String> caixaFiltros, caixaOrdem, caixaTema;
+    private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema;
     private JTable tabela;
     private DefaultTableModel elementos;
     private InteracoesCaixa selecElemento;
@@ -103,7 +103,7 @@ public class UserInterface extends JFrame {
                 }
                 else{
                     String detalhes = gestor.getEmpresas().get(indexLinha).toString();
-                    JOptionPane.showMessageDialog(null, detalhes,null, JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null, detalhes, null, JOptionPane.PLAIN_MESSAGE, null);
                 }
             }
             if(evento.getSource() == botaoGuardar) {
@@ -148,19 +148,19 @@ public class UserInterface extends JFrame {
         @Override
         public void actionPerformed(ActionEvent evento) {
             requestFocusInWindow();
-            if(evento.getSource() == caixaOrdem) {
-                Integer caixaSelect = caixaOrdem.getSelectedIndex();
+            if(evento.getSource() == caixaOrdenar) {
+                Integer caixaSelect = caixaOrdenar.getSelectedIndex();
                 gestor.ordenarLista(caixaSelect);
                 recarregarTabela();
             }
-            if(evento.getSource() == caixaFiltros) {
+            if(evento.getSource() == caixaFiltrar) {
                 recarregarTabela();
             }
             if(evento.getSource() == caixaTema) {
                 Integer caixaSelect = caixaTema.getSelectedIndex();
                 try{
                     if(caixaSelect==0)
-                        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                     if(caixaSelect==1)
                         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     personalizarUI();
@@ -213,7 +213,7 @@ public class UserInterface extends JFrame {
     }
 
     private void recarregarTabela() {
-        Integer caixaSelect = caixaFiltros.getSelectedIndex();
+        Integer caixaSelect = caixaFiltrar.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
         String[] tipos = {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
@@ -394,6 +394,9 @@ public class UserInterface extends JFrame {
         for(int x=0;x<6;x++) {
             tabela.getColumnModel().getColumn(x).setCellRenderer(justificarCentro);
         }
+        tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
+        tabela.setFont(new Font("Arial", Font.PLAIN, 15));
+        tabela.setRowHeight(25);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroller = new JScrollPane(tabela);
         posicao.gridx = 1;
@@ -421,29 +424,29 @@ public class UserInterface extends JFrame {
                             "    Minimercado", // 10
                             "    Hipermercado", // 11
                             "    Supermercado"}; // 12
-        caixaFiltros = new JComboBox<String>(filtros);
-        caixaFiltros.addActionListener(selecElemento);
+        caixaFiltrar = new JComboBox<String>(filtros);
+        caixaFiltrar.addActionListener(selecElemento);
         posicao.gridx = 1;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,10,40,0);
         JLabel textoFiltrar = new JLabel("Filtrar:");
         textoFiltrar.setFont(new Font("Arial", Font.BOLD, 15));
-		textoFiltrar.setLabelFor( caixaFiltros );
-        filtrar.add(caixaFiltros,posicao);
+		textoFiltrar.setLabelFor( caixaFiltrar );
+        filtrar.add(caixaFiltrar,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,42,0);
         filtrar.add(textoFiltrar,posicao);
         String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
-        caixaOrdem = new JComboBox<String>(ordem);
-        caixaOrdem.addActionListener(selecElemento);
+        caixaOrdenar = new JComboBox<String>(ordem);
+        caixaOrdenar.addActionListener(selecElemento);
         posicao.gridx = 3;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,10,40,75);
         JLabel textoOrdenar = new JLabel("Ordenar:");
         textoOrdenar.setFont(new Font("Arial", Font.BOLD, 15));
-		textoOrdenar.setLabelFor( caixaOrdem );
-        filtrar.add(caixaOrdem,posicao);
+		textoOrdenar.setLabelFor( caixaOrdenar );
+        filtrar.add(caixaOrdenar,posicao);
         posicao.gridx = 2;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,40,42,0);

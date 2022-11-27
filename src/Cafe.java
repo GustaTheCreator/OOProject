@@ -24,7 +24,7 @@ public class Cafe extends Restauracao {
 
     @Override
     public double receitaAnual() {
-        return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por cafe
+        return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por café
 
     public boolean verifica(){
         return verificaEmpresa() && numMedCafes>0 && faturaAnualPCafePDia()>0 && getNumEmpMesa()>0
@@ -33,11 +33,11 @@ public class Cafe extends Restauracao {
     @Override
     public String toString() {
         return super.toString()+
-                "faturacao media:"+ faturacaoMedia+"\n"+
-                "faturacao medial anual por cafe por dia: "+faturaAnualPCafePDia()+"\n"+
-                "numero medio de empregados de mesa: "+this.numEmpMesa +"\n"+
-                "salario medio anual: "+this.salarioMedAnual+"\n"+
-                "numero medio de clientes diario: "+this.numMedClientesDiario+"\n"+
-                "numero medio de cafes vendidos diariamente: "+this.numMedCafes+"\n";
+                "Faturação média: "+faturacaoMedia+"\n\n"+
+                "Faturação média anual por café por dia: "+(Math.round(faturaAnualPCafePDia()*100.0)/100.0)+"\n\n"+
+                "Número médio de empregados de mesa: "+this.numEmpMesa +"\n\n"+
+                "Salário medio anual: "+this.salarioMedAnual+"\n\n"+
+                "Número médio de clientes diário: "+this.numMedClientesDiario+"\n\n"+
+                "Número médio de cafes vendidos diariamente: "+this.numMedCafes+"\n\n";
     }
 }

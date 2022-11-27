@@ -49,7 +49,7 @@ public class Localizacao implements Serializable{
 
     @Override
     public String toString() {
-        return latitude + "/" + longitude;
+        return longitude + " " + latitude;
     }
 }
 

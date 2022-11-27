@@ -27,12 +27,12 @@ public class Pastelaria extends Restauracao {
     @Override
     public String toString() {
         return super.toString()+
-                "faturacao media:"+ faturacaoMedia+"\n"+
-                "faturacao medial anual por bolo por dia: "+faturaAnualPBoloPDia()+"\n"+
-                "numero medio de empregados de mesa: "+this.numEmpMesa +"\n"+
-                "salario medio anual: "+this.salarioMedAnual+"\n"+
-                "numero medio de clientes diario: "+this.numMedClientesDiario+"\n"+
-                "numero medio de bolos vendidos diariamente: "+this.numMedBolos+"\n";
+                "Faturação média: "+ faturacaoMedia+"\n\n"+
+                "Faturação média anual por bolo por dia: "+faturaAnualPBoloPDia()+"\n\n"+
+                "Número médio de empregados de mesa: "+this.numEmpMesa +"\n\n"+
+                "Salário médio anual: "+this.salarioMedAnual+"\n\n"+
+                "Número médio de clientes diário: "+this.numMedClientesDiario+"\n\n"+
+                "Número médio de bolos vendidos diariamente: "+this.numMedBolos+"\n\n";
     }
     public boolean verifica(){
         return verificaEmpresa() && numMedBolos>0 && faturaAnualPBoloPDia()>0 && getNumEmpMesa()>0

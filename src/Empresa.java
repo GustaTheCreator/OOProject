@@ -103,12 +103,12 @@ public abstract class Empresa implements Serializable {
         else
             return "Não / " + lucro;
     }
-    public String ToString(){
-        return "nome:" + nome + "\n" +
-                "tipo:" + tipo + "\n" +
-                "subCategoria:" + subCategoria + "\n" +
-                "categoria:" + categoria + "\n" +
-                "local:" + local + "\n" +
-                "distrito:" + distrito + "\n";
+    public String toString(){
+        return "Nome: " + nome + "\n\n" +
+                "Tipo: " + tipo + "\n\n" +
+                "Subcategoria: " + subCategoria + "\n\n" +
+                "Categoria: " + categoria + "\n\n" +
+                "Localização: " + local + "\n\n" +
+                "Distrito: " + distrito + "\n\n";
     }
 }

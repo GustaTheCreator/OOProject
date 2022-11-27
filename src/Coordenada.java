@@ -21,7 +21,7 @@ public class Coordenada implements Serializable {
 
     @Override
     public String toString() {
-        return horas + "/" + minutos + "/" + segundos + "/" + direcao;
+        return horas + "°" + minutos + "'" + segundos + "\"" + direcao;
     }
 
     public void setHoras(int horas) {
