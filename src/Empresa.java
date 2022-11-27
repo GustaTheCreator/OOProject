@@ -75,10 +75,21 @@ public abstract class Empresa  implements Serializable {
     public double lucro() {
         return receitaAnual() - despesaAnual();
     }
-
+    public boolean verificaEmpresa(){
+        String[] distritos ={"viana do castelo","braga","vila real","bragança","porto","aveiro","viseu","guarda",
+                "coimbra","castelo branco","leiria","santarém","santarem","portalegre","lisboa","évora","evora",
+                "setubal","beja","faro"};
+        for (String distrito : distritos) {
+            distrito = distrito.toLowerCase();
+            if (this.distrito.equals(distrito)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public String lucroSimNao()
     {
-        Double lucro = receitaAnual() - despesaAnual();
+        double lucro = receitaAnual() - despesaAnual();
         if(lucro > 0)
             return "Sim / " + lucro;
         else

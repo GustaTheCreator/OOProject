@@ -198,7 +198,7 @@ public class UserInterface extends JFrame {
         Integer caixaSelect = caixaFiltros.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
-        String tipos[]= {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
+        String[] tipos = {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
         if(caixaSelect==0) {
             for (Empresa empresa : registo) {
                 elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
@@ -382,7 +382,7 @@ public class UserInterface extends JFrame {
     private void construirFiltrar() {
         filtrar = new JPanel();
         filtrar.setLayout(new GridBagLayout());
-        String filtros[]= {"Todas", // 0
+        String[] filtros = {"Todas", // 0
                             "Restauração (Categoria)", // 1
                             "  Pastelaria", // 2
                             "  Cafe", // 3

@@ -19,7 +19,7 @@ public class RestLocal extends Restaurante {
         this.numMesasEsplanada = numMesasEsplanadas;
     }
 
-    public double getcustoLiceAnualMesaEsp() {
+    public double getCustoLiceAnualMesaEsp() {
         return custoLiceAnualMesaEsp;
     }
 
@@ -33,5 +33,11 @@ public class RestLocal extends Restaurante {
     @Override
     public double despesaAnual() {
         return getNumEmpMesa()*getSalarioMedAnual()+numMesasEsplanada*custoLiceAnualMesaEsp;
+    }
+    @Override
+    public String toString() {
+        return getNome() + "/" + getTipo() + "/" + getLocal() + "/" + getDistrito() + "/" + getCustoLiceAnualMesaEsp() + "/" + getNumMesasEsplanadas() + "/"
+                + getNumEmpMesa() + "/" + getSalarioMedAnual() + "/" + getNumMedClientesDiario() + "/" + getNumDiasFuncAnual() + "/" + getNumMesasInteriores()
+                + "/" + getFaturacaoMedia() + "/" + getSubCategoria() + "/" + getCategoria();
     }
 }

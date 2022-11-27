@@ -10,23 +10,38 @@ public class RestFastFood extends Restaurante {
         this.FaturacaoMediaPClienteDrive = faturacaoMediaPClienteDrive;
         this.tipo = "Restaurante Fast-Food";
     }
+
     public double getFaturacaoMediaPClienteDrive() {
         return FaturacaoMediaPClienteDrive;
     }
+
     public void setFaturacaoMediaPClienteDrive(double faturacaoMediaPClienteDrive) {
         this.FaturacaoMediaPClienteDrive = faturacaoMediaPClienteDrive;
     }
+
     public double getNumMedClientesDrive() {
         return numMedClientesDrive;
     }
+
     public void setNumMedClientesDrive(double numMedClientesDrive) {
         this.numMedClientesDrive = numMedClientesDrive;
     }
+
     @Override
     public double receitaAnual() {
-        return (getNumMesasInteriores()*getFaturacaoMedia()+numMedClientesDrive*FaturacaoMediaPClienteDrive)*getNumDiasFuncAnual();
+        return (getNumMesasInteriores() * getFaturacaoMedia() + numMedClientesDrive * FaturacaoMediaPClienteDrive) * getNumDiasFuncAnual();
     }//FaturacaoMedia por cada mesa por dia
-    @Override
-    public double despesaAnual() {return getNumEmpMesa()*getSalarioMedAnual();}
 
+    @Override
+    public double despesaAnual() {
+        return getNumEmpMesa() * getSalarioMedAnual();
+    }
+
+    @Override
+    public String toString() {
+        return getNome() + "/" + getTipo() + "/" + getLocal() + "/" + getDistrito() + "/" + getFaturacaoMediaPClienteDrive() + "/" + getNumMedClientesDrive() + "/"
+                + getNumEmpMesa() + "/" + getSalarioMedAnual() + "/" + getNumMedClientesDiario() + "/" + getNumDiasFuncAnual() + "/" + getNumMesasInteriores()
+                + "/" + getFaturacaoMedia() + "/" + getSubCategoria() + "/" + getCategoria();
+    }
 }
+

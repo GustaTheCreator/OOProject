@@ -23,7 +23,7 @@ public class Frutaria extends Mercearia {
 
     @Override
     public String toString() {
-        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getNumProdutos();
+        return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getNumProdutos();
     }
 
 }

@@ -23,6 +23,7 @@ abstract class Mercado extends Mercearia {
         return areaCorredores*getFaturacaoMedia();}//faturacaoMedia é a faturacao media anual por m^2
     @Override
     public String toString() {
-        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getAreaCorredores();
+        return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/" +getFaturacaoMedia()+"/"
+                +getCustoLimpezaAnual()+"/"+getAreaCorredores()+"/"+getSubCategoria()+"/"+getCategoria();
     }
 }

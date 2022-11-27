@@ -3,7 +3,8 @@ package src;
 public class Cafe extends Restauracao {
     private double numMedCafes;
 
-    public Cafe(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario, double numMedCafes) {
+    public Cafe(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa,
+                double salarioMedAnual, double numMedClientesDiario, double numMedCafes) {
         super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);
         this.tipo = "Cafe";
         this.numMedCafes = numMedCafes;
@@ -27,6 +28,7 @@ public class Cafe extends Restauracao {
 
     @Override
     public String toString() {
-        return getNome()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getNumEmpMesa()+"/"+getSalarioMedAnual()+"/"+getNumMedClientesDiario()+"/"+getNumMedCafes();
+        return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/"+faturaAnualPCafePDia()+"/"+getNumEmpMesa()+
+                "/"+getSalarioMedAnual()+"/"+getNumMedClientesDiario()+"/"+getNumMedCafes();
     }
 }
