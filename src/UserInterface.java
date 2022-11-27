@@ -11,9 +11,9 @@ import javax.swing.table.*;
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private GridBagConstraints posicao;
-    private JPanel menu, baseDados, opcoes, filtrar, listar, voltarBD, voltarOpc, gerir;
-    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltarBD, botaoVoltarOpc, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar;
-    private JCheckBox caixaConfirmar;
+    private JPanel menu, baseDados, opcoes, filtrar, listar,  gerir, criarEditar, voltarBD, voltarOpc, voltarCE;
+    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE;
+    private JCheckBox caixaConfirmar,caixaAutoGuardar;
     private JComboBox<String> caixaFiltros, caixaOrdem, caixaTema;
     private JTable tabela;
     private DefaultTableModel elementos;
@@ -28,16 +28,18 @@ public class UserInterface extends JFrame {
         selecElemento = new InteracoesCaixa();
         // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado
         posicao = new GridBagConstraints();
+        // criar o gestor que vai funcionar através da GUI e tenta carregar dados a partir dos ficheiros
+        gestor = new GestorEmpresas();
         // inicar variavel que verifica se houve alterações aos ficheiros deste o último save
         alteracoesPorGuardar = false;
         // construir a aparencia da janela
         construirAparencia();
-        // criar o gestor que vai funcionar através da GUI e tenta carregar dados a partir dos ficheiros
-        gestor = new GestorEmpresas();
         // utiliza o gestor para carregar os dados e informa do output do carregamento
         carregarDados();
         //construir o painel do menu
         construirMenu();
+        // construir os paines com os diferentes botões para voltar ao menu
+        construirVoltar();
         // criar o painel base de dados que contém todos os anteriores
         construirBaseDados();
         // criar o painel onde se podem configurar as opções do programa
@@ -58,19 +60,8 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == botaoOpcoes) {
                 mostrarOpcoes();
             }
-            if(evento.getSource() == botaoVoltarBD || evento.getSource() == botaoVoltarOpc) {
-                mostrarMenu();
-            }
             if(evento.getSource() == botaoCriar) {
-                int indexLinha = tabela.getSelectedRow();
-                if(indexLinha == -1) {
-                    JOptionPane.showMessageDialog(null, "Deve selecionar uma coluna da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
-                }
-                else{
-                    recarregarTabela();
-                    alteracoesPorGuardar = true;
-                    botaoGuardar.setEnabled(true);
-                }
+                mostrarCriar();
             }
             if(evento.getSource() == botaoEditar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -78,9 +69,7 @@ public class UserInterface extends JFrame {
                     JOptionPane.showMessageDialog(null, "Deve selecionar uma empresa da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    recarregarTabela();
-                    alteracoesPorGuardar = true;
-                    botaoGuardar.setEnabled(true);
+                    mostrarEditar();
                 }
             }
             if(evento.getSource() == botaoApagar) {
@@ -116,15 +105,24 @@ public class UserInterface extends JFrame {
                     botaoGuardar.setEnabled(false);
                 }
             }
+            if(evento.getSource() == botaoVoltarBD || evento.getSource() == botaoVoltarOpc) {
+                mostrarMenu();
+            }
+            if(evento.getSource() == botaoVoltarCE) {
+                mostrarBaseDados();
+            }
+            if(evento.getSource() == botaoSair) {
+                // confirmar saída e terminar
+                sair();
+            }
             if(evento.getSource() == caixaConfirmar)
             {
                 if (caixaConfirmar.isSelected() && getWindowListeners().length == 0) {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                    System.out.println("here");
                     addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {
-                            terminar();
+                            sair();
                         }
                     });
                 }
@@ -132,10 +130,6 @@ public class UserInterface extends JFrame {
                     removeWindowListener(getWindowListeners()[0]);
                     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 }
-            }
-            if(evento.getSource() == botaoSair) {
-                // confirmar saída e terminar
-                terminar();
             }
         }
     }
@@ -171,7 +165,6 @@ public class UserInterface extends JFrame {
         }
     }
 
-    //tentar metar tudo num painel e só botão de voltar separado
     private void mostrarMenu() {
         remove(baseDados);
         remove(opcoes);
@@ -182,6 +175,7 @@ public class UserInterface extends JFrame {
 
     private void mostrarBaseDados() {
         remove(menu);
+        remove(criarEditar);
         add(baseDados,BorderLayout.CENTER);
         validate();
         repaint();
@@ -190,6 +184,20 @@ public class UserInterface extends JFrame {
     private void mostrarOpcoes() {
         remove(menu);
         add(opcoes,BorderLayout.CENTER);
+        validate();
+        repaint();
+    }
+
+    private void mostrarCriar()  {
+        remove(baseDados);
+        add(criarEditar,BorderLayout.CENTER);
+        validate();
+        repaint();
+    }
+
+    private void mostrarEditar() {
+        remove(baseDados);
+        add(criarEditar,BorderLayout.CENTER);
         validate();
         repaint();
     }
@@ -222,7 +230,7 @@ public class UserInterface extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                terminar();
+                sair();
             }
         });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -308,6 +316,14 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,0,0,0);
         botaoVoltarOpc.addActionListener(premirBotao);
         voltarOpc.add(botaoVoltarOpc, posicao);
+        voltarCE = new JPanel();
+        voltarCE.setLayout(new GridBagLayout());
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        botaoVoltarCE = new JButton("◄");
+        posicao.insets = new Insets(0,0,0,0);
+        botaoVoltarCE.addActionListener(premirBotao);
+        voltarCE.add(botaoVoltarCE, posicao);
     }
 
     private void construirGerir() {
@@ -431,17 +447,30 @@ public class UserInterface extends JFrame {
         filtrar.add(botaoGuardar, posicao);
     }
 
+    private void construirCriarEditar(){
+        criarEditar = new JPanel();
+        criarEditar.setLayout(new GridBagLayout());
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.fill = GridBagConstraints.NONE;
+        posicao.insets = new Insets(0,0,0,600);
+        criarEditar.add(voltarCE,posicao);
+    }
+
     private void construirBaseDados() {
-        // construir o painel com o botão para voltar ao menu;
-        construirVoltar();
-        // construir o painel para filtrar as empresas com as diferentes opções do enunciado e o botao de guardar
-        construirFiltrar();
-        // construir o painel para gerir as empresas (criar/editar/apagar)
-        construirGerir();
         // construir o painel com a tabela
+        construirFiltrar();
+        // construir o painel com os botões gerir as empresas (criar/editar/apagar)
+        construirGerir();
+        // construir o painel onde irá ficar a interface para criar ou editar uma empresa
         construirListar();
+        // construir o painel para filtrar as empresas com as diferentes opções do enunciado e o botao de guardar
+        construirCriarEditar();
+        // constroi o painel com todos os outros, execeto o CriarEditar, que apenas é chamado quando se escolhe criar ou editar
         baseDados = new JPanel();
         baseDados.setLayout(new GridBagLayout());
+        posicao.fill = GridBagConstraints.BOTH;
+        posicao.insets = new Insets(0,0,0,0);
         posicao.gridx = 1;
         posicao.gridy = 0;
         baseDados.add(filtrar,posicao);
@@ -484,13 +513,22 @@ public class UserInterface extends JFrame {
         posicao.gridy = 1;
         posicao.insets = new Insets(0,515,23,0);
         opcoes.add(caixaConfirmar,posicao);
+        caixaAutoGuardar = new JCheckBox("Guardar automaticamente depois de criar, editar ou apagar:   ");
+        caixaAutoGuardar.setHorizontalTextPosition(SwingConstants.LEFT);
+        caixaAutoGuardar.setSelected(true);
+        caixaAutoGuardar.setSize(new DimensionUIResource(50, HEIGHT));
+        caixaAutoGuardar.addActionListener(premirBotao);
+        posicao.gridx = 0;
+        posicao.gridy = 2;
+        posicao.insets = new Insets(0,250,23,0);
+        opcoes.add(caixaAutoGuardar,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,0,600);
         opcoes.add(voltarOpc,posicao);
     }
 
-    private void terminar() {
+    private void sair() {
         int resposta;
         if(alteracoesPorGuardar) {
             resposta = JOptionPane.showConfirmDialog(null, "Existem alterações por guardar.\nDeseja guardar antes de sair?\n ", null, JOptionPane.YES_NO_CANCEL_OPTION);
