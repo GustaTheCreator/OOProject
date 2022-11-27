@@ -1,7 +1,7 @@
 package src;
 
 abstract class Mercado extends Mercearia {
-    private double areaCorredores;
+    protected double areaCorredores;
 
     public Mercado(String nome, Localizacao local, String distrito, double faturacaoMedia, double custoLimpezaAnual, double areaCorredores) {
         super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);

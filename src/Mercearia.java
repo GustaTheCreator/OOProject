@@ -1,7 +1,7 @@
 package src;
 
 public abstract class Mercearia extends Empresa {
-    private double custoLimpezaAnual;
+    protected double custoLimpezaAnual;
 
     public Mercearia(String nome, Localizacao local, String distrito, double faturacaoMedia, double custoLimpezaAnual) {
         super(nome, local, distrito, faturacaoMedia);

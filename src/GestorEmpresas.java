@@ -193,21 +193,20 @@ public class GestorEmpresas implements Serializable {
             return "\nO programa procurou um ficheiro de texto mas este também não foi encontrado!\nSe for a primeira vez que utiliza o programa, um ficheiro de objetos será criado a primeira vez que guardar!";
     }
 
-    //  create txt file and save empresas
-    public void guardarDados() {
+    // create txt file and save empresas
+    public String guardarDados() {
         ordenarLista(0); // ordenar pela opção default para que a lista seja carregada por essa ordem na proxima sessão
         File ficheiro = new File("src/data/StarThrive.dat");
         try {
-        FileOutputStream fos = new FileOutputStream(ficheiro);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(empresas);
-        oos.close();
+            FileOutputStream fos = new FileOutputStream(ficheiro);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(empresas);
+            oos.close();
+            return "As alterações foram guardadas com sucesso!";
         } catch (FileNotFoundException ex) {
-            System.out.println("Erro a criar ficheiro.");
+            return "Não foi possível guardar as alterações, ocorreu um erro a criar o ficheiro!";
         } catch (IOException ex) {
-            ficheiro.delete(); // apagar ficheiro criado pois é possível que tenha ficado corrompido
-            System.out.println("Erro a escrever para o ficheiro.");
-            ex.printStackTrace();
+            return "Não foi possível guardar as alterações, ocorreu um erro durante a escrita para o ficheiro!";
         }
     }
 

@@ -1,8 +1,8 @@
 package src;
 
 public abstract class Restaurante extends Restauracao {
-    private int numDiasFuncAnual;
-    private int numMesasInteriores;
+    protected int numDiasFuncAnual;
+    protected int numMesasInteriores;
 
     public Restaurante(String nome, Localizacao local, String distrito, double faturacaoMedia, int numEmpMesa, double salarioMedAnual, double numMedClientesDiario, int numDiasFuncAnual, int numMesasInteriores) {
         super(nome, local, distrito, faturacaoMedia, numEmpMesa, salarioMedAnual, numMedClientesDiario);

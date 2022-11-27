@@ -12,11 +12,12 @@ public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private GridBagConstraints posicao;
     private JPanel menu, baseDados, opcoes, filtrar, listar, voltarBD, voltarOpc, gerir;
+    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltarBD, botaoVoltarOpc, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar;
+    private JCheckBox caixaConfirmar;
     private JComboBox<String> caixaFiltros, caixaOrdem, caixaTema;
     private JTable tabela;
     private DefaultTableModel elementos;
     private InteracoesCaixa selecElemento;
-    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoVoltarBD, botaoVoltarOpc, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar;
     private InteracoesBotao premirBotao;
     private boolean alteracoesPorGuardar;
 
@@ -107,9 +108,30 @@ public class UserInterface extends JFrame {
                 }
             }
             if(evento.getSource() == botaoGuardar) {
-                gestor.guardarDados();
-                alteracoesPorGuardar = false;
-                botaoGuardar.setEnabled(false);
+                String informacao = gestor.guardarDados();
+                if(informacao.compareTo("As alterações foram guardadas com sucesso!") != 0)
+                    JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.OK_OPTION);
+                else {
+                    alteracoesPorGuardar = false;
+                    botaoGuardar.setEnabled(false);
+                }
+            }
+            if(evento.getSource() == caixaConfirmar)
+            {
+                if (caixaConfirmar.isSelected() && getWindowListeners().length == 0) {
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    System.out.println("here");
+                    addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            terminar();
+                        }
+                    });
+                }
+                else if (getWindowListeners().length != 0){
+                    removeWindowListener(getWindowListeners()[0]);
+                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                }
             }
             if(evento.getSource() == botaoSair) {
                 // confirmar saída e terminar
@@ -453,28 +475,11 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,450,23,0);
         opcoes.add(caixaTema,posicao);
-        JCheckBox caixaConfirmar = new JCheckBox("Confirmar antes de sair:   ");
+        caixaConfirmar = new JCheckBox("Confirmar antes de sair:   ");
         caixaConfirmar.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaConfirmar.setSelected(true);
         caixaConfirmar.setSize(new DimensionUIResource(50, HEIGHT));
-        caixaConfirmar.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent evento) {
-                if (caixaConfirmar.isSelected() && getWindowListeners().length == 0) {
-                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                    System.out.println("here");
-                    addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            terminar();
-                        }
-                    });
-                }
-                else if (getWindowListeners().length != 0){
-                    removeWindowListener(getWindowListeners()[0]);
-                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                }
-            }
-        });
+        caixaConfirmar.addActionListener(premirBotao);
         posicao.gridx = 0;
         posicao.gridy = 1;
         posicao.insets = new Insets(0,515,23,0);

@@ -3,14 +3,13 @@ package src;
 import java.io.Serializable;
 
 public abstract class Empresa  implements Serializable {
-    private String nome;
-
+    protected String nome;
     protected String tipo;
     protected String subCategoria;
     protected String categoria;
-    private Localizacao local;
-    private String distrito;
-    private double faturacaoMedia;
+    protected Localizacao local;
+    protected String distrito;
+    protected double faturacaoMedia;
 
     public Empresa(String nome,Localizacao local, String distrito, double faturacaoMedia) {
         this.nome = nome;
@@ -84,10 +83,5 @@ public abstract class Empresa  implements Serializable {
             return "Sim / " + lucro;
         else
             return "Não / " + lucro;
-    }
-
-    @Override
-    public String toString() {
-        return nome;
     }
 }
