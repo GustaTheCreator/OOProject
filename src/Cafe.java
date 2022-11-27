@@ -31,4 +31,8 @@ public class Cafe extends Restauracao {
         return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/"+faturaAnualPCafePDia()+"/"+getNumEmpMesa()+
                 "/"+getSalarioMedAnual()+"/"+getNumMedClientesDiario()+"/"+getNumMedCafes();
     }
+    public boolean verifica(){
+        return verificaEmpresa() && numMedCafes>0 && faturaAnualPCafePDia()>0 && getNumEmpMesa()>0
+                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0;
+    }
 }

@@ -29,4 +29,8 @@ public class Pastelaria extends Restauracao {
         return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/"+faturaAnualPBoloPDia()+"/"+getNumEmpMesa()+
                 "/"+getSalarioMedAnual()+"/"+getNumMedClientesDiario()+"/"+getNumMedBolos();
     }
+    public boolean verifica(){
+        return verificaEmpresa() && numMedBolos>0 && faturaAnualPBoloPDia()>0 && getNumEmpMesa()>0
+                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0;
+    }
 }

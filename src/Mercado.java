@@ -26,4 +26,7 @@ abstract class Mercado extends Mercearia {
         return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/" +getFaturacaoMedia()+"/"
                 +getCustoLimpezaAnual()+"/"+getAreaCorredores()+"/"+getSubCategoria()+"/"+getCategoria();
     }
+    public boolean verifica(){
+        return verificaEmpresa() && areaCorredores>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
+    }
 }

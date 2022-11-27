@@ -25,5 +25,7 @@ public class Frutaria extends Mercearia {
     public String toString() {
         return getNome()+"/"+getTipo()+"/"+getLocal()+"/"+getDistrito()+"/"+getFaturacaoMedia()+"/"+getCustoLimpezaAnual()+"/"+getNumProdutos();
     }
-
+    public boolean verifica(){
+        return verificaEmpresa() && numProdutos>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
+    }
 }

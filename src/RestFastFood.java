@@ -36,12 +36,15 @@ public class RestFastFood extends Restaurante {
     public double despesaAnual() {
         return getNumEmpMesa() * getSalarioMedAnual();
     }
-
     @Override
     public String toString() {
         return getNome() + "/" + getTipo() + "/" + getLocal() + "/" + getDistrito() + "/" + getFaturacaoMediaPClienteDrive() + "/" + getNumMedClientesDrive() + "/"
                 + getNumEmpMesa() + "/" + getSalarioMedAnual() + "/" + getNumMedClientesDiario() + "/" + getNumDiasFuncAnual() + "/" + getNumMesasInteriores()
                 + "/" + getFaturacaoMedia() + "/" + getSubCategoria() + "/" + getCategoria();
+    }
+    public boolean verifica(){
+        return verificaEmpresa() && numMedClientesDrive>0 && FaturacaoMediaPClienteDrive>0 && getNumEmpMesa()>0
+                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0 && getNumDiasFuncAnual()>0 && getNumMesasInteriores()>0 && getFaturacaoMedia()>0;
     }
 }
 
