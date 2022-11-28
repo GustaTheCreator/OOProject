@@ -95,14 +95,23 @@ public abstract class Empresa implements Serializable {
         return !(this.faturacaoMedia < 0) && this.local.verificaCoordenadas();
     }
     abstract public boolean verifica();
-
+    public String lucroSimNao()
+    {
+        double lucro = receitaAnual() - despesaAnual();
+        if(lucro > 0)
+            return "Sim / " + lucro;
+        else
+            return "Não / " + lucro;
+    }
+    public double getNumMedClientesDiario() { // permite a ordenação das empresas por número médio de clientes diário através de polimorfismo
+        return -1;                            // uma vez que apenas as empresas de restauração vão devolver um valor superior a 0 aqui
+    }
     public String toString(){
         return "Nome: " + nome + "\n\n" +
                 "Tipo: " + tipo + "\n\n" +
                 "Subcategoria: " + subCategoria + "\n\n" +
                 "Categoria: " + categoria + "\n\n" +
                 "Localização: " + local + "\n\n" +
-                "Distrito: " + distrito + "\n\n"+
-                "Lucro: " + lucro()+ "\n\n";
+                "Distrito: " + distrito + "\n\n";
     }
 }
