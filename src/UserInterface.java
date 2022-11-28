@@ -151,6 +151,9 @@ public class UserInterface extends JFrame {
             requestFocusInWindow();
             if(evento.getSource() == caixaOrdenar) {
                 Integer caixaSelect = caixaOrdenar.getSelectedIndex();
+                if(caixaSelect == 10) {
+                    caixaFiltrar.setSelectedIndex(1);
+                }
                 gestor.ordenarLista(caixaSelect);
                 recarregarTabela();
             }
@@ -258,6 +261,11 @@ public class UserInterface extends JFrame {
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
         String[] tipos = {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
+        if(caixaSelect != 1 && caixaOrdenar.getSelectedIndex() == 10)
+        {
+            caixaOrdenar.setSelectedIndex(0);
+            gestor.ordenarLista(0);
+        }
         if(caixaSelect==0) {
             for (Empresa empresa : registo) {
                 elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
@@ -276,6 +284,12 @@ public class UserInterface extends JFrame {
         // definir o estilo da janela
         setTitle("StarThrive");
         setSize(720, 720);
+        try{
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema guardado, será utilizado o default!",null, JOptionPane.ERROR_MESSAGE);
+        }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
         addWindowListener(new WindowAdapter() {
@@ -478,7 +492,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,42,0);
         filtrar.add(textoFiltrar,posicao);
-        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
+        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑","Média de clientes por dia ↓"};
         caixaOrdenar = new JComboBox<String>(ordem);
         caixaOrdenar.addActionListener(selecElemento);
         posicao.gridx = 3;

@@ -26,7 +26,9 @@ public abstract class Restauracao extends Empresa {
     public void setSalarioMedAnual(double salarioMedAnual) {
         this.salarioMedAnual = salarioMedAnual;
     }
-    public void setNumMedClientesDiario(double numMedClientesDiario) {this.numMedClientesDiario = numMedClientesDiario;}
+    public void setNumMedClientesDiario(double numMedClientesDiario) {
+        this.numMedClientesDiario = numMedClientesDiario;
+    }
     public double getNumMedClientesDiario() {
         return numMedClientesDiario;
     }
