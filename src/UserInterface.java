@@ -9,16 +9,16 @@ import javax.swing.table.*;
 
 
 public class UserInterface extends JFrame {
-    private GestorEmpresas gestor;
-    private GridBagConstraints posicao;
+    private final GestorEmpresas gestor;
+    private final GridBagConstraints posicao;
     private JPanel menu, baseDados, opcoes, filtrar, listar,  gerir, criarEditar, voltarBD, voltarOpc, voltarCE;
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE;
     private JCheckBox caixaConfirmar,caixaAutoGuardar;
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema;
     private JTable tabela;
     private DefaultTableModel elementos;
-    private InteracoesCaixa selecElemento;
-    private InteracoesBotao premirBotao;
+    private final InteracoesCaixa selecElemento;
+    private final InteracoesBotao premirBotao;
     private boolean alteracoesPorGuardar;
 
     public UserInterface() {
@@ -109,7 +109,7 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == botaoGuardar) {
                 String informacao = gestor.guardarDados();
                 if(informacao.compareTo("As alterações foram guardadas com sucesso!") != 0)
-                    JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.INFORMATION_MESSAGE);
                 else {
                     alteracoesPorGuardar = false;
                     botaoGuardar.setEnabled(false);
@@ -149,7 +149,7 @@ public class UserInterface extends JFrame {
         public void actionPerformed(ActionEvent evento) {
             requestFocusInWindow();
             if(evento.getSource() == caixaOrdenar) {
-                Integer caixaSelect = caixaOrdenar.getSelectedIndex();
+                int caixaSelect = caixaOrdenar.getSelectedIndex();
                 gestor.ordenarLista(caixaSelect);
                 recarregarTabela();
             }
@@ -157,7 +157,7 @@ public class UserInterface extends JFrame {
                 recarregarTabela();
             }
             if(evento.getSource() == caixaTema) {
-                Integer caixaSelect = caixaTema.getSelectedIndex();
+                int caixaSelect = caixaTema.getSelectedIndex();
                 try{
                     if(caixaSelect==0)
                         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -213,19 +213,24 @@ public class UserInterface extends JFrame {
     }
 
     private void recarregarTabela() {
-        Integer caixaSelect = caixaFiltrar.getSelectedIndex();
+        int caixaSelect = caixaFiltrar.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
         String[] tipos = {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
         if(caixaSelect==0) {
-            for (Empresa empresa : registo) {
-                elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
-            }
+            for (Empresa empresa : registo)
+                if (empresa.lucro() > 0)
+                    elementos.addRow(new Object[]{empresa.getNome(), empresa.getTipo(), empresa.getDistrito(), empresa.despesaAnual(), empresa.receitaAnual(), "Sim"});
+                else
+                    elementos.addRow(new Object[]{empresa.getNome(), empresa.getTipo(), empresa.getDistrito(), empresa.despesaAnual(), empresa.receitaAnual(), "Não"});
         }
         else{
             for (Empresa empresa : registo) {
                 if(empresa.getTipo().equals(tipos[caixaSelect]) || empresa.getCategoria().equals(tipos[caixaSelect]) || empresa.getSubCategoria().equals(tipos[caixaSelect])) {
-                    elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
+                    if (empresa.lucro()>0)
+                        elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),"Sim"});
+                    else
+                        elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),"Não"});
                 }
             }
         }
@@ -280,13 +285,13 @@ public class UserInterface extends JFrame {
         // Se os dados forem carregados de um ficheiro objeto não se mostra a mensagem pois esta é a situação ótima de
         // carregamento dos dados, sendo a que aconteceria mais vezes durante o uso normal do programa iria se tornar irritante
         if(informacao.compareTo("Os dados foram carregados do ficheiro de objetos com sucesso!") != 0)
-            JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void construirMenu() {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
-        JLabel textoTitulo = new JLabel("<html>St<img src=" + getClass().getResource("resources/star.gif").toString() + "></FONT>rThrive</html>");
+        JLabel textoTitulo = new JLabel("<html>St<img src=" + Objects.requireNonNull(getClass().getResource("resources/star.gif")) + "></FONT>rThrive</html>");
         textoTitulo.setFont(new Font("Arial", Font.BOLD, 100));
         posicao.gridx = 0;
         posicao.gridy = 0;
@@ -376,7 +381,10 @@ public class UserInterface extends JFrame {
         ArrayList<Empresa> registo = gestor.getEmpresas();
         gestor.ordenarLista(0);
         for (Empresa empresa : registo) {
-            elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),empresa.lucroSimNao()});
+            if (empresa.lucro()> 0)
+                elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),"Sim"});
+            else
+                elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),"Não"});
         }
 		tabela = new JTable(elementos) {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
@@ -424,7 +432,7 @@ public class UserInterface extends JFrame {
                             "    Minimercado", // 10
                             "    Hipermercado", // 11
                             "    Supermercado"}; // 12
-        caixaFiltrar = new JComboBox<String>(filtros);
+        caixaFiltrar = new JComboBox<>(filtros);
         caixaFiltrar.addActionListener(selecElemento);
         posicao.gridx = 1;
         posicao.gridy = 0;
@@ -438,7 +446,7 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,0,42,0);
         filtrar.add(textoFiltrar,posicao);
         String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
-        caixaOrdenar = new JComboBox<String>(ordem);
+        caixaOrdenar = new JComboBox<>(ordem);
         caixaOrdenar.addActionListener(selecElemento);
         posicao.gridx = 3;
         posicao.gridy = 0;
@@ -509,7 +517,7 @@ public class UserInterface extends JFrame {
         JLabel textoTema = new JLabel("Tema:");
         textoTema.setFont(new Font("Arial", Font.BOLD, 15));
         String[] temas = {"Original","Nativo do Sistema (Experimental)"};
-        caixaTema = new JComboBox<String>(temas);
+        caixaTema = new JComboBox<>(temas);
         caixaTema.addActionListener(selecElemento);
         textoTema.setLabelFor(caixaTema);
         opcoes.add(textoTema,posicao);

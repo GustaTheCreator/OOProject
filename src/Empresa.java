@@ -95,20 +95,14 @@ public abstract class Empresa implements Serializable {
         return !(this.faturacaoMedia < 0) && this.local.verificaCoordenadas();
     }
     abstract public boolean verifica();
-    public String lucroSimNao()
-    {
-        double lucro = receitaAnual() - despesaAnual();
-        if(lucro > 0)
-            return "Sim / " + lucro;
-        else
-            return "Não / " + lucro;
-    }
+
     public String toString(){
         return "Nome: " + nome + "\n\n" +
                 "Tipo: " + tipo + "\n\n" +
                 "Subcategoria: " + subCategoria + "\n\n" +
                 "Categoria: " + categoria + "\n\n" +
                 "Localização: " + local + "\n\n" +
-                "Distrito: " + distrito + "\n\n";
+                "Distrito: " + distrito + "\n\n"+
+                "Lucro: " + lucro()+ "\n\n";
     }
 }
