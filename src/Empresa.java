@@ -94,15 +94,9 @@ public abstract class Empresa implements Serializable {
             this.distrito = splited[0].substring(0,1).toUpperCase()+splited[0].substring(1).toLowerCase();
         return !(this.faturacaoMedia < 0) && this.local.verificaCoordenadas();
     }
+
     abstract public boolean verifica();
-    public String lucroSimNao()
-    {
-        double lucro = receitaAnual() - despesaAnual();
-        if(lucro > 0)
-            return "Sim / " + lucro;
-        else
-            return "Não / " + lucro;
-    }
+
     public double getNumMedClientesDiario() { // permite a ordenação das empresas por número médio de clientes diário através de polimorfismo
         return -1;                            // uma vez que apenas as empresas de restauração vão devolver um valor superior a 0 aqui
     }

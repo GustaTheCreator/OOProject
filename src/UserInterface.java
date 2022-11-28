@@ -9,16 +9,17 @@ import javax.swing.table.*;
 
 
 public class UserInterface extends JFrame {
-    private final GestorEmpresas gestor;
-    private final GridBagConstraints posicao;
+    private GestorEmpresas gestor;
+    private GridBagConstraints posicao;
     private JPanel menu, baseDados, opcoes, filtrar, listar,  gerir, criarEditar, voltarBD, voltarOpc, voltarCE;
-    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes, botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE;
+    private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
+    botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
     private JCheckBox caixaConfirmar,caixaAutoGuardar;
-    private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema;
+    private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema, caixaTipo;
     private JTable tabela;
     private DefaultTableModel elementos;
-    private final InteracoesCaixa selecElemento;
-    private final InteracoesBotao premirBotao;
+    private InteracoesCaixa selecElemento;
+    private InteracoesBotao premirBotao;
     private boolean alteracoesPorGuardar;
 
     public UserInterface() {
@@ -71,7 +72,7 @@ public class UserInterface extends JFrame {
                     JOptionPane.showMessageDialog(null, "Deve selecionar uma empresa da tabela para efetuar esta operação!",null, JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    mostrarEditar();
+                    mostrarEditar(indexLinha);
                     alteracoesPorGuardar = true;
                     botaoGuardar.setEnabled(true);
                 }
@@ -109,7 +110,7 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == botaoGuardar) {
                 String informacao = gestor.guardarDados();
                 if(informacao.compareTo("As alterações foram guardadas com sucesso!") != 0)
-                    JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.ERROR_MESSAGE);
                 else {
                     alteracoesPorGuardar = false;
                     botaoGuardar.setEnabled(false);
@@ -150,6 +151,9 @@ public class UserInterface extends JFrame {
             requestFocusInWindow();
             if(evento.getSource() == caixaOrdenar) {
                 int caixaSelect = caixaOrdenar.getSelectedIndex();
+                if(caixaSelect == 10) {
+                    caixaFiltrar.setSelectedIndex(1);
+                }
                 gestor.ordenarLista(caixaSelect);
                 recarregarTabela();
             }
@@ -200,13 +204,53 @@ public class UserInterface extends JFrame {
 
     private void mostrarCriar()  {
         remove(baseDados);
+        criarEditar.remove(botaoTerminarEditar);
+        posicao.gridx = 1;
+        posicao.gridy = 1;
+        posicao.fill = GridBagConstraints.NONE;
+        posicao.insets = new Insets(0,0,23,0);
+        criarEditar.add(botaoTerminarCriar,posicao);
+        caixaTipo.setSelectedIndex(-1);
         add(criarEditar,BorderLayout.CENTER);
         validate();
         repaint();
     }
 
-    private void mostrarEditar() {
+    private void mostrarEditar(int indexEmpresa) {
         remove(baseDados);
+        criarEditar.remove(botaoTerminarCriar);
+        posicao.gridx = 1;
+        posicao.gridy = 1;
+        posicao.fill = GridBagConstraints.NONE;
+        posicao.insets = new Insets(0,0,23,0);
+        String tipo = gestor.getEmpresas().get(indexEmpresa).getTipo();
+        switch(tipo){
+            case "Cafe" -> {
+                caixaTipo.setSelectedIndex(0);
+            }
+            case "Pastelaria" -> {
+                caixaTipo.setSelectedIndex(1);
+            }
+            case "Restaurante Fast-Food" -> {
+                caixaTipo.setSelectedIndex(2);
+            }
+            case "Restaurante Local" -> {
+                caixaTipo.setSelectedIndex(3);
+            }
+            case "Frutaria" -> {
+                caixaTipo.setSelectedIndex(4);
+            }
+            case "Minimercado" -> {
+                caixaTipo.setSelectedIndex(5);
+            }
+            case "Supermercado" -> {
+                caixaTipo.setSelectedIndex(6);
+            }
+            case "Hipermercado" -> {
+                caixaTipo.setSelectedIndex(7);
+            }
+        }
+        criarEditar.add(botaoTerminarEditar,posicao);
         add(criarEditar,BorderLayout.CENTER);
         validate();
         repaint();
@@ -217,6 +261,11 @@ public class UserInterface extends JFrame {
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
         String[] tipos = {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
+        if(caixaSelect != 1 && caixaOrdenar.getSelectedIndex() == 10)
+        {
+            caixaOrdenar.setSelectedIndex(0);
+            gestor.ordenarLista(0);
+        }
         if(caixaSelect==0) {
             for (Empresa empresa : registo)
                 if (empresa.lucro() > 0)
@@ -240,6 +289,12 @@ public class UserInterface extends JFrame {
         // definir o estilo da janela
         setTitle("StarThrive");
         setSize(720, 720);
+        try{
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema guardado, será utilizado o default!",null, JOptionPane.ERROR_MESSAGE);
+        }
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
         addWindowListener(new WindowAdapter() {
@@ -285,13 +340,18 @@ public class UserInterface extends JFrame {
         // Se os dados forem carregados de um ficheiro objeto não se mostra a mensagem pois esta é a situação ótima de
         // carregamento dos dados, sendo a que aconteceria mais vezes durante o uso normal do programa iria se tornar irritante
         if(informacao.compareTo("Os dados foram carregados do ficheiro de objetos com sucesso!") != 0)
-            JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.ERROR_MESSAGE);
     }
 
     private void construirMenu() {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
-        JLabel textoTitulo = new JLabel("<html>St<img src=" + Objects.requireNonNull(getClass().getResource("resources/star.gif")) + "></FONT>rThrive</html>");
+        JLabel textoTitulo = new JLabel("StarThrive");
+        try{ // tenta aplicar o titulo alternativo com o gif, se não conseguir retorna ao básico
+            textoTitulo = new JLabel("<html>St<img src=" + Objects.requireNonNull(getClass().getResource("resources/star.gif")) + "></FONT>rThrive</html>");
+        } catch (NullPointerException ex) {
+            textoTitulo = new JLabel("StarThrive");
+        }
         textoTitulo.setFont(new Font("Arial", Font.BOLD, 100));
         posicao.gridx = 0;
         posicao.gridy = 0;
@@ -445,8 +505,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,42,0);
         filtrar.add(textoFiltrar,posicao);
-        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑"};
-        caixaOrdenar = new JComboBox<>(ordem);
+        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑","Média de clientes por dia ↓"};        caixaOrdenar = new JComboBox<>(ordem);
         caixaOrdenar.addActionListener(selecElemento);
         posicao.gridx = 3;
         posicao.gridy = 0;
@@ -468,14 +527,38 @@ public class UserInterface extends JFrame {
         filtrar.add(botaoGuardar, posicao);
     }
 
-    private void construirCriarEditar(){
+        private void construirCriarEditar(){
         criarEditar = new JPanel();
         criarEditar.setLayout(new GridBagLayout());
-        posicao.gridx = 0;
+        JLabel textoTipo = new JLabel("Tipo:");
+        textoTipo.setFont(new Font("Arial", Font.BOLD, 15));
+        String[] tipos = {"Cafe","Pastelaria","Restaurante Fast-Food","Restaurante Local","Frutaria","Minimercado","Hipermercado","Supermercado"};
+        caixaTipo = new JComboBox<String>(tipos);
+        caixaTipo.addActionListener(selecElemento);
+        textoTipo.setLabelFor(caixaTipo);
+        posicao.gridx = 1;
         posicao.gridy = 0;
         posicao.fill = GridBagConstraints.NONE;
-        posicao.insets = new Insets(0,0,0,600);
+        posicao.insets = new Insets(0,0,23,350);
+        criarEditar.add(textoTipo,posicao);
+        posicao.gridx = 1;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,0,23,0);
+        criarEditar.add(caixaTipo,posicao);
+        posicao.gridx = 0;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,0,0,0);
         criarEditar.add(voltarCE,posicao);
+        botaoTerminarCriar = new JButton("Criar");
+        posicao.gridx = 1;
+        posicao.gridy = 1;
+        botaoTerminarCriar.addActionListener(premirBotao);
+        posicao.insets = new Insets(0,0,23,0);
+        botaoTerminarEditar = new JButton("Aplicar alterações");
+        posicao.gridx = 0;
+        posicao.gridy = 1;
+        botaoTerminarEditar.addActionListener(premirBotao);
+        posicao.insets = new Insets(0,0,23,0);
     }
 
     private void construirBaseDados() {
