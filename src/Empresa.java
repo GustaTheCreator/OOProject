@@ -77,7 +77,7 @@ public abstract class Empresa implements Serializable {
     }
 
     public boolean verifica(){
-        return !(this.faturacaoMedia < 0) && this.local.verificaCoordenadas();
+        return !(this.faturacaoMedia < 0);
     }
 
     public double getNumMedClientesDiario() { // permite a ordenação das empresas por número médio de clientes diário através de polimorfismo
