@@ -75,27 +75,10 @@ public abstract class Empresa implements Serializable {
     public double lucro() {
         return receitaAnual() - despesaAnual();
     }
-    public boolean verificaEmpresa(){
-        boolean bool = false;
-        String[] distritos ={"viana do castelo","braga","vila real","bragança","porto","aveiro","viseu","guarda",
-                "coimbra","castelo branco","leiria","santarém","santarem","portalegre","lisboa","évora","evora",
-                "setubal","beja","faro"};
-        for (String distrito : distritos) {
-            this.distrito = distrito.toLowerCase();
-            if (this.distrito.equals(distrito)) {bool = true;}}
-        if (!bool) return false;
-        String [] splited = this.distrito.split(" ");
-        if (this.distrito.equals(distritos[0]))
-            this.distrito = "Viana do Castelo";
-        else if (splited.length==2)
-            this.distrito = splited[0].substring(0,1).toUpperCase()+splited[0].substring(1).toLowerCase()+
-                    " "+splited[1].substring(0,1).toUpperCase()+splited[1].substring(1).toLowerCase();
-        else
-            this.distrito = splited[0].substring(0,1).toUpperCase()+splited[0].substring(1).toLowerCase();
+
+    public boolean verifica(){
         return !(this.faturacaoMedia < 0) && this.local.verificaCoordenadas();
     }
-
-    abstract public boolean verifica();
 
     public double getNumMedClientesDiario() { // permite a ordenação das empresas por número médio de clientes diário através de polimorfismo
         return -1;                            // uma vez que apenas as empresas de restauração vão devolver um valor superior a 0 aqui

@@ -129,6 +129,7 @@ public class GestorEmpresas implements Serializable {
                 empresas.sort((atual, proximo) -> Double.compare(atual.getNumMedClientesDiario(), proximo.getNumMedClientesDiario()));
                 Collections.reverse(empresas);
             }
+            default -> {}
         }
     }
 
@@ -201,6 +202,7 @@ public class GestorEmpresas implements Serializable {
                         case "Hipermercado" -> addHiperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
                                 dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0),
                                 dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        default -> {}
                     }
                 }
                 br.close();

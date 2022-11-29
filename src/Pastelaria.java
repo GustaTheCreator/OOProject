@@ -35,7 +35,7 @@ public class Pastelaria extends Restauracao {
                 "Número médio de bolos vendidos diariamente: "+this.numMedBolos+"\n\n";
     }
     public boolean verifica(){
-        return verificaEmpresa() && numMedBolos>0 && faturaAnualPBoloPDia()>0 && getNumEmpMesa()>0
+        return super.verifica() && numMedBolos>0 && faturaAnualPBoloPDia()>0 && getNumEmpMesa()>0
                 && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0;
     }
 }

@@ -48,7 +48,7 @@ public class RestLocal extends Restaurante {
 
     }
     public boolean verifica(){
-        return verificaEmpresa() && numMesasEsplanada>0 && custoLiceAnualMesaEsp>0 && getNumEmpMesa()>0
+        return super.verifica() && numMesasEsplanada>0 && custoLiceAnualMesaEsp>0 && getNumEmpMesa()>0
                 && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0 && getNumDiasFuncAnual()>0 && getNumMesasInteriores()>0 && getFaturacaoMedia()>0;
     }
 }

@@ -27,7 +27,7 @@ public class Cafe extends Restauracao {
         return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por café
 
     public boolean verifica(){
-        return verificaEmpresa() && numMedCafes>0 && faturaAnualPCafePDia()>0 && getNumEmpMesa()>0
+        return super.verifica() && numMedCafes>0 && faturaAnualPCafePDia()>0 && getNumEmpMesa()>0
                 && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0;
     }
     @Override

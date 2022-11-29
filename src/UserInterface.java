@@ -15,6 +15,7 @@ public class UserInterface extends JFrame {
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
     botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
     private JCheckBox caixaConfirmar,caixaAutoGuardar;
+    private JTextField campoNome, campoDistrito;
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema, caixaTipo;
     private JTable tabela;
     private DefaultTableModel elementos;
@@ -160,6 +161,10 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == caixaFiltrar) {
                 recarregarTabela();
             }
+            if(evento.getSource() == caixaTipo) {
+                recarregarCriarEditar();
+                criarEditar.validate();
+            }
             if(evento.getSource() == caixaTema) {
                 int caixaSelect = caixaTema.getSelectedIndex();
                 try{
@@ -205,12 +210,14 @@ public class UserInterface extends JFrame {
     private void mostrarCriar()  {
         remove(baseDados);
         criarEditar.remove(botaoTerminarEditar);
+        caixaTipo.setSelectedItem(null);
+        recarregarCriarEditar();
         posicao.gridx = 1;
-        posicao.gridy = 1;
+        posicao.gridy = 99; // garantir que o botão fica no fim
         posicao.fill = GridBagConstraints.NONE;
         posicao.insets = new Insets(0,0,23,0);
         criarEditar.add(botaoTerminarCriar,posicao);
-        caixaTipo.setSelectedIndex(-1);
+        caixaTipo.setSelectedItem(null);
         add(criarEditar,BorderLayout.CENTER);
         validate();
         repaint();
@@ -219,41 +226,52 @@ public class UserInterface extends JFrame {
     private void mostrarEditar(int indexEmpresa) {
         remove(baseDados);
         criarEditar.remove(botaoTerminarCriar);
+        caixaTipo.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getTipo());
+        recarregarCriarEditar();
         posicao.gridx = 1;
-        posicao.gridy = 1;
+        posicao.gridy = 99; // garantir que o botão fica no fim
         posicao.fill = GridBagConstraints.NONE;
         posicao.insets = new Insets(0,0,23,0);
-        String tipo = gestor.getEmpresas().get(indexEmpresa).getTipo();
-        switch(tipo){
-            case "Cafe" -> {
-                caixaTipo.setSelectedIndex(0);
-            }
-            case "Pastelaria" -> {
-                caixaTipo.setSelectedIndex(1);
-            }
-            case "Restaurante Fast-Food" -> {
-                caixaTipo.setSelectedIndex(2);
-            }
-            case "Restaurante Local" -> {
-                caixaTipo.setSelectedIndex(3);
-            }
-            case "Frutaria" -> {
-                caixaTipo.setSelectedIndex(4);
-            }
-            case "Minimercado" -> {
-                caixaTipo.setSelectedIndex(5);
-            }
-            case "Supermercado" -> {
-                caixaTipo.setSelectedIndex(6);
-            }
-            case "Hipermercado" -> {
-                caixaTipo.setSelectedIndex(7);
-            }
-        }
         criarEditar.add(botaoTerminarEditar,posicao);
         add(criarEditar,BorderLayout.CENTER);
         validate();
         repaint();
+    }
+
+    private void recarregarCriarEditar() {
+        if (caixaTipo.getSelectedItem() != null)
+        {
+            String tipo = caixaTipo.getSelectedItem().toString();
+            posicao.fill = GridBagConstraints.NONE;
+            posicao.insets = new Insets(0,0,23,0);
+            switch(tipo){
+                case "Cafe" -> {
+
+                }
+                case "Pastelaria" -> {
+
+                }
+                case "Restaurante Fast-Food" -> {
+
+                }
+                case "Restaurante Local" -> {
+
+                }
+                case "Frutaria" -> {
+
+                }
+                case "Minimercado" -> {
+
+                }
+                case "Supermercado" -> {
+
+                }
+                case "Hipermercado" -> {
+
+                }
+                default -> {}
+            }
+        }
     }
 
     private void recarregarTabela() {
@@ -289,12 +307,12 @@ public class UserInterface extends JFrame {
         // definir o estilo da janela
         setTitle("StarThrive");
         setSize(720, 720);
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        }
-        catch(Exception e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema guardado, será utilizado o default!",null, JOptionPane.ERROR_MESSAGE);
         }
+
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
         addWindowListener(new WindowAdapter() {
@@ -320,6 +338,7 @@ public class UserInterface extends JFrame {
         UIManager.put("CheckBox.focus",invisivel);
         UIManager.put("CheckBox.background",Color.WHITE);
         UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
+        UIManager.put("TextField.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("OptionPane.yesButtonText","Sim");
         UIManager.put("OptionPane.noButtonText","Não");
@@ -431,7 +450,7 @@ public class UserInterface extends JFrame {
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
         // por default criamos a tabela a mostrar todas as empresas na primeira vez que o utlizadar aceder à base de dados
-        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa", "Receita", "Lucro / Diferença"};
+        String[] colunas = {"Nome", "Tipo", "Distrito", "Despesa", "Receita", "Lucro"};
         elementos = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int fila, int coluna) {
@@ -541,24 +560,36 @@ public class UserInterface extends JFrame {
         posicao.fill = GridBagConstraints.NONE;
         posicao.insets = new Insets(0,0,23,350);
         criarEditar.add(textoTipo,posicao);
-        posicao.gridx = 1;
-        posicao.gridy = 0;
         posicao.insets = new Insets(0,0,23,0);
         criarEditar.add(caixaTipo,posicao);
+        JLabel textoNome = new JLabel("Nome:");
+        textoNome.setFont(new Font("Arial", Font.BOLD, 15));
+        campoNome = new JTextField(14);
+        textoNome.setLabelFor(campoNome);
+        posicao.gridx = 1;
+        posicao.gridy = 1;
+        posicao.insets = new Insets(0,0,23,350);
+        criarEditar.add(textoNome,posicao);
+        posicao.insets = new Insets(0,0,23,0);
+        criarEditar.add(campoNome,posicao);
+        JLabel textoDistrito = new JLabel("Distrito:");
+        textoDistrito.setFont(new Font("Arial", Font.BOLD, 15));
+        campoDistrito = new JTextField(14);
+        textoDistrito.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 2;
+        posicao.insets = new Insets(0,0,23,350);
+        criarEditar.add(textoDistrito,posicao);
+        posicao.insets = new Insets(0,0,23,0);
+        criarEditar.add(campoDistrito,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,0,0);
         criarEditar.add(voltarCE,posicao);
         botaoTerminarCriar = new JButton("Criar");
-        posicao.gridx = 1;
-        posicao.gridy = 1;
         botaoTerminarCriar.addActionListener(premirBotao);
-        posicao.insets = new Insets(0,0,23,0);
         botaoTerminarEditar = new JButton("Aplicar alterações");
-        posicao.gridx = 0;
-        posicao.gridy = 1;
         botaoTerminarEditar.addActionListener(premirBotao);
-        posicao.insets = new Insets(0,0,23,0);
     }
 
     private void construirBaseDados() {
@@ -570,7 +601,7 @@ public class UserInterface extends JFrame {
         construirListar();
         // construir o painel para filtrar as empresas com as diferentes opções do enunciado e o botao de guardar
         construirCriarEditar();
-        // constroi o painel com todos os outros, execeto o CriarEditar, que apenas é chamado quando se escolhe criar ou editar
+        // constroi o painel com todos os outros, execeto o CriarEditar, que apenas é chamado quando se escolhe criar ou editar a partir da bd
         baseDados = new JPanel();
         baseDados.setLayout(new GridBagLayout());
         posicao.fill = GridBagConstraints.BOTH;
@@ -593,42 +624,39 @@ public class UserInterface extends JFrame {
     {
         opcoes = new JPanel();
         opcoes.setLayout(new GridBagLayout());
-        posicao.gridx = 0;
-        posicao.gridy = 0;
-        posicao.insets = new Insets(0,100,23,0);
-        posicao.fill = GridBagConstraints.NONE;
         JLabel textoTema = new JLabel("Tema:");
         textoTema.setFont(new Font("Arial", Font.BOLD, 15));
         String[] temas = {"Original","Nativo do Sistema (Experimental)"};
         caixaTema = new JComboBox<>(temas);
         caixaTema.addActionListener(selecElemento);
         textoTema.setLabelFor(caixaTema);
-        opcoes.add(textoTema,posicao);
-        posicao.gridx = 0;
+        posicao.gridx = 1;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,450,23,0);
+        posicao.insets = new Insets(0,0,23,350);
+        posicao.fill = GridBagConstraints.NONE;
+        opcoes.add(textoTema,posicao);
+        posicao.insets = new Insets(0,0,23,0);
         opcoes.add(caixaTema,posicao);
         caixaConfirmar = new JCheckBox("Confirmar antes de sair:   ");
         caixaConfirmar.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaConfirmar.setSelected(true);
         caixaConfirmar.setSize(new DimensionUIResource(50, HEIGHT));
         caixaConfirmar.addActionListener(premirBotao);
-        posicao.gridx = 0;
+        posicao.gridx = 1;
         posicao.gridy = 1;
-        posicao.insets = new Insets(0,515,23,0);
+        posicao.insets = new Insets(0,0,23,0);
         opcoes.add(caixaConfirmar,posicao);
         caixaAutoGuardar = new JCheckBox("Guardar automaticamente depois de criar, editar ou apagar:   ");
         caixaAutoGuardar.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaAutoGuardar.setSelected(false);
-        caixaAutoGuardar.setSize(new DimensionUIResource(50, HEIGHT));
         caixaAutoGuardar.addActionListener(premirBotao);
-        posicao.gridx = 0;
+        posicao.gridx = 1;
         posicao.gridy = 2;
-        posicao.insets = new Insets(0,250,23,0);
+        posicao.insets = new Insets(0,0,23,0);
         opcoes.add(caixaAutoGuardar,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,0,0,600);
+        posicao.insets = new Insets(0,0,0,0);
         opcoes.add(voltarOpc,posicao);
     }
 

@@ -30,6 +30,6 @@ abstract class Mercado extends Mercearia {
                 "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
     }
     public boolean verifica(){
-        return verificaEmpresa() && areaCorredores>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
+        return super.verifica() && areaCorredores>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
     }
 }

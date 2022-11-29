@@ -30,6 +30,6 @@ public class Frutaria extends Mercearia {
                 "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
     }
     public boolean verifica(){
-        return verificaEmpresa() && numProdutos>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
+        return super.verifica() && numProdutos>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
     }
 }

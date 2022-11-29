@@ -49,7 +49,7 @@ public class RestFastFood extends Restaurante {
                 "Número de mesas interiores: "+this.numMesasInteriores+"\n\n";
     }
     public boolean verifica(){
-        return verificaEmpresa() && numMedClientesDrive>0 && FaturacaoMediaPClienteDrive>0 && getNumEmpMesa()>0
+        return super.verifica() && numMedClientesDrive>0 && FaturacaoMediaPClienteDrive>0 && getNumEmpMesa()>0
                 && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0 && getNumDiasFuncAnual()>0 && getNumMesasInteriores()>0 && getFaturacaoMedia()>0;
     }
 }
