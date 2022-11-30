@@ -7,14 +7,23 @@ public class Opcoes implements Serializable{
     private int estilo;
     private boolean confirmarSair;
     private boolean AutoGuardar;
+    private boolean fullscreen;
+
     public Opcoes() {
         this.tema = 0;
         this.estilo = 0;
         this.confirmarSair = true;
         this.AutoGuardar = false;
+        this.fullscreen = true;
     }
     public int getEstilo() {
         return estilo;
+    }
+    public boolean isFullscreen() {
+        return fullscreen;
+    }
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
     }
     public void setEstilo(int estilo) {
         this.estilo = estilo;

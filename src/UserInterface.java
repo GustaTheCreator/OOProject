@@ -17,7 +17,7 @@ public class UserInterface extends JFrame {
     private JPanel menu, baseDados, opcoes, filtrar, listar,  gerir, criarEditar, voltarBD, voltarOpc, voltarCE;
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
     botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
-    private JCheckBox caixaConfirmar,caixaAutoGuardar;
+    private JCheckBox caixaConfirmar,caixaAutoGuardar, caixaFullscreen;
     private JTextField campoNome, campoDistrito, campoFaturacaoMedia;
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaEstilo, caixaTema, caixaTipo;
     private JComboBox<Integer> caixaHorasLat, caixaMinutosLat,caixaSegundosLat, caixaHorasLong, caixaMinutosLong, caixaSegundosLong;
@@ -167,6 +167,14 @@ public class UserInterface extends JFrame {
             }
             if(evento.getSource() == caixaAutoGuardar) {
                 opcoesGuardadas.setAutoGuardar(caixaAutoGuardar.isSelected());
+                guardarOpcoes();
+            }
+            if(evento.getSource() == caixaFullscreen) {
+                boolean estado = caixaFullscreen.isSelected();
+                UserInterface.this.dispose();
+                UserInterface.this.setUndecorated(estado);
+                UserInterface.this.setVisible(true);
+                opcoesGuardadas.setFullscreen(estado);
                 guardarOpcoes();
             }
         }
@@ -366,7 +374,7 @@ public class UserInterface extends JFrame {
         // definir o estilo da janela
         setTitle("StarThrive");
         setSize(720, 720);
-
+        setUndecorated(opcoesGuardadas.isFullscreen());
         if(opcoesGuardadas.isConfirmarSair()){
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
@@ -380,11 +388,9 @@ public class UserInterface extends JFrame {
         else{
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
-
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon("src/resources/icon.png").getImage());
-
         // criar cores e modelos personalizados para toda a interface através do UIManager
         int estilo = opcoesGuardadas.getEstilo();
         int tema =  opcoesGuardadas.getTema();
@@ -418,17 +424,24 @@ public class UserInterface extends JFrame {
         if(!serConstruido)
             JOptionPane.showMessageDialog(null, "As alterações ao tema apenas são visíveis depois de reiniciar o programa!",null, JOptionPane.WARNING_MESSAGE);
         else {
+            Color cinza = new Color(33,33,33);
             if(tema == 0) {
                 UIManager.put("Panel.background",Color.WHITE); // light mode
-                UIManager.put("Label.foreground",new Color(33,33,33));
+                UIManager.put("Label.foreground",cinza);
                 UIManager.put("CheckBox.background",Color.WHITE);
-                UIManager.put("CheckBox.foreground",new Color(33,33,33));
+                UIManager.put("CheckBox.foreground",cinza);
+                UIManager.put("Button.background",new Color(225,225,225));
+                UIManager.put("Button.foreground",Color.BLACK);
             }
             else {
-                UIManager.put("Panel.background",new Color(33,33,33)); //dark mode
+                UIManager.put("Panel.background",cinza); //dark mode
                 UIManager.put("Label.foreground",Color.WHITE);
-                UIManager.put("CheckBox.background",new Color(33,33,33));
+                UIManager.put("CheckBox.background",cinza);
                 UIManager.put("CheckBox.foreground",Color.WHITE);
+                UIManager.put("Table.background",cinza);
+                UIManager.put("Table.foreground",Color.WHITE);
+                UIManager.put("Button.background",Color.WHITE);
+                UIManager.put("Button.foreground",Color.BLACK);
             }
         }
         opcoesGuardadas.setTema(tema);
@@ -437,6 +450,7 @@ public class UserInterface extends JFrame {
 
     private void personalizarUI() {
         Color invisivel = new Color(0,0,0,0);
+        Color azul =  new Color(118,221,221);
         UIManager.put("Button.focus",invisivel);
         UIManager.put("Button.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("Label.font",new Font("Arial", Font.BOLD, 15));
@@ -444,6 +458,8 @@ public class UserInterface extends JFrame {
         UIManager.put("CheckBox.focus",invisivel);
         UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("TextField.font",new Font("Arial", Font.BOLD, 15));
+        UIManager.put("ComboBox.selectionBackground",new Color(118,221,221));
+        UIManager.put("ComboBox.selectionForeground",Color.BLACK);
         UIManager.put("OptionPane.background",Color.WHITE);
         UIManager.put("OptionPane.yesButtonText","Sim");
         UIManager.put("OptionPane.noButtonText","Não");
@@ -457,6 +473,10 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
         UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/warning.gif"));
         UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
+        UIManager.put("Table.selectionBackground",azul);
+        UIManager.put("Table.selectionForeground",Color.BLACK);
+        UIManager.put("Table.focusCellBackground",azul);
+        UIManager.put("Table.focusCellForeground",Color.BLACK);
     }
 
     private void carregarDados() {
@@ -584,12 +604,15 @@ public class UserInterface extends JFrame {
         }};
         tabela.setFillsViewportHeight(true);
         DefaultTableCellRenderer justificarCentro = new DefaultTableCellRenderer();
-        ((DefaultTableCellRenderer)tabela.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        JTableHeader header = tabela.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 15));
+        header.setOpaque(false);
+        header.setBackground(new Color(225,225,225));
+        ((DefaultTableCellRenderer)header.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
         justificarCentro.setHorizontalAlignment(JLabel.CENTER);
         for(int x=0;x<6;x++) {
             tabela.getColumnModel().getColumn(x).setCellRenderer(justificarCentro);
         }
-        tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
         tabela.setFont(new Font("Arial", Font.PLAIN, 15));
         tabela.setRowHeight(25);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -821,7 +844,7 @@ public class UserInterface extends JFrame {
         posicao.fill = GridBagConstraints.NONE;
     }
 
-    public void carregarOpcoes() {
+    private void carregarOpcoes() {
         File ficheiro = new File("src/data/Opcoes.dat");
         if(ficheiro.exists() && ficheiro.isFile()) {
             try {
@@ -901,7 +924,16 @@ public class UserInterface extends JFrame {
         posicao.gridx = 1;
         posicao.gridy = 4;
         posicao.insets = new Insets(0,0,25,300);
-        opcoes.add(caixaAutoGuardar,posicao);
+        posicao.insets = new Insets(0,0,25,300);
+        opcoes.add(caixaConfirmar,posicao);
+        caixaFullscreen = new JCheckBox("Fullscreen:   ");
+        caixaFullscreen.setHorizontalTextPosition(SwingConstants.LEFT);
+        caixaFullscreen.setSelected(opcoesGuardadas.isFullscreen());
+        caixaFullscreen.addActionListener(premirBotao);
+        posicao.gridx = 1;
+        posicao.gridy = 5;
+        posicao.insets = new Insets(0,0,25,300);
+        opcoes.add(caixaFullscreen,posicao);
         posicao.gridx = 0;
         posicao.gridy = 1;
         posicao.insets = new Insets(0,0,0,0);
