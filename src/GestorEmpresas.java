@@ -206,19 +206,19 @@ public class GestorEmpresas implements Serializable {
                     }
                 }
                 br.close();
-                return "\nO programa procurou um ficheiro de texto e carregou os dados desse ficheiro com sucesso!";
+                return "\nO programa procurou e encontrou um ficheiro de texto, foram carregados os seus dados com sucesso!";
             } catch (FileNotFoundException ex) {
-                return "\nO programa procurou um ficheiro de texto mas ocorreu um erro ao tentar aceder-lhe!";
+                return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro ao tentar aceder-lhe!";
             } catch (IOException ex) {
                 empresas.clear();
-                return "\nO programa procurou um ficheiro de texto mas ocorreu um erro durante a leitura!";
+                return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro durante a leitura!";
             } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException ex) {
                 empresas.clear();
-                return "\nO programa procurou um ficheiro de texto mas ocorreu um erro ao tentar converter a sua informação, é possível que haja dados inválidos!";
+                return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro ao tentar converter a sua informação!";
             }
         }
         else
-            return "\nO programa procurou um ficheiro de texto mas este também não foi encontrado!\nSe for a primeira vez que utiliza o programa, um ficheiro de objetos será criado a primeira vez que guardar!";
+            return "\nO programa procurou um ficheiro de texto mas também este também não foi encontrado!\nSe for a primeira vez que utiliza o programa, um ficheiro de objetos será criado na primeira vez que guardar!";
     }
 
     // create txt file and save empresas

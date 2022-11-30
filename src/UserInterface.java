@@ -56,10 +56,8 @@ public class UserInterface extends JFrame {
         construirBaseDados();
         // criar o painel onde se podem configurar as opções do programa
         construirOpcoes();
-        // corrige o bug na aparência dos popups "JOptionPane" quando são criados em dark
-        // mode, pois fazemos todos os paineis futuramente criados serem brancos, uma vez
-        // que temos a certeza que não serão criados mais paineis para a interface
-        UIManager.put("Panel.background",Color.WHITE); // light mode
+        // fazer todos os popups serem brancos independentemente do tema
+        UIManager.put("Panel.background",Color.WHITE);
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
         // logo o menu depois de estar tudo construído
@@ -375,9 +373,12 @@ public class UserInterface extends JFrame {
         setTitle("StarThrive");
         setSize(720, 720);
         setUndecorated(opcoesGuardadas.isFullscreen());
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLayout(new BorderLayout());
+        setIconImage(new ImageIcon("src/resources/icon.png").getImage());
+        // criar um listener personalizado para chamar a confirmação quando o utilizador tenta fechar, caso a opção esteja ativa
         if(opcoesGuardadas.isConfirmarSair()){
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -388,9 +389,6 @@ public class UserInterface extends JFrame {
         else{
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setLayout(new BorderLayout());
-        setIconImage(new ImageIcon("src/resources/icon.png").getImage());
         // criar cores e modelos personalizados para toda a interface através do UIManager
         int estilo = opcoesGuardadas.getEstilo();
         int tema =  opcoesGuardadas.getTema();
@@ -483,8 +481,11 @@ public class UserInterface extends JFrame {
         String informacao = gestor.carregarDadosObjeto();
         // Se os dados forem carregados de um ficheiro objeto não se mostra a mensagem pois esta é a situação ótima de
         // carregamento dos dados, sendo a que aconteceria mais vezes durante o uso normal do programa iria se tornar irritante
-        if(informacao.compareTo("Os dados foram carregados do ficheiro de objetos com sucesso!") != 0)
+        if(informacao.compareTo("Os dados foram carregados do ficheiro de objetos com sucesso!") != 0) {
+            UIManager.put("Panel.background",Color.WHITE);
             JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.ERROR_MESSAGE);
+            UIManager.put("Panel.background",new Color(33,33,33));
+        }
     }
 
     private void construirMenu() {
@@ -884,7 +885,7 @@ public class UserInterface extends JFrame {
         opcoes = new JPanel();
         opcoes.setLayout(new GridBagLayout());
         JLabel textoEstilo = new JLabel("Estilo:");
-        String[] estilos = {"Clásssico","Nativo do Sistema"};
+        String[] estilos = {"Clássico","Nativo do Sistema"};
         caixaEstilo = new JComboBox<>(estilos);
         caixaEstilo.setSelectedIndex(opcoesGuardadas.getEstilo());
         caixaEstilo.addActionListener(selecElemento);
@@ -925,7 +926,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 4;
         posicao.insets = new Insets(0,0,25,300);
         posicao.insets = new Insets(0,0,25,300);
-        opcoes.add(caixaConfirmar,posicao);
+        opcoes.add(caixaAutoGuardar,posicao);
         caixaFullscreen = new JCheckBox("Fullscreen:   ");
         caixaFullscreen.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaFullscreen.setSelected(opcoesGuardadas.isFullscreen());
