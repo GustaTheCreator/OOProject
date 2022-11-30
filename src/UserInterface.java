@@ -4,7 +4,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
+import javax.swing.event.*;
 import javax.swing.table.*;
 
 
@@ -15,12 +15,15 @@ public class UserInterface extends JFrame {
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
     botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
     private JCheckBox caixaConfirmar,caixaAutoGuardar;
-    private JTextField campoNome, campoDistrito;
+    private JTextField campoNome, campoDistrito, campoFaturacaoMedia;
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema, caixaTipo;
+    private JComboBox<Integer> caixaHorasLat, caixaMinutosLat,caixaSegundosLat, caixaHorasLong, caixaMinutosLong, caixaSegundosLong;
+    private JComboBox<Character> caixaDirecaoLat, caixaDirecaoLong;
     private JTable tabela;
     private DefaultTableModel elementos;
     private InteracoesCaixa selecElemento;
     private InteracoesBotao premirBotao;
+    private InteracoesCampo escreverCampo;
     private boolean alteracoesPorGuardar;
 
     public UserInterface() {
@@ -28,6 +31,8 @@ public class UserInterface extends JFrame {
         premirBotao = new InteracoesBotao();
         // criar o listener para as comboBox
         selecElemento = new InteracoesCaixa();
+        // criar o listener para quando escreve num campo de texto
+        escreverCampo = new InteracoesCampo();
         // criar a variável que guarda as definições de layout para cada componente antes de ser adicionado
         posicao = new GridBagConstraints();
         // criar o gestor que vai funcionar através da GUI e tenta carregar dados a partir dos ficheiros
@@ -49,7 +54,7 @@ public class UserInterface extends JFrame {
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
         // logo o menu depois de estar tudo construído
-        add(menu);
+        add(menu,BorderLayout.CENTER);
     }
 
     private class InteracoesBotao implements ActionListener {
@@ -64,8 +69,6 @@ public class UserInterface extends JFrame {
             }
             if(evento.getSource() == botaoCriar) {
                 mostrarCriar();
-                alteracoesPorGuardar = true;
-                botaoGuardar.setEnabled(true);
             }
             if(evento.getSource() == botaoEditar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -74,9 +77,17 @@ public class UserInterface extends JFrame {
                 }
                 else{
                     mostrarEditar(indexLinha);
-                    alteracoesPorGuardar = true;
-                    botaoGuardar.setEnabled(true);
                 }
+            }
+            if(evento.getSource() == botaoTerminarCriar) {
+
+                alteracoesPorGuardar = true;
+                botaoGuardar.setEnabled(true);
+            }
+            if(evento.getSource() == botaoTerminarEditar) {
+
+                alteracoesPorGuardar = true;
+                botaoGuardar.setEnabled(true);
             }
             if(evento.getSource() == botaoApagar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -146,6 +157,18 @@ public class UserInterface extends JFrame {
         }
     }
 
+    private class InteracoesCampo implements DocumentListener{
+        public void changedUpdate(DocumentEvent e) {
+            botaoTerminarEditar.setEnabled(true);
+        }
+        public void removeUpdate(DocumentEvent e) {
+            botaoTerminarEditar.setEnabled(true);
+        }
+        public void insertUpdate(DocumentEvent e) {
+            botaoTerminarEditar.setEnabled(true);
+        }
+    }
+
     private class InteracoesCaixa implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
@@ -181,6 +204,11 @@ public class UserInterface extends JFrame {
                     JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema selecionado, irá permanecer o atual!",null, JOptionPane.ERROR_MESSAGE);
                 }
             }
+            if(evento.getSource() == caixaTipo || evento.getSource() == caixaHorasLat || evento.getSource() == caixaMinutosLat ||
+            evento.getSource() == caixaMinutosLat || evento.getSource() == caixaDirecaoLat || evento.getSource() == caixaHorasLong ||
+            evento.getSource() == caixaMinutosLong || evento.getSource() == caixaSegundosLong || evento.getSource() == caixaDirecaoLong) {
+                botaoTerminarEditar.setEnabled(true);
+            }
         }
     }
 
@@ -211,11 +239,22 @@ public class UserInterface extends JFrame {
         remove(baseDados);
         criarEditar.remove(botaoTerminarEditar);
         caixaTipo.setSelectedItem(null);
+        campoNome.setText(null);
+        campoDistrito.setText(null);
+        caixaHorasLat.setSelectedItem(null);
+        caixaMinutosLat.setSelectedItem(null);
+        caixaSegundosLat.setSelectedItem(null);
+        caixaDirecaoLat.setSelectedItem(null);
+        caixaHorasLong.setSelectedItem(null);
+        caixaMinutosLong.setSelectedItem(null);
+        caixaSegundosLong.setSelectedItem(null);
+        caixaDirecaoLong.setSelectedItem(null);
+        campoFaturacaoMedia.setText(null);
         recarregarCriarEditar();
         posicao.gridx = 1;
         posicao.gridy = 99; // garantir que o botão fica no fim
         posicao.fill = GridBagConstraints.NONE;
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(botaoTerminarCriar,posicao);
         caixaTipo.setSelectedItem(null);
         add(criarEditar,BorderLayout.CENTER);
@@ -225,13 +264,24 @@ public class UserInterface extends JFrame {
 
     private void mostrarEditar(int indexEmpresa) {
         remove(baseDados);
-        criarEditar.remove(botaoTerminarCriar);
         caixaTipo.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getTipo());
+        campoNome.setText(gestor.getEmpresas().get(indexEmpresa).getNome());
+        campoDistrito.setText(gestor.getEmpresas().get(indexEmpresa).getDistrito());
+        caixaHorasLat.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLatitude().getHoras());
+        caixaMinutosLat.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLatitude().getMinutos());
+        caixaSegundosLat.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLatitude().getSegundos());
+        caixaDirecaoLat.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLatitude().getDirecao());
+        caixaHorasLong.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLongitude().getHoras());
+        caixaMinutosLong.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLongitude().getMinutos());
+        caixaSegundosLong.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLongitude().getSegundos());
+        caixaDirecaoLong.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getLocal().getLongitude().getDirecao());
+        campoFaturacaoMedia.setText(String.valueOf(gestor.getEmpresas().get(indexEmpresa).getFaturacaoMedia()));
         recarregarCriarEditar();
         posicao.gridx = 1;
         posicao.gridy = 99; // garantir que o botão fica no fim
         posicao.fill = GridBagConstraints.NONE;
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.insets = new Insets(0,0,25,0);
+        botaoTerminarEditar.setEnabled(false);
         criarEditar.add(botaoTerminarEditar,posicao);
         add(criarEditar,BorderLayout.CENTER);
         validate();
@@ -243,7 +293,7 @@ public class UserInterface extends JFrame {
         {
             String tipo = caixaTipo.getSelectedItem().toString();
             posicao.fill = GridBagConstraints.NONE;
-            posicao.insets = new Insets(0,0,23,0);
+            posicao.insets = new Insets(0,0,25,0);
             switch(tipo){
                 case "Cafe" -> {
 
@@ -365,17 +415,20 @@ public class UserInterface extends JFrame {
     private void construirMenu() {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
-        JLabel textoTitulo = new JLabel("StarThrive");
-        try{ // tenta aplicar o titulo alternativo com o gif, se não conseguir retorna ao básico
-            textoTitulo = new JLabel("<html>St<img src=" + Objects.requireNonNull(getClass().getResource("resources/star.gif")) + "></FONT>rThrive</html>");
-        } catch (NullPointerException ex) {
-            textoTitulo = new JLabel("StarThrive");
-        }
-        textoTitulo.setFont(new Font("Arial", Font.BOLD, 100));
+        JLabel textoTitulo1 = new JLabel("St");
+        JLabel textoTituloImagem = new JLabel(new ImageIcon("src/resources/star.gif"));
+        JLabel textoTitulo2 = new JLabel("rThrive");
+        textoTitulo1.setFont(new Font("Arial", Font.BOLD, 100));
+        textoTitulo2.setFont(new Font("Arial", Font.BOLD, 100));
         posicao.gridx = 0;
         posicao.gridy = 0;
+        posicao.insets = new Insets(0,0,40,400);
+        menu.add(textoTitulo1, posicao);
+        posicao.insets = new Insets(0,0,70,200);
+        menu.add(textoTituloImagem, posicao);
+        posicao.insets = new Insets(0,230,40,0);
+        menu.add(textoTitulo2, posicao);
         posicao.insets = new Insets(0,0,40,0);
-        menu.add(textoTitulo, posicao);
         botaoBaseDados = new JButton("Base de Dados");
         posicao.gridx = 0;
         posicao.gridy = 1;
@@ -486,6 +539,7 @@ public class UserInterface extends JFrame {
         tabela.setRowHeight(25);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroller = new JScrollPane(tabela);
+        scroller.add(botaoSair);
         posicao.gridx = 1;
         posicao.gridy = 0;
         posicao.fill = GridBagConstraints.BOTH;
@@ -493,6 +547,7 @@ public class UserInterface extends JFrame {
         posicao.weighty = 0;
         posicao.insets = new Insets(0,0,0,0);
         listar.add(scroller,posicao);
+        posicao.fill = GridBagConstraints.NONE;
     }
 
     private void construirFiltrar() {
@@ -524,7 +579,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,42,0);
         filtrar.add(textoFiltrar,posicao);
-        String[] ordem = {"Nome ↓","Nome ↑","Distrito ↓","Distrito ↑","Despesa anual ↓","Despesa anual ↑","Receita anual ↓","Receita anual ↑","Lucro ↓","Lucro ↑","Média de clientes por dia ↓"};        caixaOrdenar = new JComboBox<>(ordem);
+        String[] ordem = {"Nome ▲","Nome ▼","Distrito ▲","Distrito ▼","Despesa anual ▲","Despesa anual ▼","Receita anual ▲","Receita anual ▼","Lucro ▲","Lucro ▼","Média de clientes por dia ▼"};        caixaOrdenar = new JComboBox<>(ordem);
         caixaOrdenar.addActionListener(selecElemento);
         posicao.gridx = 3;
         posicao.gridy = 0;
@@ -558,30 +613,130 @@ public class UserInterface extends JFrame {
         posicao.gridx = 1;
         posicao.gridy = 0;
         posicao.fill = GridBagConstraints.NONE;
-        posicao.insets = new Insets(0,0,23,350);
+        posicao.insets = new Insets(0,0,25,275);
         criarEditar.add(textoTipo,posicao);
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(caixaTipo,posicao);
         JLabel textoNome = new JLabel("Nome:");
         textoNome.setFont(new Font("Arial", Font.BOLD, 15));
         campoNome = new JTextField(14);
+        campoNome.getDocument().addDocumentListener(escreverCampo);
         textoNome.setLabelFor(campoNome);
         posicao.gridx = 1;
         posicao.gridy = 1;
-        posicao.insets = new Insets(0,0,23,350);
+        posicao.insets = new Insets(0,0,25,275);
         criarEditar.add(textoNome,posicao);
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(campoNome,posicao);
         JLabel textoDistrito = new JLabel("Distrito:");
         textoDistrito.setFont(new Font("Arial", Font.BOLD, 15));
         campoDistrito = new JTextField(14);
+        campoDistrito.getDocument().addDocumentListener(escreverCampo);
         textoDistrito.setLabelFor(campoDistrito);
         posicao.gridx = 1;
         posicao.gridy = 2;
-        posicao.insets = new Insets(0,0,23,350);
+        posicao.insets = new Insets(0,0,25,275);
         criarEditar.add(textoDistrito,posicao);
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(campoDistrito,posicao);
+        Integer[] lista0a59 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59};
+        Integer[] lista0a180 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,125,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180};
+        caixaHorasLong = new JComboBox<Integer>(lista0a180);
+        caixaMinutosLong = new JComboBox<Integer>(lista0a59);
+        caixaSegundosLong = new JComboBox<Integer>(lista0a59);
+        Character[] listaDirecoesLong = {'W','E'};
+        caixaDirecaoLong = new JComboBox<Character>(listaDirecoesLong);
+        Integer[] lista0a90 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90};
+        caixaHorasLat = new JComboBox<Integer>(lista0a90);
+        caixaMinutosLat = new JComboBox<Integer>(lista0a59);
+        caixaSegundosLat = new JComboBox<Integer>(lista0a59);
+        Character[] listaDirecoesLat = {'N','S'};
+        caixaDirecaoLat = new JComboBox<Character>(listaDirecoesLat);
+        caixaHorasLong.addActionListener(selecElemento);
+        caixaMinutosLong.addActionListener(selecElemento);
+        caixaSegundosLong.addActionListener(selecElemento);
+        caixaDirecaoLong.addActionListener(selecElemento);
+        caixaHorasLat.addActionListener(selecElemento);
+        caixaMinutosLat.addActionListener(selecElemento);
+        caixaSegundosLat.addActionListener(selecElemento);
+        caixaDirecaoLat.addActionListener(selecElemento);
+        posicao.gridx = 1;
+        posicao.gridy = 3;
+        JLabel textoLocalizacao = new JLabel("Localização:");
+        textoLocalizacao.setFont(new Font("Arial", Font.BOLD, 15));
+        posicao.insets = new Insets(0,0,25,0);
+        criarEditar.add(textoLocalizacao,posicao);
+        posicao.gridx = 1;
+        posicao.gridy = 4;
+        posicao.insets = new Insets(0,0,25,240);
+        criarEditar.add(caixaHorasLong,posicao);
+        JLabel textoHorasLong= new JLabel("°");
+        textoHorasLong.setFont(new Font("Arial", Font.BOLD, 25));
+        textoHorasLong.setLabelFor(caixaHorasLong);
+        posicao.insets = new Insets(0,0,25,170);
+        criarEditar.add(textoHorasLong,posicao);
+        JLabel textoMinutosLong= new JLabel("'");
+        textoMinutosLong.setFont(new Font("Arial", Font.BOLD, 25));
+        textoMinutosLong.setLabelFor(caixaMinutosLong);
+        posicao.insets = new Insets(0,0,25,20);
+        criarEditar.add(textoMinutosLong,posicao);
+        posicao.insets = new Insets(0,0,25,80);
+        criarEditar.add(caixaMinutosLong,posicao);
+        JLabel textoSegundosLong= new JLabel("\"");
+        textoSegundosLong.setFont(new Font("Arial", Font.BOLD, 25));
+        textoSegundosLong.setLabelFor(caixaSegundosLong);
+        posicao.insets = new Insets(0,140,25,0);
+        criarEditar.add(textoSegundosLong,posicao);
+        posicao.insets = new Insets(0,80,25,0);
+        criarEditar.add(caixaSegundosLong,posicao);
+        JLabel textoDirecaoLong= new JLabel("→ Longitude");
+        textoDirecaoLong.setFont(new Font("Arial", Font.BOLD, 15));
+        textoDirecaoLong.setLabelFor(caixaDirecaoLong);
+        posicao.insets = new Insets(0,385,25,0);
+        criarEditar.add(textoDirecaoLong,posicao);
+        posicao.insets = new Insets(0,240,25,0);
+        criarEditar.add(caixaDirecaoLong,posicao);
+        posicao.gridx = 1;
+        posicao.gridy = 5;
+        posicao.insets = new Insets(0,0,25,240);
+        criarEditar.add(caixaHorasLat,posicao);
+        JLabel textoHorasLat = new JLabel("°");
+        textoHorasLat.setFont(new Font("Arial", Font.BOLD, 25));
+        textoHorasLat.setLabelFor(caixaHorasLat);
+        posicao.insets = new Insets(0,0,25,180);
+        criarEditar.add(textoHorasLat,posicao);
+        JLabel textoMinutosLat = new JLabel("'");
+        textoMinutosLat.setFont(new Font("Arial", Font.BOLD, 25));
+        textoMinutosLat.setLabelFor(caixaMinutosLat);
+        posicao.insets = new Insets(0,0,25,20);
+        criarEditar.add(textoMinutosLat,posicao);
+        posicao.insets = new Insets(0,0,25,80);
+        criarEditar.add(caixaMinutosLat,posicao);
+        JLabel textoSegundosLat = new JLabel("\"");
+        textoSegundosLat.setFont(new Font("Arial", Font.BOLD, 25));
+        textoSegundosLat.setLabelFor(caixaSegundosLat);
+        posicao.insets = new Insets(0,140,25,0);
+        criarEditar.add(textoSegundosLat,posicao);
+        posicao.insets = new Insets(0,80,25,0);
+        criarEditar.add(caixaSegundosLat,posicao);
+        JLabel textoDirecaoLat = new JLabel("→ Latitude");
+        textoDirecaoLat.setFont(new Font("Arial", Font.BOLD, 15));
+        textoDirecaoLat.setLabelFor(caixaDirecaoLat);
+        posicao.insets = new Insets(0,365,25,0);
+        criarEditar.add(textoDirecaoLat,posicao);
+        posicao.insets = new Insets(0,240,25,0);
+        criarEditar.add(caixaDirecaoLat,posicao);
+        JLabel textoFaturacaoMedia = new JLabel("Faturação média:");
+        textoFaturacaoMedia.setFont(new Font("Arial", Font.BOLD, 15));
+        campoFaturacaoMedia = new JTextField(14);
+        campoFaturacaoMedia.getDocument().addDocumentListener(escreverCampo);
+        textoFaturacaoMedia.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 6;
+        posicao.insets = new Insets(25,0,25,350);
+        criarEditar.add(textoFaturacaoMedia,posicao);
+        posicao.insets = new Insets(25,0,25,0);
+        criarEditar.add(campoFaturacaoMedia,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,0,0);
@@ -618,12 +773,19 @@ public class UserInterface extends JFrame {
         posicao.gridx = 1;
         posicao.gridy = 1;
         baseDados.add(listar,posicao);
+        posicao.fill = GridBagConstraints.NONE;
     }
 
     private void construirOpcoes()
     {
         opcoes = new JPanel();
         opcoes.setLayout(new GridBagLayout());
+        JLabel textoTituloImagem = new JLabel(new ImageIcon("src/resources/settings.gif"));
+        posicao.gridx = 1;
+        posicao.gridy = 0;
+        posicao.insets = new Insets(0,0,70,300);
+        opcoes.add(textoTituloImagem, posicao);
+        posicao.insets = new Insets(0,0,40,0);
         JLabel textoTema = new JLabel("Tema:");
         textoTema.setFont(new Font("Arial", Font.BOLD, 15));
         String[] temas = {"Original","Nativo do Sistema (Experimental)"};
@@ -631,31 +793,31 @@ public class UserInterface extends JFrame {
         caixaTema.addActionListener(selecElemento);
         textoTema.setLabelFor(caixaTema);
         posicao.gridx = 1;
-        posicao.gridy = 0;
-        posicao.insets = new Insets(0,0,23,350);
-        posicao.fill = GridBagConstraints.NONE;
+        posicao.gridy = 1;
+        posicao.insets = new Insets(0,5,25,350);
+        posicao.fill = GridBagConstraints.BOTH;
         opcoes.add(textoTema,posicao);
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.insets = new Insets(0,70,25,300);
         opcoes.add(caixaTema,posicao);
         caixaConfirmar = new JCheckBox("Confirmar antes de sair:   ");
         caixaConfirmar.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaConfirmar.setSelected(true);
-        caixaConfirmar.setSize(new DimensionUIResource(50, HEIGHT));
+        caixaConfirmar.setSize(new Dimension(50, HEIGHT));
         caixaConfirmar.addActionListener(premirBotao);
         posicao.gridx = 1;
-        posicao.gridy = 1;
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.gridy = 2;
+        posicao.insets = new Insets(0,0,25,0);
         opcoes.add(caixaConfirmar,posicao);
         caixaAutoGuardar = new JCheckBox("Guardar automaticamente depois de criar, editar ou apagar:   ");
         caixaAutoGuardar.setHorizontalTextPosition(SwingConstants.LEFT);
         caixaAutoGuardar.setSelected(false);
         caixaAutoGuardar.addActionListener(premirBotao);
         posicao.gridx = 1;
-        posicao.gridy = 2;
-        posicao.insets = new Insets(0,0,23,0);
+        posicao.gridy = 3;
+        posicao.insets = new Insets(0,0,25,0);
         opcoes.add(caixaAutoGuardar,posicao);
         posicao.gridx = 0;
-        posicao.gridy = 0;
+        posicao.gridy = 1;
         posicao.insets = new Insets(0,0,0,0);
         opcoes.add(voltarOpc,posicao);
     }
