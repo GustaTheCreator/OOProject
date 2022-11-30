@@ -89,6 +89,9 @@ public abstract class Empresa implements Serializable {
                 "Subcategoria: " + subCategoria + "\n\n" +
                 "Categoria: " + categoria + "\n\n" +
                 "Distrito: " + distrito + "\n\n" +
-                "Localização: " + local + "\n\n";
+                "Localização: " + local + "\n\n" +
+                "Receita Anual: " + receitaAnual() + "\n\n" +
+                "Despesa Anual: " + despesaAnual() + "\n\n" +
+                "Lucro: " + lucro() + "\n\n";
     }
 }

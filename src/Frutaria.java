@@ -25,7 +25,6 @@ public class Frutaria extends Mercearia {
     public String toString() {
         return super.toString()+
                 "Faturação média: "+ faturacaoMedia+"\n\n"+
-                "Faturação média anual por produto: "+receitaAnual()+"\n\n"+
                 "Número de produtos: "+this.numProdutos +"\n\n"+
                 "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
     }

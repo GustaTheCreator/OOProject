@@ -3,6 +3,8 @@ package src;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -10,13 +12,14 @@ import javax.swing.table.*;
 
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
+    private Opcoes opcoesGuardadas;
     private GridBagConstraints posicao;
     private JPanel menu, baseDados, opcoes, filtrar, listar,  gerir, criarEditar, voltarBD, voltarOpc, voltarCE;
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
     botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
     private JCheckBox caixaConfirmar,caixaAutoGuardar;
     private JTextField campoNome, campoDistrito, campoFaturacaoMedia;
-    private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaTema, caixaTipo;
+    private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaEstilo, caixaTema, caixaTipo;
     private JComboBox<Integer> caixaHorasLat, caixaMinutosLat,caixaSegundosLat, caixaHorasLong, caixaMinutosLong, caixaSegundosLong;
     private JComboBox<Character> caixaDirecaoLat, caixaDirecaoLong;
     private JTable tabela;
@@ -39,6 +42,8 @@ public class UserInterface extends JFrame {
         gestor = new GestorEmpresas();
         // inicar variavel que verifica se houve alterações aos ficheiros deste o último save
         alteracoesPorGuardar = false;
+        // carregar as opções guardadas da última sessão, se não exisitirem cria as default
+        carregarOpcoes();
         // construir a aparencia da janela
         construirAparencia();
         // utiliza o gestor para carregar os dados e informa do output do carregamento
@@ -51,6 +56,10 @@ public class UserInterface extends JFrame {
         construirBaseDados();
         // criar o painel onde se podem configurar as opções do programa
         construirOpcoes();
+        // corrige o bug na aparência dos popups "JOptionPane" quando são criados em dark
+        // mode, pois fazemos todos os paineis futuramente criados serem brancos, uma vez
+        // que temos a certeza que não serão criados mais paineis para a interface
+        UIManager.put("Panel.background",Color.WHITE); // light mode
         // uma vez que o construtor apenas é chamado quando a frame
         // é criada pela primeira vez sabemos que podemos mostrar
         // logo o menu depois de estar tudo construído
@@ -153,6 +162,12 @@ public class UserInterface extends JFrame {
                     removeWindowListener(getWindowListeners()[0]);
                     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 }
+                opcoesGuardadas.setConfirmarSair(caixaConfirmar.isSelected());
+                guardarOpcoes();
+            }
+            if(evento.getSource() == caixaAutoGuardar) {
+                opcoesGuardadas.setAutoGuardar(caixaAutoGuardar.isSelected());
+                guardarOpcoes();
             }
         }
     }
@@ -188,21 +203,14 @@ public class UserInterface extends JFrame {
                 recarregarCriarEditar();
                 criarEditar.validate();
             }
+            if(evento.getSource() == caixaEstilo) {
+                int estilo = caixaEstilo.getSelectedIndex();
+                mudarEstilo(estilo,false);
+            }
             if(evento.getSource() == caixaTema) {
-                int caixaSelect = caixaTema.getSelectedIndex();
-                try{
-                    if(caixaSelect==0)
-                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                    if(caixaSelect==1)
-                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    personalizarUI();
-                    SwingUtilities.updateComponentTreeUI(menu);
-                    SwingUtilities.updateComponentTreeUI(baseDados);
-                    SwingUtilities.updateComponentTreeUI(opcoes);
-                }
-                catch(Exception e) {
-                    JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema selecionado, irá permanecer o atual!",null, JOptionPane.ERROR_MESSAGE);
-                }
+                int tema = caixaTema.getSelectedIndex();
+                mudarTema(tema,false);
+
             }
             if(evento.getSource() == caixaTipo || evento.getSource() == caixaHorasLat || evento.getSource() == caixaMinutosLat ||
             evento.getSource() == caixaMinutosLat || evento.getSource() == caixaDirecaoLat || evento.getSource() == caixaHorasLong ||
@@ -264,6 +272,7 @@ public class UserInterface extends JFrame {
 
     private void mostrarEditar(int indexEmpresa) {
         remove(baseDados);
+        criarEditar.remove(botaoTerminarCriar);
         caixaTipo.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getTipo());
         campoNome.setText(gestor.getEmpresas().get(indexEmpresa).getNome());
         campoDistrito.setText(gestor.getEmpresas().get(indexEmpresa).getDistrito());
@@ -357,36 +366,82 @@ public class UserInterface extends JFrame {
         // definir o estilo da janela
         setTitle("StarThrive");
         setSize(720, 720);
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possível implementar o tema guardado, será utilizado o default!",null, JOptionPane.ERROR_MESSAGE);
+
+        if(opcoesGuardadas.isConfirmarSair()){
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    sair();
+                }
+            });
+        }
+        else{
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        // cria um listener personalizado para chamar a confirmação quando o utilizador tenta fechar o programa de qualquer forma
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                sair();
-            }
-        });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon("src/resources/icon.png").getImage());
 
         // criar cores e modelos personalizados para toda a interface através do UIManager
+        int estilo = opcoesGuardadas.getEstilo();
+        int tema =  opcoesGuardadas.getTema();
+        mudarEstilo(estilo, true);
+        mudarTema(tema, true);
         personalizarUI();
+    }
+
+    private void mudarEstilo(int estilo, boolean serConstruido) {
+        try {
+            if(estilo == 0)
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            else
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            if(!serConstruido){
+                SwingUtilities.updateComponentTreeUI(UserInterface.this);
+                SwingUtilities.updateComponentTreeUI(menu);
+                SwingUtilities.updateComponentTreeUI(baseDados);
+                SwingUtilities.updateComponentTreeUI(opcoes);
+                SwingUtilities.updateComponentTreeUI(criarEditar);
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException| UnsupportedLookAndFeelException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível implementar o estilo, será utilizado o default!",null, JOptionPane.WARNING_MESSAGE);
+            opcoesGuardadas.setEstilo(0);
+        }
+        opcoesGuardadas.setEstilo(estilo);
+        guardarOpcoes();
+    }
+
+    private void mudarTema(int tema, boolean serConstruido) {
+        if(!serConstruido)
+            JOptionPane.showMessageDialog(null, "As alterações ao tema apenas são visíveis depois de reiniciar o programa!",null, JOptionPane.WARNING_MESSAGE);
+        else {
+            if(tema == 0) {
+                UIManager.put("Panel.background",Color.WHITE); // light mode
+                UIManager.put("Label.foreground",new Color(33,33,33));
+                UIManager.put("CheckBox.background",Color.WHITE);
+                UIManager.put("CheckBox.foreground",new Color(33,33,33));
+            }
+            else {
+                UIManager.put("Panel.background",new Color(33,33,33)); //dark mode
+                UIManager.put("Label.foreground",Color.WHITE);
+                UIManager.put("CheckBox.background",new Color(33,33,33));
+                UIManager.put("CheckBox.foreground",Color.WHITE);
+            }
+        }
+        opcoesGuardadas.setTema(tema);
+        guardarOpcoes();
     }
 
     private void personalizarUI() {
         Color invisivel = new Color(0,0,0,0);
-        UIManager.put("Panel.background",Color.WHITE);
         UIManager.put("Button.focus",invisivel);
         UIManager.put("Button.font",new Font("Arial", Font.BOLD, 15));
+        UIManager.put("Label.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("CheckBox.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("CheckBox.focus",invisivel);
-        UIManager.put("CheckBox.background",Color.WHITE);
         UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("TextField.font",new Font("Arial", Font.BOLD, 15));
         UIManager.put("OptionPane.background",Color.WHITE);
@@ -539,7 +594,6 @@ public class UserInterface extends JFrame {
         tabela.setRowHeight(25);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroller = new JScrollPane(tabela);
-        scroller.add(botaoSair);
         posicao.gridx = 1;
         posicao.gridy = 0;
         posicao.fill = GridBagConstraints.BOTH;
@@ -572,7 +626,6 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,10,40,0);
         JLabel textoFiltrar = new JLabel("Filtrar:");
-        textoFiltrar.setFont(new Font("Arial", Font.BOLD, 15));
 		textoFiltrar.setLabelFor( caixaFiltrar );
         filtrar.add(caixaFiltrar,posicao);
         posicao.gridx = 0;
@@ -585,7 +638,6 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         posicao.insets = new Insets(0,10,40,75);
         JLabel textoOrdenar = new JLabel("Ordenar:");
-        textoOrdenar.setFont(new Font("Arial", Font.BOLD, 15));
 		textoOrdenar.setLabelFor( caixaOrdenar );
         filtrar.add(caixaOrdenar,posicao);
         posicao.gridx = 2;
@@ -605,7 +657,6 @@ public class UserInterface extends JFrame {
         criarEditar = new JPanel();
         criarEditar.setLayout(new GridBagLayout());
         JLabel textoTipo = new JLabel("Tipo:");
-        textoTipo.setFont(new Font("Arial", Font.BOLD, 15));
         String[] tipos = {"Cafe","Pastelaria","Restaurante Fast-Food","Restaurante Local","Frutaria","Minimercado","Hipermercado","Supermercado"};
         caixaTipo = new JComboBox<String>(tipos);
         caixaTipo.addActionListener(selecElemento);
@@ -618,7 +669,6 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(caixaTipo,posicao);
         JLabel textoNome = new JLabel("Nome:");
-        textoNome.setFont(new Font("Arial", Font.BOLD, 15));
         campoNome = new JTextField(14);
         campoNome.getDocument().addDocumentListener(escreverCampo);
         textoNome.setLabelFor(campoNome);
@@ -629,7 +679,6 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(campoNome,posicao);
         JLabel textoDistrito = new JLabel("Distrito:");
-        textoDistrito.setFont(new Font("Arial", Font.BOLD, 15));
         campoDistrito = new JTextField(14);
         campoDistrito.getDocument().addDocumentListener(escreverCampo);
         textoDistrito.setLabelFor(campoDistrito);
@@ -640,14 +689,14 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(campoDistrito,posicao);
         Integer[] lista0a59 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59};
-        Integer[] lista0a180 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,125,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180};
-        caixaHorasLong = new JComboBox<Integer>(lista0a180);
+        Integer[] lista0a179 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,125,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179};
+        caixaHorasLong = new JComboBox<Integer>(lista0a179);
         caixaMinutosLong = new JComboBox<Integer>(lista0a59);
         caixaSegundosLong = new JComboBox<Integer>(lista0a59);
         Character[] listaDirecoesLong = {'W','E'};
         caixaDirecaoLong = new JComboBox<Character>(listaDirecoesLong);
-        Integer[] lista0a90 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90};
-        caixaHorasLat = new JComboBox<Integer>(lista0a90);
+        Integer[] lista0a89 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89};
+        caixaHorasLat = new JComboBox<Integer>(lista0a89);
         caixaMinutosLat = new JComboBox<Integer>(lista0a59);
         caixaSegundosLat = new JComboBox<Integer>(lista0a59);
         Character[] listaDirecoesLat = {'N','S'};
@@ -663,7 +712,6 @@ public class UserInterface extends JFrame {
         posicao.gridx = 1;
         posicao.gridy = 3;
         JLabel textoLocalizacao = new JLabel("Localização:");
-        textoLocalizacao.setFont(new Font("Arial", Font.BOLD, 15));
         posicao.insets = new Insets(0,0,25,0);
         criarEditar.add(textoLocalizacao,posicao);
         posicao.gridx = 1;
@@ -690,7 +738,6 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,80,25,0);
         criarEditar.add(caixaSegundosLong,posicao);
         JLabel textoDirecaoLong= new JLabel("→ Longitude");
-        textoDirecaoLong.setFont(new Font("Arial", Font.BOLD, 15));
         textoDirecaoLong.setLabelFor(caixaDirecaoLong);
         posicao.insets = new Insets(0,385,25,0);
         criarEditar.add(textoDirecaoLong,posicao);
@@ -720,14 +767,12 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(0,80,25,0);
         criarEditar.add(caixaSegundosLat,posicao);
         JLabel textoDirecaoLat = new JLabel("→ Latitude");
-        textoDirecaoLat.setFont(new Font("Arial", Font.BOLD, 15));
         textoDirecaoLat.setLabelFor(caixaDirecaoLat);
         posicao.insets = new Insets(0,365,25,0);
         criarEditar.add(textoDirecaoLat,posicao);
         posicao.insets = new Insets(0,240,25,0);
         criarEditar.add(caixaDirecaoLat,posicao);
         JLabel textoFaturacaoMedia = new JLabel("Faturação média:");
-        textoFaturacaoMedia.setFont(new Font("Arial", Font.BOLD, 15));
         campoFaturacaoMedia = new JTextField(14);
         campoFaturacaoMedia.getDocument().addDocumentListener(escreverCampo);
         textoFaturacaoMedia.setLabelFor(campoDistrito);
@@ -776,45 +821,86 @@ public class UserInterface extends JFrame {
         posicao.fill = GridBagConstraints.NONE;
     }
 
+    public void carregarOpcoes() {
+        File ficheiro = new File("src/data/Opcoes.dat");
+        if(ficheiro.exists() && ficheiro.isFile()) {
+            try {
+                FileInputStream fis = new FileInputStream(ficheiro);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                opcoesGuardadas = (Opcoes)ois.readObject();
+                ois.close();
+                return;
+            } catch (IOException | ClassNotFoundException ex ) {
+                opcoesGuardadas = new Opcoes();
+                return;
+            }
+        }
+        opcoesGuardadas = new Opcoes();
+        return;
+    }
+
+    private void guardarOpcoes() {
+        File ficheiro = new File("src/data/Opcoes.dat");
+        String informacao;
+        try {
+            FileOutputStream fos = new FileOutputStream(ficheiro);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(opcoesGuardadas);
+            oos.close();
+            return; //"As alterações foram guardadas com sucesso!";
+        } catch (FileNotFoundException ex) {
+            informacao = "Não foi possível guardar as mudanças nas opções, ocorreu um erro a criar o ficheiro!";
+        } catch (IOException ex) {
+            informacao = "Não foi possível guardar as mudanças nas opções, ocorreu um erro durante a escrita para o ficheiro!";
+        }
+        JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.ERROR_MESSAGE);
+    }
+
     private void construirOpcoes()
     {
         opcoes = new JPanel();
         opcoes.setLayout(new GridBagLayout());
-        JLabel textoTituloImagem = new JLabel(new ImageIcon("src/resources/settings.gif"));
-        posicao.gridx = 1;
-        posicao.gridy = 0;
-        posicao.insets = new Insets(0,0,70,300);
-        opcoes.add(textoTituloImagem, posicao);
-        posicao.insets = new Insets(0,0,40,0);
-        JLabel textoTema = new JLabel("Tema:");
-        textoTema.setFont(new Font("Arial", Font.BOLD, 15));
-        String[] temas = {"Original","Nativo do Sistema (Experimental)"};
-        caixaTema = new JComboBox<>(temas);
-        caixaTema.addActionListener(selecElemento);
-        textoTema.setLabelFor(caixaTema);
+        JLabel textoEstilo = new JLabel("Estilo:");
+        String[] estilos = {"Clásssico","Nativo do Sistema"};
+        caixaEstilo = new JComboBox<>(estilos);
+        caixaEstilo.setSelectedIndex(opcoesGuardadas.getEstilo());
+        caixaEstilo.addActionListener(selecElemento);
+        textoEstilo.setLabelFor(caixaEstilo);
         posicao.gridx = 1;
         posicao.gridy = 1;
         posicao.insets = new Insets(0,5,25,350);
         posicao.fill = GridBagConstraints.BOTH;
+        opcoes.add(textoEstilo,posicao);
+        posicao.insets = new Insets(0,70,25,300);
+        opcoes.add(caixaEstilo,posicao);
+        JLabel textoTema = new JLabel("Tema:");
+        String[] temas = {"Claro","Escuro"};
+        caixaTema = new JComboBox<>(temas);
+        caixaTema.setSelectedIndex(opcoesGuardadas.getTema());
+        caixaTema.addActionListener(selecElemento);
+        textoTema.setLabelFor(caixaTema);
+        posicao.gridx = 1;
+        posicao.gridy = 2;
+        posicao.insets = new Insets(0,5,25,350);
         opcoes.add(textoTema,posicao);
         posicao.insets = new Insets(0,70,25,300);
         opcoes.add(caixaTema,posicao);
         caixaConfirmar = new JCheckBox("Confirmar antes de sair:   ");
         caixaConfirmar.setHorizontalTextPosition(SwingConstants.LEFT);
-        caixaConfirmar.setSelected(true);
+        caixaConfirmar.setSelected(opcoesGuardadas.isConfirmarSair());
         caixaConfirmar.setSize(new Dimension(50, HEIGHT));
         caixaConfirmar.addActionListener(premirBotao);
         posicao.gridx = 1;
-        posicao.gridy = 2;
-        posicao.insets = new Insets(0,0,25,0);
+        posicao.gridy = 3;
+        posicao.insets = new Insets(0,0,25,300);
         opcoes.add(caixaConfirmar,posicao);
         caixaAutoGuardar = new JCheckBox("Guardar automaticamente depois de criar, editar ou apagar:   ");
         caixaAutoGuardar.setHorizontalTextPosition(SwingConstants.LEFT);
-        caixaAutoGuardar.setSelected(false);
+        caixaAutoGuardar.setSelected(opcoesGuardadas.isAutoGuardar());
         caixaAutoGuardar.addActionListener(premirBotao);
         posicao.gridx = 1;
-        posicao.gridy = 3;
-        posicao.insets = new Insets(0,0,25,0);
+        posicao.gridy = 4;
+        posicao.insets = new Insets(0,0,25,300);
         opcoes.add(caixaAutoGuardar,posicao);
         posicao.gridx = 0;
         posicao.gridy = 1;
