@@ -253,6 +253,7 @@ public class UserInterface extends JFrame {
         remove(baseDados);
         criarEditar.remove(botaoTerminarEditar);
         caixaTipo.setSelectedItem(null);
+        caixaTipo.setEnabled(true);
         campoNome.setText(null);
         campoDistrito.setText(null);
         caixaHorasLat.setSelectedItem(null);
@@ -278,6 +279,7 @@ public class UserInterface extends JFrame {
 
     private void mostrarEditar(int indexEmpresa) {
         remove(baseDados);
+        caixaTipo.setEnabled(false);
         criarEditar.remove(botaoTerminarCriar);
         caixaTipo.setSelectedItem(gestor.getEmpresas().get(indexEmpresa).getTipo());
         campoNome.setText(gestor.getEmpresas().get(indexEmpresa).getNome());
@@ -419,31 +421,39 @@ public class UserInterface extends JFrame {
     }
 
     private void mudarTema(int tema, boolean serConstruido) {
-        if(!serConstruido)
-            JOptionPane.showMessageDialog(null, "As alterações ao tema apenas são visíveis depois de reiniciar o programa!",null, JOptionPane.WARNING_MESSAGE);
-        else {
-            Color cinza = new Color(33,33,33);
-            if(tema == 0) {
-                UIManager.put("Panel.background",Color.WHITE); // light mode
-                UIManager.put("Label.foreground",cinza);
-                UIManager.put("CheckBox.background",Color.WHITE);
-                UIManager.put("CheckBox.foreground",cinza);
-                UIManager.put("Button.background",new Color(225,225,225));
-                UIManager.put("Button.foreground",Color.BLACK);
-            }
-            else {
-                UIManager.put("Panel.background",cinza); //dark mode
-                UIManager.put("Label.foreground",Color.WHITE);
-                UIManager.put("CheckBox.background",cinza);
-                UIManager.put("CheckBox.foreground",Color.WHITE);
-                UIManager.put("Table.background",cinza);
-                UIManager.put("Table.foreground",Color.WHITE);
-                UIManager.put("Button.background",Color.WHITE);
-                UIManager.put("Button.foreground",Color.BLACK);
-            }
-        }
         opcoesGuardadas.setTema(tema);
         guardarOpcoes();
+        Color cinza = new Color(33,33,33);
+        if(tema == 0) {
+            UIManager.put("Panel.background",Color.WHITE); // light mode
+            UIManager.put("Label.foreground",cinza);
+            UIManager.put("CheckBox.background",Color.WHITE);
+            UIManager.put("CheckBox.foreground",cinza);
+            UIManager.put("Button.background",new Color(225,225,225));
+            UIManager.put("Button.foreground",Color.BLACK);
+        }
+        else {
+            UIManager.put("Panel.background",cinza); //dark mode
+            UIManager.put("Label.foreground",Color.WHITE);
+            UIManager.put("CheckBox.background",cinza);
+            UIManager.put("CheckBox.foreground",Color.WHITE);
+            UIManager.put("Table.background",cinza);
+            UIManager.put("Table.foreground",Color.WHITE);
+            UIManager.put("Button.background",Color.WHITE);
+            UIManager.put("Button.foreground",Color.BLACK);
+        }
+        if(!serConstruido)  // reconstrói tudo para aplicar o tema
+        {
+            construirMenu();
+            construirVoltar();
+            construirBaseDados();
+            remove(opcoes);
+            construirOpcoes();
+            add(opcoes,BorderLayout.CENTER);
+            UIManager.put("Panel.background",Color.WHITE);
+            validate();
+            repaint();
+        }
     }
 
     private void personalizarUI() {
@@ -807,7 +817,7 @@ public class UserInterface extends JFrame {
         posicao.insets = new Insets(25,0,25,0);
         criarEditar.add(campoFaturacaoMedia,posicao);
         posicao.gridx = 0;
-        posicao.gridy = 0;
+        posicao.gridy = 5;
         posicao.insets = new Insets(0,0,0,0);
         criarEditar.add(voltarCE,posicao);
         botaoTerminarCriar = new JButton("Criar");
@@ -939,6 +949,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 1;
         posicao.insets = new Insets(0,0,0,0);
         opcoes.add(voltarOpc,posicao);
+        posicao.fill = GridBagConstraints.NONE;
     }
 
     private void sair() {
