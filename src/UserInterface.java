@@ -1142,7 +1142,6 @@ public class UserInterface extends JFrame {
             }
         }
         opcoesGuardadas = new Opcoes();
-        return;
     }
 
     private void guardarOpcoes() {
@@ -1208,7 +1207,6 @@ public class UserInterface extends JFrame {
         caixaAutoGuardar.addActionListener(premirBotao);
         posicao.gridx = 1;
         posicao.gridy = 4;
-        posicao.insets = new Insets(0,0,25,300);
         posicao.insets = new Insets(0,0,25,300);
         caixasOpcoes.add(caixaAutoGuardar,posicao);
         caixaFullscreen = new JCheckBox("Fullscreen:   ");

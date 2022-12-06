@@ -1,8 +1,24 @@
+/**
+ * @author: Diogo Simões e Gustavo Alves
+ *
+ */
 package src;
+/**
+ * Classe Frutaria
+ */
 
 public class Frutaria extends Mercearia {
     private int numProdutos;
 
+    /**
+     * Construtor da classe Frutaria
+     * @param nome
+     * @param local
+     * @param distrito
+     * @param faturacaoMedia
+     * @param custoLimpezaAnual
+     * @param numProdutos
+     */
     public Frutaria(String nome, Localizacao local, String distrito, double faturacaoMedia, double custoLimpezaAnual, int numProdutos) {
         super(nome, local, distrito, faturacaoMedia, custoLimpezaAnual);
         this.tipo = "Frutaria";

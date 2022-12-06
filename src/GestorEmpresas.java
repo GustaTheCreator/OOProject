@@ -126,7 +126,7 @@ public class GestorEmpresas implements Serializable {
                 Collections.reverse(empresas);
             }
             case 10 -> {
-                empresas.sort((atual, proximo) -> Double.compare(atual.getNumMedClientesDiario(), proximo.getNumMedClientesDiario()));
+                empresas.sort(Comparator.comparingDouble(Empresa::getNumMedClientesDiario));
                 Collections.reverse(empresas);
             }
             default -> {}
