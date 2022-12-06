@@ -102,10 +102,10 @@ public class UserInterface extends JFrame {
                         gestor.addPastelaria(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleTres.getText()),Double.parseDouble(campoDoubleDois.getText()),Integer.parseInt(campoIntUm.getText()));
                     }
                     case "Restaurante Fast-Food" -> {
-                        //gestor.addRestFastFood(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()), );
+                        gestor.addRestFastFood(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Integer.parseInt(campoIntUm.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleDois.getText()),Integer.parseInt(campoIntDois.getText()),Integer.parseInt(campoIntTres.getText()),Double.parseDouble(campoDoubleTres.getText()),Double.parseDouble(campoDoubleQuatro.getText()));
                     }
                     case "Restaurante Local" -> {
-                        //gestor.addRestLocal(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()), );
+                        gestor.addRestLocal(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Integer.parseInt(campoIntUm.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleDois.getText()),Integer.parseInt(campoIntDois.getText()),Integer.parseInt(campoIntTres.getText()),Integer.parseInt(campoIntQuatro.getText()),Double.parseDouble(campoDoubleTres.getText()));
                     }
                     case "Frutaria" -> {
                         gestor.addFrutaria(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()), Double.parseDouble(campoDoubleUm.getText()),Integer.parseInt(campoIntUm.getText()));
@@ -124,39 +124,80 @@ public class UserInterface extends JFrame {
                 autoGuardar();
                 recarregarTabela();
                 mostrarBaseDados();
-                // pop up a dizer guardado com sucesso, mensagem diferente se tiver auto guardar
+                if(caixaAutoGuardar.isSelected())
+                    JOptionPane.showMessageDialog(null, "A empresa foi criada com sucesso e guardada automaticamente!",null, JOptionPane.WARNING_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "A empresa foi criada com sucesso, não se esqueça de guardar!",null, JOptionPane.WARNING_MESSAGE);
             }
             if(evento.getSource() == botaoTerminarEditar) {
-                String tipo = caixaTipo.getSelectedItem().toString();
+                Empresa empresa = gestor.getEmpresas().get(tabela.getSelectedRow());
+                String tipo = empresa.getTipo();
                 switch(tipo){
                     case "Cafe" -> {
-
+                        Cafe cafe = (Cafe)empresa;
+                        cafe.setNumEmpMesa(Integer.parseInt(campoIntUm.getText()));
+                        cafe.setSalarioMedAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        cafe.setNumMedClientesDiario(Double.parseDouble(campoDoubleDois.getText()));
+                        cafe.setNumMedCafes(Double.parseDouble(campoDoubleTres.getText()));
                     }
                     case "Pastelaria" -> {
-
+                        Pastelaria pastelaria = (Pastelaria)empresa;
+                        pastelaria.setNumEmpMesa(Integer.parseInt(campoIntUm.getText()));
+                        pastelaria.setSalarioMedAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        pastelaria.setNumMedClientesDiario(Double.parseDouble(campoDoubleDois.getText()));
+                        pastelaria.setNumMedBolos(Double.parseDouble(campoDoubleTres.getText()));
                     }
                     case "Restaurante Fast-Food" -> {
+                        RestFastFood restFastFood = (RestFastFood)empresa;
+                        restFastFood.setNumEmpMesa(Integer.parseInt(campoIntUm.getText()));
+                        restFastFood.setSalarioMedAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        restFastFood.setNumMedClientesDiario(Double.parseDouble(campoDoubleDois.getText()));
+                        restFastFood.setNumDiasFuncAnual(Integer.parseInt(campoIntDois.getText()));
+                        restFastFood.setNumMesasInteriores(Integer.parseInt(campoIntUm.getText()));
 
                     }
                     case "Restaurante Local" -> {
+                        RestLocal restLocal = (RestLocal)empresa;
+                        restLocal.setNumEmpMesa(Integer.parseInt(campoIntUm.getText()));
+                        restLocal.setSalarioMedAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        restLocal.setNumMedClientesDiario(Double.parseDouble(campoDoubleDois.getText()));
+                        restLocal.setNumDiasFuncAnual(Integer.parseInt(campoIntDois.getText()));
+                        restLocal.setNumMesasInteriores(Integer.parseInt(campoIntUm.getText()));
 
                     }
                     case "Frutaria" -> {
+                        Frutaria frutaria = (Frutaria)empresa;
+                        frutaria.setCustoLimpezaAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        frutaria.setNumProdutos(Integer.parseInt(campoIntUm.getText()));
 
                     }
                     case "Minimercado" -> {
+                        Minimercado minimercado = (Minimercado)empresa;
+                        minimercado.setCustoLimpezaAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        minimercado.setAreaCorredores(Double.parseDouble(campoDoubleDois.getText()));
 
                     }
                     case "Supermercado" -> {
+                        Supermercado supermercado = (Supermercado)empresa;
+                        supermercado.setCustoLimpezaAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        supermercado.setAreaCorredores(Double.parseDouble(campoDoubleDois.getText()));
 
                     }
                     case "Hipermercado"-> {
+                        Hipermercado hipermercado = (Hipermercado)empresa;
+                        hipermercado.setCustoLimpezaAnual(Double.parseDouble(campoDoubleUm.getText()));
+                        hipermercado.setAreaCorredores(Double.parseDouble(campoDoubleDois.getText()));
 
                     }
                     default -> {}
                 }
                 autoGuardar();
+                recarregarTabela();
                 mostrarBaseDados();
+                if(caixaAutoGuardar.isSelected())
+                    JOptionPane.showMessageDialog(null, "As alterações à empresa foram aplicadas com sucesso e guardadas automaticamente!",null, JOptionPane.WARNING_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "As alterações à empresa foram aplicadas com sucesso, não se esqueça de guardar!",null, JOptionPane.WARNING_MESSAGE);
             }
             if(evento.getSource() == botaoApagar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -168,6 +209,10 @@ public class UserInterface extends JFrame {
                         gestor.remove(indexLinha);
                         autoGuardar();
                         recarregarTabela();
+                        if(caixaAutoGuardar.isSelected())
+                            JOptionPane.showMessageDialog(null, "A empresa foi apagada com sucesso e a alteração foi guardada automaticamente!",null, JOptionPane.WARNING_MESSAGE);
+                        else
+                            JOptionPane.showMessageDialog(null, "A empresa foi apagada com sucesso, não se esqueça de guardar!",null, JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
@@ -366,50 +411,58 @@ public class UserInterface extends JFrame {
         String tipo = empresa.getTipo();
         switch(tipo){
             case "Cafe" -> {
-                campoIntUm.setText(String.valueOf(((Cafe)empresa).getNumEmpMesa()));
-                campoDoubleUm.setText(String.valueOf(((Cafe)empresa).getSalarioMedAnual()));
-                campoDoubleDois.setText(String.valueOf(((Cafe)empresa).getNumMedClientesDiario()));
-                campoDoubleTres.setText(String.valueOf(((Cafe)empresa).getNumMedCafes()));
+                Cafe cafe = (Cafe)empresa;
+                campoIntUm.setText(String.valueOf(cafe.getNumEmpMesa()));
+                campoDoubleUm.setText(String.valueOf(cafe.getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(cafe.getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(cafe.getNumMedCafes()));
             }
             case "Pastelaria" -> {
-                campoIntUm.setText(String.valueOf(((Pastelaria)empresa).getNumEmpMesa()));
-                campoDoubleUm.setText(String.valueOf(((Pastelaria)empresa).getSalarioMedAnual()));
-                campoDoubleDois.setText(String.valueOf(((Pastelaria)empresa).getNumMedClientesDiario()));
-                campoDoubleTres.setText(String.valueOf(((Pastelaria)empresa).getNumMedBolos()));
+                Pastelaria pastelaria = (Pastelaria)empresa;
+                campoIntUm.setText(String.valueOf(pastelaria.getNumEmpMesa()));
+                campoDoubleUm.setText(String.valueOf(pastelaria.getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(pastelaria.getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(pastelaria.getNumMedBolos()));
             }
             case "Restaurante Fast-Food" -> {
-                campoIntUm.setText(String.valueOf(((RestFastFood)empresa).getNumEmpMesa()));
-                campoIntDois.setText(String.valueOf(((RestFastFood)empresa).getNumDiasFuncAnual()));
-                campoIntTres.setText(String.valueOf(((RestFastFood)empresa).getNumMesasInteriores()));
-                campoDoubleUm.setText(String.valueOf(((RestFastFood)empresa).getSalarioMedAnual()));
-                campoDoubleDois.setText(String.valueOf(((RestFastFood)empresa).getNumMedClientesDiario()));
-                campoDoubleTres.setText(String.valueOf(((RestFastFood)empresa).getNumMedClientesDrive()));
-                campoDoubleQuatro.setText(String.valueOf(((RestFastFood)empresa).getFaturacaoMediaPClienteDrive()));
+                RestFastFood restFastFood = (RestFastFood)empresa;
+                campoIntUm.setText(String.valueOf(restFastFood.getNumEmpMesa()));
+                campoIntDois.setText(String.valueOf(restFastFood.getNumDiasFuncAnual()));
+                campoIntTres.setText(String.valueOf(restFastFood.getNumMesasInteriores()));
+                campoDoubleUm.setText(String.valueOf(restFastFood.getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(restFastFood.getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(restFastFood.getNumMedClientesDrive()));
+                campoDoubleQuatro.setText(String.valueOf(restFastFood.getFaturacaoMediaPClienteDrive()));
             }
             case "Restaurante Local" -> {
-                campoIntUm.setText(String.valueOf(((RestLocal)empresa).getNumEmpMesa()));
-                campoIntDois.setText(String.valueOf(((RestLocal)empresa).getNumDiasFuncAnual()));
-                campoIntTres.setText(String.valueOf(((RestLocal)empresa).getNumMesasInteriores()));
-                campoIntQuatro.setText(String.valueOf(((RestLocal)empresa).getNumMesasInteriores()));
-                campoDoubleUm.setText(String.valueOf(((RestLocal)empresa).getSalarioMedAnual()));
-                campoDoubleDois.setText(String.valueOf(((RestLocal)empresa).getNumMedClientesDiario()));
-                campoDoubleTres.setText(String.valueOf(((RestLocal)empresa).getCustoLiceAnualMesaEsp()));
+                RestLocal restLocal = (RestLocal)empresa;
+                campoIntUm.setText(String.valueOf(restLocal.getNumEmpMesa()));
+                campoIntDois.setText(String.valueOf(restLocal.getNumDiasFuncAnual()));
+                campoIntTres.setText(String.valueOf(restLocal.getNumMesasInteriores()));
+                campoIntQuatro.setText(String.valueOf(restLocal.getNumMesasEsplanadas()));
+                campoDoubleUm.setText(String.valueOf(restLocal.getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(restLocal.getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(restLocal.getCustoLiceAnualMesaEsp()));
             }
             case "Frutaria" -> {
-                campoIntUm.setText(String.valueOf(((Frutaria)empresa).getNumProdutos()));
-                campoDoubleUm.setText(String.valueOf(((Frutaria)empresa).getCustoLimpezaAnual()));
+                Frutaria frutaria = (Frutaria)empresa;
+                campoIntUm.setText(String.valueOf(frutaria.getNumProdutos()));
+                campoDoubleUm.setText(String.valueOf(frutaria.getCustoLimpezaAnual()));
             }
             case "Minimercado" -> {
-                campoDoubleUm.setText(String.valueOf(((Minimercado)empresa).getCustoLimpezaAnual()));
-                campoDoubleDois.setText(String.valueOf(((Minimercado)empresa).getAreaCorredores()));
+                Minimercado minimercado = (Minimercado)empresa;
+                campoDoubleUm.setText(String.valueOf(minimercado.getCustoLimpezaAnual()));
+                campoDoubleDois.setText(String.valueOf(minimercado.getAreaCorredores()));
             }
             case "Supermercado" -> {
-                campoDoubleUm.setText(String.valueOf(((Supermercado)empresa).getCustoLimpezaAnual()));
-                campoDoubleDois.setText(String.valueOf(((Supermercado)empresa).getAreaCorredores()));
+                Supermercado supermercado = (Supermercado)empresa;
+                campoDoubleUm.setText(String.valueOf(supermercado.getCustoLimpezaAnual()));
+                campoDoubleDois.setText(String.valueOf(supermercado.getAreaCorredores()));
             }
             case "Hipermercado"-> {
-                campoDoubleUm.setText(String.valueOf(((Hipermercado)empresa).getCustoLimpezaAnual()));
-                campoDoubleDois.setText(String.valueOf(((Hipermercado)empresa).getAreaCorredores()));
+                Hipermercado hipermercado = (Hipermercado)empresa;
+                campoDoubleUm.setText(String.valueOf(hipermercado.getCustoLimpezaAnual()));
+                campoDoubleDois.setText(String.valueOf(hipermercado.getAreaCorredores()));
             }
             default -> {}
         }

@@ -46,12 +46,12 @@ public class GestorEmpresas implements Serializable {
     }
 
     public void addSuperMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
-        Minimercado empresa = new Minimercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
+        Supermercado empresa = new Supermercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
     public void addHiperMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
-        Minimercado empresa = new Minimercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
+        Hipermercado empresa = new Hipermercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
