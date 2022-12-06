@@ -15,14 +15,14 @@ public class UserInterface extends JFrame {
     private Opcoes opcoesGuardadas;
     private GridBagConstraints posicao;
     private JPanel menu, baseDados, opcoes, caixasOpcoes, filtrar, listar,  gerir, criarEditar, caixasDados, voltarBD,
-    voltarOpc, voltarCE;
+                    voltarOpc, voltarCE;
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
-    botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
+                    botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
     private JCheckBox caixaConfirmar,caixaAutoGuardar, caixaFullscreen;
     private JTextField campoNome, campoDistrito, campoFaturacaoMedia, campoIntUm, campoIntDois, campoIntTres, campoIntQuatro,
-    campoDoubleUm, campoDoubleDois, campoDoubleTres, campoDoubleQuatro;
+                        campoDoubleUm, campoDoubleDois, campoDoubleTres, campoDoubleQuatro;
     private JLabel textoIntUm, textoIntDois, textoIntTres, textoIntQuatro, textoDoubleUm, textoDoubleDois,
-    textoDoubleTres, textoDoubleQuatro;
+                    textoDoubleTres, textoDoubleQuatro;
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaEstilo, caixaTema, caixaTipo;
     private JComboBox<Integer> caixaHorasLat, caixaMinutosLat,caixaSegundosLat, caixaHorasLong, caixaMinutosLong, caixaSegundosLong;
     private JComboBox<Character> caixaDirecaoLat, caixaDirecaoLong;
@@ -91,16 +91,73 @@ public class UserInterface extends JFrame {
                 }
             }
             if(evento.getSource() == botaoTerminarCriar) {
-
-                alteracoesPorGuardar = true;
-                botaoGuardar.setEnabled(true);
-                botaoGuardar.setToolTipText(null);
+                String tipo = caixaTipo.getSelectedItem().toString();
+                Coordenada latitude = new Coordenada(caixaHorasLat.getSelectedIndex(),caixaMinutosLat.getSelectedIndex(),caixaSegundosLat.getSelectedIndex(),caixaDirecaoLat.getSelectedItem().toString().charAt(0));
+                Coordenada longitude = new Coordenada(caixaHorasLong.getSelectedIndex(),caixaMinutosLong.getSelectedIndex(),caixaSegundosLong.getSelectedIndex(),caixaDirecaoLong.getSelectedItem().toString().charAt(0));
+                Localizacao local = new Localizacao(latitude,longitude);
+                switch(tipo){
+                    case "Cafe" -> {
+                        gestor.addCafe(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleTres.getText()),Double.parseDouble(campoDoubleDois.getText()),Integer.parseInt(campoIntUm.getText()));
+                    }
+                    case "Pastelaria" -> {
+                        //gestor.addPastelaria(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    case "Restaurante Fast-Food" -> {
+                        //gestor.addRestFastFood(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    case "Restaurante Local" -> {
+                        //gestor.addRestLocal(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    case "Frutaria" -> {
+                        //gestor.addFrutaria(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    case "Minimercado" -> {
+                        //gestor.addMiniMercado(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    case "Supermercado" -> {
+                        //7gestor.addSuperMercado(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    case "Hipermercado"-> {
+                        //gestor.addHiperMercado(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                    }
+                    default -> {}
+                }
+                autoGuardar();
+                recarregarTabela();
+                mostrarBaseDados();
+                // pop up a dizer guardado com sucesso, mensagem diferente se tiver auto guardar
             }
             if(evento.getSource() == botaoTerminarEditar) {
+                String tipo = caixaTipo.getSelectedItem().toString();
+                switch(tipo){
+                    case "Cafe" -> {
 
-                alteracoesPorGuardar = true;
-                botaoGuardar.setEnabled(true);
-                botaoGuardar.setToolTipText(null);
+                    }
+                    case "Pastelaria" -> {
+
+                    }
+                    case "Restaurante Fast-Food" -> {
+
+                    }
+                    case "Restaurante Local" -> {
+
+                    }
+                    case "Frutaria" -> {
+
+                    }
+                    case "Minimercado" -> {
+
+                    }
+                    case "Supermercado" -> {
+
+                    }
+                    case "Hipermercado"-> {
+
+                    }
+                    default -> {}
+                }
+                autoGuardar();
+                mostrarBaseDados();
             }
             if(evento.getSource() == botaoApagar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -110,16 +167,8 @@ public class UserInterface extends JFrame {
                 else{
                     if(JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende apagar a empresa selecionada?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         gestor.remove(indexLinha);
+                        autoGuardar();
                         recarregarTabela();
-                        if(caixaAutoGuardar.isSelected()) {
-                            gestor.guardarDados();
-                        }
-                        else
-                        {
-                            alteracoesPorGuardar = true;
-                            botaoGuardar.setEnabled(true);
-                            botaoGuardar.setToolTipText(null);
-                        }
                     }
                 }
             }
@@ -189,15 +238,21 @@ public class UserInterface extends JFrame {
     private class InteracoesCampo implements DocumentListener{
         public void changedUpdate(DocumentEvent evento) {}
         public void removeUpdate(DocumentEvent evento) {
-            if(verificaCaixas() && verificaCampos()) {
+            if(verificaCampos(caixaTipo.getSelectedItem().toString()) == 0) {
                 botaoTerminarEditar.setEnabled(true);
                 botaoTerminarCriar.setEnabled(true);
+            } else {
+                botaoTerminarEditar.setEnabled(false);
+                botaoTerminarCriar.setEnabled(false);
             }
         }
         public void insertUpdate(DocumentEvent evento) {
-            if(verificaCaixas() && verificaCampos()) {
+            if(verificaCampos(caixaTipo.getSelectedItem().toString()) == 0) {
                 botaoTerminarEditar.setEnabled(true);
                 botaoTerminarCriar.setEnabled(true);
+            } else {
+                botaoTerminarEditar.setEnabled(false);
+                botaoTerminarCriar.setEnabled(false);
             }
         }
     }
@@ -227,15 +282,11 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == caixaTema) {
                 int tema = caixaTema.getSelectedIndex();
                 mudarTema(tema,false);
-
             }
             if(evento.getSource() == caixaTipo || evento.getSource() == caixaHorasLat || evento.getSource() == caixaMinutosLat ||
             evento.getSource() == caixaMinutosLat || evento.getSource() == caixaDirecaoLat || evento.getSource() == caixaHorasLong ||
             evento.getSource() == caixaMinutosLong || evento.getSource() == caixaSegundosLong || evento.getSource() == caixaDirecaoLong) {
-                if(verificaCaixas() && verificaCampos()) {
-                    botaoTerminarEditar.setEnabled(true);
-                    botaoTerminarCriar.setEnabled(true);
-                }
+                botaoTerminarEditar.setEnabled(true);
             }
         }
     }
@@ -268,30 +319,29 @@ public class UserInterface extends JFrame {
         caixasDados.remove(botaoTerminarEditar);
         caixaTipo.setSelectedIndex(0);
         caixaTipo.setEnabled(true);
-        campoNome.setText(null);
-        campoDistrito.setText(null);
-        campoIntUm.setText(null);
-        campoIntDois.setText(null);
-        campoIntTres.setText(null);
-        campoIntQuatro.setText(null);
-        campoDoubleUm.setText(null);
-        campoDoubleDois.setText(null);
-        campoDoubleTres.setText(null);
-        campoDoubleQuatro.setText(null);
-        caixaHorasLat.setSelectedItem(null);
-        caixaMinutosLat.setSelectedItem(null);
-        caixaSegundosLat.setSelectedItem(null);
-        caixaDirecaoLat.setSelectedItem(null);
-        caixaHorasLong.setSelectedItem(null);
-        caixaMinutosLong.setSelectedItem(null);
-        caixaSegundosLong.setSelectedItem(null);
-        caixaDirecaoLong.setSelectedItem(null);
-        campoFaturacaoMedia.setText(null);
+        campoNome.setText("A minha empresa");
+        campoDistrito.setText("O meu distrito");
+        campoIntUm.setText("1");
+        campoIntDois.setText("1");
+        campoIntTres.setText("1");
+        campoIntQuatro.setText("1");
+        campoDoubleUm.setText("1");
+        campoDoubleDois.setText("1");
+        campoDoubleTres.setText("1");
+        campoDoubleQuatro.setText("1");
+        caixaHorasLat.setSelectedIndex(0);
+        caixaMinutosLat.setSelectedIndex(0);
+        caixaSegundosLat.setSelectedIndex(0);
+        caixaDirecaoLat.setSelectedIndex(0);
+        caixaHorasLong.setSelectedIndex(0);
+        caixaMinutosLong.setSelectedIndex(0);
+        caixaSegundosLong.setSelectedIndex(0);
+        caixaDirecaoLong.setSelectedIndex(0);
+        campoFaturacaoMedia.setText("1");
         recarregarCriarEditar();
         posicao.gridx = 1;
         posicao.gridy = 99; // garantir que o botão fica no fim
         posicao.insets = new Insets(0,0,25,0);
-        botaoTerminarCriar.setEnabled(false);
         caixasDados.add(botaoTerminarCriar,posicao);
         remove(baseDados);
         add(criarEditar,BorderLayout.CENTER);
@@ -301,7 +351,6 @@ public class UserInterface extends JFrame {
 
     private void mostrarEditar(int indexEmpresa) {
         Empresa empresa = gestor.getEmpresas().get(indexEmpresa);
-        caixaTipo.setEnabled(false);
         caixasDados.remove(botaoTerminarCriar);
         caixaTipo.setSelectedItem(empresa.getTipo());
         campoNome.setText(empresa.getNome());
@@ -317,28 +366,53 @@ public class UserInterface extends JFrame {
         campoFaturacaoMedia.setText(String.valueOf(empresa.getFaturacaoMedia()));
         String tipo = empresa.getTipo();
         switch(tipo){
-            case "Cafe":
+            case "Cafe" -> {
                 campoIntUm.setText(String.valueOf(((Cafe)empresa).getNumEmpMesa()));
                 campoDoubleUm.setText(String.valueOf(((Cafe)empresa).getSalarioMedAnual()));
                 campoDoubleDois.setText(String.valueOf(((Cafe)empresa).getNumMedClientesDiario()));
                 campoDoubleTres.setText(String.valueOf(((Cafe)empresa).getNumMedCafes()));
-            break;
-            case "Pastelaria":
-            break;
-            case "Restaurante Fast-Food":
-            break;
-            case "Restaurante Local":
-            break;
-            case "Frutaria":
-
-            break;
-            case "Minimercado":
-            case "Supermercado":
-            case "Hipermercado":
-
-
-            break;
-            default: break;
+            }
+            case "Pastelaria" -> {
+                campoIntUm.setText(String.valueOf(((Pastelaria)empresa).getNumEmpMesa()));
+                campoDoubleUm.setText(String.valueOf(((Pastelaria)empresa).getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(((Pastelaria)empresa).getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(((Pastelaria)empresa).getNumMedBolos()));
+            }
+            case "Restaurante Fast-Food" -> {
+                campoIntUm.setText(String.valueOf(((RestFastFood)empresa).getNumEmpMesa()));
+                campoIntDois.setText(String.valueOf(((RestFastFood)empresa).getNumDiasFuncAnual()));
+                campoIntTres.setText(String.valueOf(((RestFastFood)empresa).getNumMesasInteriores()));
+                campoDoubleUm.setText(String.valueOf(((RestFastFood)empresa).getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(((RestFastFood)empresa).getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(((RestFastFood)empresa).getNumMedClientesDrive()));
+                campoDoubleQuatro.setText(String.valueOf(((RestFastFood)empresa).getFaturacaoMediaPClienteDrive()));
+            }
+            case "Restaurante Local" -> {
+                campoIntUm.setText(String.valueOf(((RestLocal)empresa).getNumEmpMesa()));
+                campoIntDois.setText(String.valueOf(((RestLocal)empresa).getNumDiasFuncAnual()));
+                campoIntTres.setText(String.valueOf(((RestLocal)empresa).getNumMesasInteriores()));
+                campoIntQuatro.setText(String.valueOf(((RestLocal)empresa).getNumMesasInteriores()));
+                campoDoubleUm.setText(String.valueOf(((RestLocal)empresa).getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(((RestLocal)empresa).getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(((RestLocal)empresa).getCustoLiceAnualMesaEsp()));
+            }
+            case "Frutaria" -> {
+                campoIntUm.setText(String.valueOf(((Frutaria)empresa).getNumProdutos()));
+                campoDoubleUm.setText(String.valueOf(((Frutaria)empresa).getCustoLimpezaAnual()));
+            }
+            case "Minimercado" -> {
+                campoDoubleUm.setText(String.valueOf(((Minimercado)empresa).getCustoLimpezaAnual()));
+                campoDoubleDois.setText(String.valueOf(((Minimercado)empresa).getAreaCorredores()));
+            }
+            case "Supermercado" -> {
+                campoDoubleUm.setText(String.valueOf(((Supermercado)empresa).getCustoLimpezaAnual()));
+                campoDoubleDois.setText(String.valueOf(((Supermercado)empresa).getAreaCorredores()));
+            }
+            case "Hipermercado"-> {
+                campoDoubleUm.setText(String.valueOf(((Hipermercado)empresa).getCustoLimpezaAnual()));
+                campoDoubleDois.setText(String.valueOf(((Hipermercado)empresa).getAreaCorredores()));
+            }
+            default -> {}
         }
         recarregarCriarEditar();
         posicao.gridx = 1;
@@ -354,8 +428,6 @@ public class UserInterface extends JFrame {
 
 
     private void recarregarCriarEditar() {
-        verificaCampos();
-        verificaCaixas();
         campoDoubleUm.setVisible(false);
         campoDoubleDois.setVisible(false);
         campoDoubleTres.setVisible(false);
@@ -363,6 +435,7 @@ public class UserInterface extends JFrame {
         campoIntUm.setVisible(false);
         campoIntDois.setVisible(false);
         campoIntTres.setVisible(false);
+        campoIntQuatro.setVisible(false);
         textoIntUm.setVisible(false);
         textoIntDois.setVisible(false);
         textoIntTres.setVisible(false);
@@ -403,20 +476,16 @@ public class UserInterface extends JFrame {
 
             break;
             case "Restaurante Fast-Food":
-            break;
-            case "Restaurante Local":
                 textoIntUm.setText("Número de empregados de mesa:");
                 textoIntDois.setText("Número de dias de funcionamento anual:");
                 textoIntTres.setText("Número de mesas interiores:");
-                textoIntQuatro.setText("Número de mesas de esplanada:");
                 textoDoubleUm.setText("Salário médio anual:");
                 textoDoubleDois.setText("Número de clientes médio diário:");
-                textoDoubleTres.setText("Número médio de bolos:");
-                textoDoubleQuatro.setText("Número médio de bolos:");
+                textoDoubleTres.setText("Número de clientes médio drive:");
+                textoDoubleQuatro.setText("Faturação média por cliente drive:");
                 campoIntUm.setVisible(true);
                 campoIntDois.setVisible(true);
                 campoIntTres.setVisible(true);
-                campoIntQuatro.setVisible(true);
                 campoDoubleUm.setVisible(true);
                 campoDoubleDois.setVisible(true);
                 campoDoubleTres.setVisible(true);
@@ -425,6 +494,28 @@ public class UserInterface extends JFrame {
                 textoDoubleDois.setVisible(true);
                 textoDoubleTres.setVisible(true);
                 textoDoubleQuatro.setVisible(true);
+                textoIntUm.setVisible(true);
+                textoIntDois.setVisible(true);
+                textoIntTres.setVisible(true);
+            break;
+            case "Restaurante Local":
+                textoIntUm.setText("Número de empregados de mesa:");
+                textoIntDois.setText("Número de dias de funcionamento anual:");
+                textoIntTres.setText("                      Número de mesas interiores:");
+                textoIntQuatro.setText("                Número de mesas de esplanada:");
+                textoDoubleUm.setText("Salário médio anual:");
+                textoDoubleDois.setText("Número de clientes médio diário:");
+                textoDoubleTres.setText("Custo da licensa anual de esplanada:");
+                campoIntUm.setVisible(true);
+                campoIntDois.setVisible(true);
+                campoIntTres.setVisible(true);
+                campoIntQuatro.setVisible(true);
+                campoDoubleUm.setVisible(true);
+                campoDoubleDois.setVisible(true);
+                campoDoubleTres.setVisible(true);
+                textoDoubleUm.setVisible(true);
+                textoDoubleDois.setVisible(true);
+                textoDoubleTres.setVisible(true);
                 textoIntUm.setVisible(true);
                 textoIntDois.setVisible(true);
                 textoIntTres.setVisible(true);
@@ -595,6 +686,18 @@ public class UserInterface extends JFrame {
         UIManager.put("Table.selectionForeground",Color.BLACK);
         UIManager.put("Table.focusCellBackground",azul);
         UIManager.put("Table.focusCellForeground",Color.BLACK);
+    }
+
+    private void autoGuardar() {
+        if(caixaAutoGuardar.isSelected()) {
+            gestor.guardarDados();
+        }
+        else
+        {
+            alteracoesPorGuardar = true;
+            botaoGuardar.setEnabled(true);
+            botaoGuardar.setToolTipText(null);
+        }
     }
 
     private void carregarDados() {
@@ -954,7 +1057,7 @@ public class UserInterface extends JFrame {
         textoDoubleTres.setLabelFor(campoDistrito);
         posicao.gridx = 1;
         posicao.gridy = 9;
-        posicao.insets = new Insets(0,0,20,400);
+        posicao.insets = new Insets(0,0,20,485);
         caixasDados.add(textoDoubleTres,posicao);
         posicao.insets = new Insets(0,0,20,0);
         caixasDados.add(campoDoubleTres,posicao);
@@ -1023,79 +1126,82 @@ public class UserInterface extends JFrame {
         botaoTerminarEditar.addActionListener(premirBotao);
     }
 
-    private boolean verificaCampoString(JTextField campo){
+    private int verificaCampoString(JTextField campo){
         if(campo.getText().isEmpty()){
             campo.setToolTipText("Este campo não pode ficar vazio!");
             campo.setBackground(new Color(255,114,111));
-            return true;
+            return 1;
         } else {
             campo.setBackground(Color.WHITE);
             campo.setToolTipText(null);
-            return false;
+            return 0;
         }
     }
 
-    private boolean verificaCampoDouble(JTextField campo){
+    private int verificaCampoDouble(JTextField campo){
         try{
-            Double.parseDouble(campo.getText());
-            campo.setBackground(Color.WHITE);
-            campo.setToolTipText(null);
-            return true;
-        } catch (NumberFormatException ex) {
-            campo.setToolTipText("Este campo apenas aceita valores númericos!");
+            double valor = Double.parseDouble(campo.getText());
+            if(valor >= 0) {
+                campo.setBackground(Color.WHITE);
+                campo.setToolTipText(null);
+                return 0;
+            }
+            campo.setToolTipText("Este campo apenas aceita valores númericos iguais ou superiores a zero!");
             campo.setBackground(new Color(255,114,111));
-            return false;
+            return 1;
+        } catch (NumberFormatException ex) {
+            campo.setToolTipText("Este campo apenas aceita valores númericos iguais ou superiores a zero!");
+            campo.setBackground(new Color(255,114,111));
+            return 1;
         }
     }
 
-    private boolean verificaCampoInt(JTextField campo){
+    private int verificaCampoInt(JTextField campo){
         try{
-            Integer.parseInt(campo.getText());
-            campo.setBackground(Color.WHITE);
-            campo.setToolTipText(null);
-            return true;
-        } catch (NumberFormatException ex) {
-            campo.setToolTipText("Este campo apenas aceita valores númericos inteiros!");
+            int valor = Integer.parseInt(campo.getText());
+            if(valor >= 0) {
+                campo.setBackground(Color.WHITE);
+                campo.setToolTipText(null);
+                return 0;
+            }
+            campo.setToolTipText("Este campo apenas aceita valores númericos inteiros iguais ou superiores a zero!");
             campo.setBackground(new Color(255,114,111));
-            return false;
+            return 1;
+        } catch (NumberFormatException ex) {
+            campo.setToolTipText("Este campo apenas aceita valores númericos inteiros iguais ou superiores a zero!");
+            campo.setBackground(new Color(255,114,111));
+            return 1;
         }
     }
 
-    private boolean verificaCampos(){
-        return verificaCampoString(campoNome) && verificaCampoString(campoDistrito) && verificaCampoDouble(campoFaturacaoMedia) &&
-        verificaCampoDouble(campoDoubleUm) && verificaCampoDouble(campoDoubleDois) && verificaCampoDouble(campoDoubleTres) &&
-        verificaCampoDouble(campoDoubleQuatro) && verificaCampoInt(campoIntUm) && verificaCampoInt(campoIntDois) &&
-        verificaCampoInt(campoIntTres) && verificaCampoInt(campoIntQuatro);
-    }
+    private int verificaCampos(String tipoSelecionado){
+        switch (tipoSelecionado) {
+            case "Cafe":
+            case "Pastelaria":
+                return verificaCampoDouble(campoFaturacaoMedia) + verificaCampoString(campoNome) + verificaCampoString(campoDistrito) +  verificaCampoDouble(campoDoubleUm) + verificaCampoDouble(campoDoubleDois) + verificaCampoDouble(campoDoubleTres) +
+                verificaCampoInt(campoIntUm);
 
-    private boolean verificaCaixaChar(JComboBox<Character> caixa) {
-        if (caixa.getSelectedIndex() == -1) {
-            caixa.setBackground(new Color(255,114,111));
-            caixa.setToolTipText("Este campo não pode ficar vazio!");
-            return false;
-        } else {
-            caixa.setBackground(Color.WHITE);
-            caixa.setToolTipText(null);
-            return true;
+            case "Restaurante Fast-Food":
+                return verificaCampoDouble(campoFaturacaoMedia) + verificaCampoString(campoNome) + verificaCampoString(campoDistrito) +  verificaCampoDouble(campoDoubleUm) + verificaCampoDouble(campoDoubleDois) + verificaCampoDouble(campoDoubleTres) +
+                verificaCampoDouble(campoDoubleQuatro) + verificaCampoInt(campoIntUm) + verificaCampoInt(campoIntDois) +
+                verificaCampoInt(campoIntTres) + verificaCampoInt(campoIntQuatro);
+
+            case "Restaurante Local":
+                return verificaCampoDouble(campoFaturacaoMedia) + verificaCampoString(campoNome) + verificaCampoString(campoDistrito) +  verificaCampoDouble(campoDoubleUm) + verificaCampoDouble(campoDoubleDois) + verificaCampoDouble(campoDoubleTres) +
+                verificaCampoInt(campoIntUm) + verificaCampoInt(campoIntDois) + verificaCampoInt(campoIntTres) +
+                verificaCampoInt(campoIntQuatro);
+
+            case "Frutaria":
+                return verificaCampoDouble(campoFaturacaoMedia) + verificaCampoString(campoNome) + verificaCampoString(campoDistrito) +  verificaCampoDouble(campoDoubleUm) + verificaCampoInt(campoIntUm);
+
+            case "Minimercado":
+            case "Supermercado":
+            case "Hipermercado":
+                return verificaCampoDouble(campoFaturacaoMedia) + verificaCampoString(campoNome) + verificaCampoString(campoDistrito) +  verificaCampoDouble(campoDoubleUm) + verificaCampoDouble(campoDoubleDois);
+
+            default:
+                return 0;
         }
-    }
-
-    private boolean verificaCaixaInt(JComboBox<Integer> caixa) {
-        if (caixa.getSelectedIndex() == -1) {
-            caixa.setBackground(new Color(255,114,111));
-            caixa.setToolTipText("Este campo não pode ficar vazio!");
-            return false;
-        } else {
-            caixa.setBackground(Color.WHITE);
-            caixa.setToolTipText(null);
-            return true;
-        }
-    }
-
-    private boolean verificaCaixas() {
-        return verificaCaixaInt(caixaHorasLat) && verificaCaixaInt(caixaHorasLong) && verificaCaixaInt(caixaMinutosLat) &&
-        verificaCaixaInt(caixaMinutosLong) && verificaCaixaInt(caixaSegundosLat) && verificaCaixaInt(caixaSegundosLong) &&
-        verificaCaixaChar(caixaDirecaoLong) && verificaCaixaChar(caixaDirecaoLat);
     }
 
     private void construirBaseDados() {

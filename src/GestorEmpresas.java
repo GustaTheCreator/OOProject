@@ -14,82 +14,49 @@ public class GestorEmpresas implements Serializable {
         return empresas;
     }
 
-    public void addCafe(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,
-                        int minutosLong, int segundosLong, char direcaoLong, String distrito, double mediaAnual,
-                        double salarioMedAnual, double numMedCafes,double numMedClientesDia, int numEmpMesa)
-    {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        Cafe empresa = new Cafe(nome, local, distrito,mediaAnual,numEmpMesa,salarioMedAnual,numMedClientesDia,numMedCafes);
+    public void addCafe(String nome, Localizacao local, String distrito, double fatMediaAnual,
+                        double salarioMedAnual, double numMedCafes,double numMedClientesDia, int numEmpMesa) {
+        Cafe empresa = new Cafe(nome, local, distrito,fatMediaAnual,numEmpMesa,salarioMedAnual,numMedClientesDia,numMedCafes);
         this.empresas.add(empresa);
     }
 
-    public void addPastelaria(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong,
-                              int minutosLong, int segundosLong, char direcaoLong, String distrito, double mediaAnual,
+    public void addPastelaria(String nome, Localizacao local, String distrito, double fatMediaAnual,
                               double salarioMedAnual, int numProdutos,double numMedClientesDia, int numEmpMesa) {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        Pastelaria empresa = new Pastelaria(nome, local, distrito, mediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDia, numProdutos);
+        Pastelaria empresa = new Pastelaria(nome, local, distrito, fatMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDia, numProdutos);
         this.empresas.add(empresa);
     }
 
-    public void addRestFastFood(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong, int minutosLong,
-                                int segundosLong, char direcaoLong, String distrito, double mediaAnual,int numEmpMesa, double salarioMedAnual,
+    public void addRestFastFood(String nome, Localizacao local, String distrito, double fatMediaAnual,int numEmpMesa, double salarioMedAnual,
                                 double numMedClientesDia,int numDiasFunc, int numMesasInteriores, double numMedClietesDrive,double faturacaoMediaDrive ) {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        RestFastFood empresa = new RestFastFood(nome, local, distrito, mediaAnual,numEmpMesa,salarioMedAnual, numMedClientesDia, numDiasFunc,
+        RestFastFood empresa = new RestFastFood(nome, local, distrito, fatMediaAnual,numEmpMesa,salarioMedAnual, numMedClientesDia, numDiasFunc,
                                 numMesasInteriores,numMedClietesDrive,faturacaoMediaDrive);
         this.empresas.add(empresa);
     }
 
-    public void addRestLocal(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong, int minutosLong,
-                             int segundosLong, char direcaoLong, String distrito, double mediaAnual,int numEmpMesa, double salarioMedAnual,
+    public void addRestLocal(String nome, Localizacao local, String distrito, double fatMediaAnual,int numEmpMesa, double salarioMedAnual,
                              double numMedClientesDia,int numDiasFunc, int numMesasInteriores, int numMesasEsplanada,double custoLicencaAnoPMesasEsp ){
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        RestLocal empresa = new RestLocal(nome, local, distrito, mediaAnual,numEmpMesa,salarioMedAnual, numMedClientesDia, numDiasFunc,
+        RestLocal empresa = new RestLocal(nome, local, distrito, fatMediaAnual,numEmpMesa,salarioMedAnual, numMedClientesDia, numDiasFunc,
                                 numMesasInteriores,numMesasEsplanada,custoLicencaAnoPMesasEsp);
         this.empresas.add(empresa);
     }
 
-    public void addMiniMercado(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong, int minutosLong,
-                               int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoLimpezaAno, double areaCorredores) {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        Minimercado empresa = new Minimercado(nome, local, distrito, mediaAnual, custoLimpezaAno, areaCorredores);
+    public void addMiniMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
+        Minimercado empresa = new Minimercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
-    public void addSuperMercado(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong, int minutosLong,
-                                int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoLimpezaAno, double areaCorredores) {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        Minimercado empresa = new Minimercado(nome, local, distrito, mediaAnual, custoLimpezaAno, areaCorredores);
+    public void addSuperMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
+        Minimercado empresa = new Minimercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
-    public void addHiperMercado(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong, int minutosLong,
-                                int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoLimpezaAno, double areaCorredores) {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        Minimercado empresa = new Minimercado(nome, local, distrito, mediaAnual, custoLimpezaAno, areaCorredores);
+    public void addHiperMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
+        Minimercado empresa = new Minimercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
-    public void addFrutaria(String nome, int horasLat, int minutosLat, int segundosLat, char direcaoLat, int horasLong, int minutosLong,
-                            int segundosLong, char direcaoLong, String distrito, double mediaAnual, double custoLimpezaAno, int numProdutos) {
-        Coordenada lat = new Coordenada(horasLat, minutosLat, segundosLat, direcaoLat);
-        Coordenada longi = new Coordenada(horasLong, minutosLong, segundosLong, direcaoLong);
-        Localizacao local = new Localizacao(lat, longi);
-        Frutaria empresa = new Frutaria(nome, local, distrito, mediaAnual, custoLimpezaAno, numProdutos);
+    public void addFrutaria(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, int numProdutos) {
+        Frutaria empresa = new Frutaria(nome, local, distrito, fatMediaAnual, custoLimpezaAno, numProdutos);
         this.empresas.add(empresa);
     }
 
@@ -165,43 +132,30 @@ public class GestorEmpresas implements Serializable {
                 String linha;
                 while((linha = br.readLine()) != null) {
                     String[] dados = linha.split("/");
+                    Coordenada latitude = new Coordenada(Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),dados[5].charAt(0));
+                    Coordenada longitude = new Coordenada(Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]),dados[9].charAt(0));
+                    Localizacao local = new Localizacao(latitude, longitude);
                     switch (dados[0]) {
-                        case "Cafe" -> addCafe(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
-                                dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]),
-                                dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]),
+                        case "Cafe" -> addCafe(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]),
                                 Integer.parseInt(dados[13]), Double.parseDouble(dados[14]), Integer.parseInt(dados[15]));
 
-                        case "Pastelaria" -> addPastelaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
-                                dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]),
-                                dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]),
+                        case "Pastelaria" -> addPastelaria(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]),
                                 Double.parseDouble(dados[14]), Integer.parseInt(dados[15]));
 
-                        case "Restaurante Fast-Food" -> addRestFastFood(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
-                                dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]),
-                                dados[9].charAt(0), dados[10], Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]),
+                        case "Restaurante Fast-Food" -> addRestFastFood(dados[1], local, dados[10], Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]),
                                 Double.parseDouble(dados[14]), Integer.parseInt(dados[15]), Integer.parseInt(dados[16]), Integer.parseInt(dados[17]),
                                 Double.parseDouble(dados[18]));
 
-                        case "Restaurante Local" -> addRestLocal(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0),
-                                Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10],
-                                Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]), Double.parseDouble(dados[14]),
+                        case "Restaurante Local" -> addRestLocal(dados[1], local, dados[10],Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]), Double.parseDouble(dados[14]),
                                 Integer.parseInt(dados[15]), Integer.parseInt(dados[16]), Integer.parseInt(dados[17]), Double.parseDouble(dados[18]));
 
-                        case "Frutaria" -> addFrutaria(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]), dados[5].charAt(0),
-                                Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0), dados[10],
-                                Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        case "Frutaria" -> addFrutaria(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
 
-                        case "Minimercado" -> addMiniMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
-                                dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0),
-                                dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        case "Minimercado" -> addMiniMercado(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
 
-                        case "Supermercado" -> addSuperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
-                                dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0),
-                                dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        case "Supermercado" -> addSuperMercado(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
 
-                        case "Hipermercado" -> addHiperMercado(dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),
-                                dados[5].charAt(0), Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), dados[9].charAt(0),
-                                dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        case "Hipermercado" -> addHiperMercado(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
                         default -> {}
                     }
                 }
