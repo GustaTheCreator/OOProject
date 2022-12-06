@@ -1,4 +1,4 @@
-package src;
+
 
 import java.util.*;
 import java.io.*;
@@ -21,8 +21,8 @@ public class GestorEmpresas implements Serializable {
     }
 
     public void addPastelaria(String nome, Localizacao local, String distrito, double fatMediaAnual,
-                              double salarioMedAnual, int numProdutos,double numMedClientesDia, int numEmpMesa) {
-        Pastelaria empresa = new Pastelaria(nome, local, distrito, fatMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDia, numProdutos);
+                              double salarioMedAnual, double numMedBolos,double numMedClientesDia, int numEmpMesa) {
+        Pastelaria empresa = new Pastelaria(nome, local, distrito, fatMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDia, numMedBolos);
         this.empresas.add(empresa);
     }
 
@@ -102,7 +102,7 @@ public class GestorEmpresas implements Serializable {
 
     @SuppressWarnings("unchecked")
     public String carregarDadosObjeto() {
-        File ficheiro = new File("src/data/StarThrive.dat"); // se o ficheiro de objetos não estiver criado ou ocorrer um erro
+        File ficheiro = new File("StarThrive.dat"); // se o ficheiro de objetos não estiver criado ou ocorrer um erro
         if(ficheiro.exists() && ficheiro.isFile()) {         // durante o carregamento então recorre ao ficheiro de texto
             try {
                 FileInputStream fis = new FileInputStream(ficheiro);
@@ -124,7 +124,7 @@ public class GestorEmpresas implements Serializable {
     }
 
     public String carregarDadosTexto() {
-        File ficheiro = new File("src/data/StarThrive.txt");
+        File ficheiro = new File("StarThrive.txt");
         if(ficheiro.exists() && ficheiro.isFile()) {
             try {
                 FileReader fr = new FileReader(ficheiro);
@@ -178,7 +178,7 @@ public class GestorEmpresas implements Serializable {
     // create txt file and save empresas
     public String guardarDados() {
         ordenarLista(0); // ordenar pela opção default para que a lista seja carregada por essa ordem na proxima sessão
-        File ficheiro = new File("src/data/StarThrive.dat");
+        File ficheiro = new File("StarThrive.dat");
         try {
             FileOutputStream fos = new FileOutputStream(ficheiro);
             ObjectOutputStream oos = new ObjectOutputStream(fos);

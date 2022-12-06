@@ -1,4 +1,4 @@
-package src;
+
 
 public class Cafe extends Restauracao {
     protected double numMedCafes;
@@ -26,10 +26,6 @@ public class Cafe extends Restauracao {
     public double receitaAnual() {
         return numMedCafes*getFaturacaoMedia();}//FaturacaoMedia anual por café
 
-    public boolean verifica(){
-        return super.verifica() && numMedCafes>0 && faturaAnualPCafePDia()>0 && getNumEmpMesa()>0
-                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0;
-    }
     @Override
     public String toString() {
         return super.toString()+

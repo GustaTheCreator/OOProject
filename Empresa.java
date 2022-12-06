@@ -1,4 +1,4 @@
-package src;
+
 
 import java.io.Serializable;
 /**
@@ -142,14 +142,6 @@ public abstract class Empresa implements Serializable {
      */
     public double lucro() {
         return receitaAnual() - despesaAnual();
-    }
-    /**
-     * Método que verifica se a facturação média da Empresa é superior ou igual a 0
-     * @return true se a facturação média for superior ou igual a 0
-     */
-
-    public boolean verifica(){
-        return this.faturacaoMedia >= 0;
     }
 
     /**

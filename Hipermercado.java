@@ -1,4 +1,4 @@
-package src;
+
 
 public class Hipermercado extends Mercado{
     public Hipermercado(String nome, Localizacao local, String distrito, double faturacaoMedia,

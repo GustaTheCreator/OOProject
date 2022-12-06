@@ -1,4 +1,3 @@
-package src;
 
 import java.util.*;
 import java.awt.*;
@@ -100,25 +99,25 @@ public class UserInterface extends JFrame {
                         gestor.addCafe(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleTres.getText()),Double.parseDouble(campoDoubleDois.getText()),Integer.parseInt(campoIntUm.getText()));
                     }
                     case "Pastelaria" -> {
-                        //gestor.addPastelaria(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        gestor.addPastelaria(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleTres.getText()),Double.parseDouble(campoDoubleDois.getText()),Integer.parseInt(campoIntUm.getText()));
                     }
                     case "Restaurante Fast-Food" -> {
-                        //gestor.addRestFastFood(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        //gestor.addRestFastFood(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()), );
                     }
                     case "Restaurante Local" -> {
-                        //gestor.addRestLocal(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        //gestor.addRestLocal(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()), );
                     }
                     case "Frutaria" -> {
-                        //gestor.addFrutaria(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        gestor.addFrutaria(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()), Double.parseDouble(campoDoubleUm.getText()),Integer.parseInt(campoIntUm.getText()));
                     }
                     case "Minimercado" -> {
-                        //gestor.addMiniMercado(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        gestor.addMiniMercado(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleDois.getText()));
                     }
                     case "Supermercado" -> {
-                        //7gestor.addSuperMercado(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        gestor.addSuperMercado(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleDois.getText()));
                     }
                     case "Hipermercado"-> {
-                        //gestor.addHiperMercado(campoNome.getText(),local,campoDistrito.getText(),campoFaturacaoMedia.getText(), );
+                        gestor.addHiperMercado(campoNome.getText(),local,campoDistrito.getText(),Double.parseDouble(campoFaturacaoMedia.getText()),Double.parseDouble(campoDoubleUm.getText()),Double.parseDouble(campoDoubleDois.getText()));
                     }
                     default -> {}
                 }
@@ -580,7 +579,7 @@ public class UserInterface extends JFrame {
         setUndecorated(opcoesGuardadas.isFullscreen());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
-        setIconImage(new ImageIcon("src/resources/icon.png").getImage());
+        setIconImage(new ImageIcon("icon.png").getImage());
         // criar um listener personalizado para chamar a confirmação quando o utilizador tenta fechar, caso a opção esteja ativa
         if(opcoesGuardadas.isConfirmarSair()){
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -679,9 +678,9 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.okButtonMnemonic", "0");
         UIManager.put("OptionPane.cancelButtonMnemonic", "0");
         UIManager.put("OptionPane.noButtonMnemonic", "0");
-        UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
-        UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/warning.gif"));
-        UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
+        UIManager.put("OptionPane.questionIcon",new ImageIcon("question.gif"));
+        UIManager.put("OptionPane.warningIcon",new ImageIcon("warning.gif"));
+        UIManager.put("OptionPane.errorIcon",new ImageIcon("error.gif"));
         UIManager.put("Table.selectionBackground",azul);
         UIManager.put("Table.selectionForeground",Color.BLACK);
         UIManager.put("Table.focusCellBackground",azul);
@@ -716,7 +715,7 @@ public class UserInterface extends JFrame {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
         JLabel textoTitulo1 = new JLabel("St");
-        JLabel textoTituloImagem = new JLabel(new ImageIcon("src/resources/star.gif"));
+        JLabel textoTituloImagem = new JLabel(new ImageIcon("star.gif"));
         JLabel textoTitulo2 = new JLabel("rThrive");
         textoTitulo1.setFont(new Font("Arial", Font.BOLD, 100));
         textoTitulo2.setFont(new Font("Arial", Font.BOLD, 100));
@@ -1234,7 +1233,7 @@ public class UserInterface extends JFrame {
     }
 
     private void carregarOpcoes() {
-        File ficheiro = new File("src/data/Opcoes.dat");
+        File ficheiro = new File("Opcoes.dat");
         if(ficheiro.exists() && ficheiro.isFile()) {
             try {
                 FileInputStream fis = new FileInputStream(ficheiro);
@@ -1251,7 +1250,7 @@ public class UserInterface extends JFrame {
     }
 
     private void guardarOpcoes() {
-        File ficheiro = new File("src/data/Opcoes.dat");
+        File ficheiro = new File("Opcoes.dat");
         String informacao;
         try {
             FileOutputStream fos = new FileOutputStream(ficheiro);

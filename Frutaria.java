@@ -2,7 +2,7 @@
  * @author: Diogo Simões e Gustavo Alves
  *
  */
-package src;
+
 /**
  * Classe Frutaria
  */
@@ -43,8 +43,5 @@ public class Frutaria extends Mercearia {
                 "Faturação média: "+ faturacaoMedia+"\n\n"+
                 "Número de produtos: "+this.numProdutos +"\n\n"+
                 "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
-    }
-    public boolean verifica(){
-        return super.verifica() && numProdutos>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
     }
 }

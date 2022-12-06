@@ -1,4 +1,4 @@
-package src;
+
 
 public class RestLocal extends Restaurante {
     private int numMesasEsplanada;
@@ -46,9 +46,5 @@ public class RestLocal extends Restaurante {
                 "Número de mesas de esplanada: "+this.numMesasEsplanada+"\n\n"+
                 "custo de licenca anual por cada mesa de esplanada: "+this.custoLiceAnualMesaEsp+"\n\n";
 
-    }
-    public boolean verifica(){
-        return super.verifica() && numMesasEsplanada>0 && custoLiceAnualMesaEsp>0 && getNumEmpMesa()>0
-                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0 && getNumDiasFuncAnual()>0 && getNumMesasInteriores()>0 && getFaturacaoMedia()>0;
     }
 }

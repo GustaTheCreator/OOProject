@@ -1,4 +1,4 @@
-package src;
+
 
 abstract class Mercado extends Mercearia {
     protected double areaCorredores;
@@ -27,8 +27,5 @@ abstract class Mercado extends Mercearia {
                 "Faturação média: "+ faturacaoMedia+"\n\n"+
                 "Área dos corredores: "+this.areaCorredores +"\n\n"+
                 "Custo de limpeza anual: "+this.custoLimpezaAnual+"\n\n";
-    }
-    public boolean verifica(){
-        return super.verifica() && areaCorredores>0 && getFaturacaoMedia()>0 && getCustoLimpezaAnual()>0;
     }
 }

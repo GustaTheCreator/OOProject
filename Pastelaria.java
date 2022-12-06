@@ -1,4 +1,4 @@
-package src;
+
 
 public class Pastelaria extends Restauracao {
     private double numMedBolos;
@@ -33,9 +33,5 @@ public class Pastelaria extends Restauracao {
                 "Salário médio anual: "+this.salarioMedAnual+"\n\n"+
                 "Número médio de clientes diário: "+this.numMedClientesDiario+"\n\n"+
                 "Número médio de bolos vendidos diariamente: "+this.numMedBolos+"\n\n";
-    }
-    public boolean verifica(){
-        return super.verifica() && numMedBolos>0 && faturaAnualPBoloPDia()>0 && getNumEmpMesa()>0
-                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0;
     }
 }

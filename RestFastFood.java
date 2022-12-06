@@ -1,4 +1,4 @@
-package src;
+
 
 public class RestFastFood extends Restaurante {
     private double numMedClientesDrive;
@@ -47,10 +47,6 @@ public class RestFastFood extends Restaurante {
                 "Faturação média por cliente drive: "+this.FaturacaoMediaPClienteDrive+"\n\n"+
                 "Número de dias de funcionamento anual: "+this.numDiasFuncAnual+"\n\n"+
                 "Número de mesas interiores: "+this.numMesasInteriores+"\n\n";
-    }
-    public boolean verifica(){
-        return super.verifica() && numMedClientesDrive>0 && FaturacaoMediaPClienteDrive>0 && getNumEmpMesa()>0
-                && getSalarioMedAnual()>0 && getNumMedClientesDiario()>0 && getNumDiasFuncAnual()>0 && getNumMesasInteriores()>0 && getFaturacaoMedia()>0;
     }
 }
 
