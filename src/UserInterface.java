@@ -14,11 +14,15 @@ public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private Opcoes opcoesGuardadas;
     private GridBagConstraints posicao;
-    private JPanel menu, baseDados, opcoes, caixasOpcoes, filtrar, listar,  gerir, criarEditar, caixasDados, voltarBD, voltarOpc, voltarCE;
+    private JPanel menu, baseDados, opcoes, caixasOpcoes, filtrar, listar,  gerir, criarEditar, caixasDados, voltarBD,
+    voltarOpc, voltarCE;
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
     botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
     private JCheckBox caixaConfirmar,caixaAutoGuardar, caixaFullscreen;
-    private JTextField campoNome, campoDistrito, campoFaturacaoMedia;
+    private JTextField campoNome, campoDistrito, campoFaturacaoMedia, campoIntUm, campoIntDois, campoIntTres, campoIntQuatro,
+    campoDoubleUm, campoDoubleDois, campoDoubleTres, campoDoubleQuatro;
+    private JLabel textoIntUm, textoIntDois, textoIntTres, textoIntQuatro, textoDoubleUm, textoDoubleDois,
+    textoDoubleTres, textoDoubleQuatro;
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaEstilo, caixaTema, caixaTipo;
     private JComboBox<Integer> caixaHorasLat, caixaMinutosLat,caixaSegundosLat, caixaHorasLong, caixaMinutosLong, caixaSegundosLong;
     private JComboBox<Character> caixaDirecaoLat, caixaDirecaoLong;
@@ -90,11 +94,13 @@ public class UserInterface extends JFrame {
 
                 alteracoesPorGuardar = true;
                 botaoGuardar.setEnabled(true);
+                botaoGuardar.setToolTipText(null);
             }
             if(evento.getSource() == botaoTerminarEditar) {
 
                 alteracoesPorGuardar = true;
                 botaoGuardar.setEnabled(true);
+                botaoGuardar.setToolTipText(null);
             }
             if(evento.getSource() == botaoApagar) {
                 int indexLinha = tabela.getSelectedRow();
@@ -112,6 +118,7 @@ public class UserInterface extends JFrame {
                         {
                             alteracoesPorGuardar = true;
                             botaoGuardar.setEnabled(true);
+                            botaoGuardar.setToolTipText(null);
                         }
                     }
                 }
@@ -133,6 +140,7 @@ public class UserInterface extends JFrame {
                 else {
                     alteracoesPorGuardar = false;
                     botaoGuardar.setEnabled(false);
+                    botaoGuardar.setToolTipText("Não há alterações para guardar!");
                 }
             }
             if(evento.getSource() == botaoVoltarBD || evento.getSource() == botaoVoltarOpc) {
@@ -151,7 +159,7 @@ public class UserInterface extends JFrame {
                     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                     addWindowListener(new WindowAdapter() {
                         @Override
-                        public void windowClosing(WindowEvent e) {
+                        public void windowClosing(WindowEvent evento) {
                             sair();
                         }
                     });
@@ -179,14 +187,18 @@ public class UserInterface extends JFrame {
     }
 
     private class InteracoesCampo implements DocumentListener{
-        public void changedUpdate(DocumentEvent e) {
-            botaoTerminarEditar.setEnabled(true);
+        public void changedUpdate(DocumentEvent evento) {}
+        public void removeUpdate(DocumentEvent evento) {
+            if(verificaCaixas() && verificaCampos()) {
+                botaoTerminarEditar.setEnabled(true);
+                botaoTerminarCriar.setEnabled(true);
+            }
         }
-        public void removeUpdate(DocumentEvent e) {
-            botaoTerminarEditar.setEnabled(true);
-        }
-        public void insertUpdate(DocumentEvent e) {
-            botaoTerminarEditar.setEnabled(true);
+        public void insertUpdate(DocumentEvent evento) {
+            if(verificaCaixas() && verificaCampos()) {
+                botaoTerminarEditar.setEnabled(true);
+                botaoTerminarCriar.setEnabled(true);
+            }
         }
     }
 
@@ -220,7 +232,10 @@ public class UserInterface extends JFrame {
             if(evento.getSource() == caixaTipo || evento.getSource() == caixaHorasLat || evento.getSource() == caixaMinutosLat ||
             evento.getSource() == caixaMinutosLat || evento.getSource() == caixaDirecaoLat || evento.getSource() == caixaHorasLong ||
             evento.getSource() == caixaMinutosLong || evento.getSource() == caixaSegundosLong || evento.getSource() == caixaDirecaoLong) {
-                botaoTerminarEditar.setEnabled(true);
+                if(verificaCaixas() && verificaCampos()) {
+                    botaoTerminarEditar.setEnabled(true);
+                    botaoTerminarCriar.setEnabled(true);
+                }
             }
         }
     }
@@ -249,11 +264,20 @@ public class UserInterface extends JFrame {
     }
 
     private void mostrarCriar()  {
+        tabela.clearSelection();
         caixasDados.remove(botaoTerminarEditar);
-        caixaTipo.setSelectedItem(null);
+        caixaTipo.setSelectedIndex(0);
         caixaTipo.setEnabled(true);
         campoNome.setText(null);
         campoDistrito.setText(null);
+        campoIntUm.setText(null);
+        campoIntDois.setText(null);
+        campoIntTres.setText(null);
+        campoIntQuatro.setText(null);
+        campoDoubleUm.setText(null);
+        campoDoubleDois.setText(null);
+        campoDoubleTres.setText(null);
+        campoDoubleQuatro.setText(null);
         caixaHorasLat.setSelectedItem(null);
         caixaMinutosLat.setSelectedItem(null);
         caixaSegundosLat.setSelectedItem(null);
@@ -267,6 +291,7 @@ public class UserInterface extends JFrame {
         posicao.gridx = 1;
         posicao.gridy = 99; // garantir que o botão fica no fim
         posicao.insets = new Insets(0,0,25,0);
+        botaoTerminarCriar.setEnabled(false);
         caixasDados.add(botaoTerminarCriar,posicao);
         remove(baseDados);
         add(criarEditar,BorderLayout.CENTER);
@@ -290,6 +315,31 @@ public class UserInterface extends JFrame {
         caixaSegundosLong.setSelectedItem(empresa.getLocal().getLongitude().getSegundos());
         caixaDirecaoLong.setSelectedItem(empresa.getLocal().getLongitude().getDirecao());
         campoFaturacaoMedia.setText(String.valueOf(empresa.getFaturacaoMedia()));
+        String tipo = empresa.getTipo();
+        switch(tipo){
+            case "Cafe":
+                campoIntUm.setText(String.valueOf(((Cafe)empresa).getNumEmpMesa()));
+                campoDoubleUm.setText(String.valueOf(((Cafe)empresa).getSalarioMedAnual()));
+                campoDoubleDois.setText(String.valueOf(((Cafe)empresa).getNumMedClientesDiario()));
+                campoDoubleTres.setText(String.valueOf(((Cafe)empresa).getNumMedCafes()));
+            break;
+            case "Pastelaria":
+            break;
+            case "Restaurante Fast-Food":
+            break;
+            case "Restaurante Local":
+            break;
+            case "Frutaria":
+
+            break;
+            case "Minimercado":
+            case "Supermercado":
+            case "Hipermercado":
+
+
+            break;
+            default: break;
+        }
         recarregarCriarEditar();
         posicao.gridx = 1;
         posicao.gridy = 99; // garantir que o botão fica no fim
@@ -302,39 +352,105 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
+
     private void recarregarCriarEditar() {
-        if (caixaTipo.getSelectedItem() != null)
-        {
-            String tipo = caixaTipo.getSelectedItem().toString();
-            switch(tipo){
-                case "Cafe" -> {
+        verificaCampos();
+        verificaCaixas();
+        campoDoubleUm.setVisible(false);
+        campoDoubleDois.setVisible(false);
+        campoDoubleTres.setVisible(false);
+        campoDoubleQuatro.setVisible(false);
+        campoIntUm.setVisible(false);
+        campoIntDois.setVisible(false);
+        campoIntTres.setVisible(false);
+        textoIntUm.setVisible(false);
+        textoIntDois.setVisible(false);
+        textoIntTres.setVisible(false);
+        textoIntQuatro.setVisible(false);
+        textoDoubleUm.setVisible(false);
+        textoDoubleDois.setVisible(false);
+        textoDoubleTres.setVisible(false);
+        textoDoubleQuatro.setVisible(false);
+        String tipo = caixaTipo.getSelectedItem().toString();
+        switch(tipo){
+            case "Cafe":
+                textoIntUm.setText("Número de empregados de mesa:");
+                textoDoubleUm.setText("Salário médio anual:");
+                textoDoubleDois.setText("Número de clientes médio diário:");
+                textoDoubleTres.setText("Número médio de cafés por dia:");
+                textoIntUm.setVisible(true);
+                textoDoubleUm.setVisible(true);
+                textoDoubleDois.setVisible(true);
+                textoDoubleTres.setVisible(true);
+                campoIntUm.setVisible(true);
+                campoDoubleUm.setVisible(true);
+                campoDoubleDois.setVisible(true);
+                campoDoubleTres.setVisible(true);
+            break;
+            case "Pastelaria":
+                textoIntUm.setText("Número de empregados de mesa:");
+                textoDoubleUm.setText("Salário médio anual:");
+                textoDoubleDois.setText("Número de clientes médio diário:");
+                textoDoubleTres.setText("Número médio de bolos por dia:");
+                textoIntUm.setVisible(true);
+                textoDoubleUm.setVisible(true);
+                textoDoubleDois.setVisible(true);
+                textoDoubleTres.setVisible(true);
+                campoIntUm.setVisible(true);
+                campoDoubleUm.setVisible(true);
+                campoDoubleDois.setVisible(true);
+                campoDoubleTres.setVisible(true);
 
-                }
-                case "Pastelaria" -> {
-
-                }
-                case "Restaurante Fast-Food" -> {
-
-                }
-                case "Restaurante Local" -> {
-
-                }
-                case "Frutaria" -> {
-
-                }
-                case "Minimercado" -> {
-
-                }
-                case "Supermercado" -> {
-
-                }
-                case "Hipermercado" -> {
-
-                }
-                default -> {}
-            }
-            criarEditar.validate();
+            break;
+            case "Restaurante Fast-Food":
+            break;
+            case "Restaurante Local":
+                textoIntUm.setText("Número de empregados de mesa:");
+                textoIntDois.setText("Número de dias de funcionamento anual:");
+                textoIntTres.setText("Número de mesas interiores:");
+                textoIntQuatro.setText("Número de mesas de esplanada:");
+                textoDoubleUm.setText("Salário médio anual:");
+                textoDoubleDois.setText("Número de clientes médio diário:");
+                textoDoubleTres.setText("Número médio de bolos:");
+                textoDoubleQuatro.setText("Número médio de bolos:");
+                campoIntUm.setVisible(true);
+                campoIntDois.setVisible(true);
+                campoIntTres.setVisible(true);
+                campoIntQuatro.setVisible(true);
+                campoDoubleUm.setVisible(true);
+                campoDoubleDois.setVisible(true);
+                campoDoubleTres.setVisible(true);
+                campoDoubleQuatro.setVisible(true);
+                textoDoubleUm.setVisible(true);
+                textoDoubleDois.setVisible(true);
+                textoDoubleTres.setVisible(true);
+                textoDoubleQuatro.setVisible(true);
+                textoIntUm.setVisible(true);
+                textoIntDois.setVisible(true);
+                textoIntTres.setVisible(true);
+                textoIntQuatro.setVisible(true);
+            break;
+            case "Frutaria":
+                textoDoubleUm.setText("Custo da limpeza anual:");
+                textoIntUm.setText("                    Número de Produtos:");
+                textoIntUm.setVisible(true);
+                textoDoubleUm.setVisible(true);
+                campoIntUm.setVisible(true);
+                campoDoubleUm.setVisible(true);
+            break;
+            case "Minimercado":
+            case "Supermercado":
+            case "Hipermercado":
+                textoDoubleUm.setText("Custo da limpeza anual:");
+                textoDoubleDois.setText("                   Área de corredores:");
+                campoDoubleUm.setVisible(true);
+                campoDoubleDois.setVisible(true);
+                textoDoubleUm.setVisible(true);
+                textoDoubleDois.setVisible(true);
+            break;
+            default: break;
         }
+        criarEditar.validate();
     }
 
     private void recarregarTabela() {
@@ -379,7 +495,7 @@ public class UserInterface extends JFrame {
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowAdapter() {
                 @Override
-                public void windowClosing(WindowEvent e) {
+                public void windowClosing(WindowEvent evento) {
                     sair();
                 }
             });
@@ -676,6 +792,7 @@ public class UserInterface extends JFrame {
         posicao.gridy = 0;
         botaoGuardar = new JButton("Guardar");
         botaoGuardar.setEnabled(false);
+        botaoGuardar.setToolTipText("Não há alterações para guardar!");
         posicao.insets = new Insets(0,40,40,0);
         botaoGuardar.addActionListener(premirBotao);
         filtrar.add(botaoGuardar, posicao);
@@ -693,9 +810,9 @@ public class UserInterface extends JFrame {
         textoTipo.setLabelFor(caixaTipo);
         posicao.gridx = 1;
         posicao.gridy = 0;
-        posicao.insets = new Insets(0,0,25,275);
+        posicao.insets = new Insets(0,0,20,275);
         caixasDados.add(textoTipo,posicao);
-        posicao.insets = new Insets(0,0,25,0);
+        posicao.insets = new Insets(0,0,20,0);
         caixasDados.add(caixaTipo,posicao);
         JLabel textoNome = new JLabel("Nome:");
         campoNome = new JTextField(14);
@@ -703,9 +820,9 @@ public class UserInterface extends JFrame {
         textoNome.setLabelFor(campoNome);
         posicao.gridx = 1;
         posicao.gridy = 1;
-        posicao.insets = new Insets(0,0,25,275);
+        posicao.insets = new Insets(0,0,20,275);
         caixasDados.add(textoNome,posicao);
-        posicao.insets = new Insets(0,0,25,0);
+        posicao.insets = new Insets(0,0,20,0);
         caixasDados.add(campoNome,posicao);
         JLabel textoDistrito = new JLabel("Distrito:");
         campoDistrito = new JTextField(14);
@@ -713,9 +830,9 @@ public class UserInterface extends JFrame {
         textoDistrito.setLabelFor(campoDistrito);
         posicao.gridx = 1;
         posicao.gridy = 2;
-        posicao.insets = new Insets(0,0,25,275);
+        posicao.insets = new Insets(0,0,20,275);
         caixasDados.add(textoDistrito,posicao);
-        posicao.insets = new Insets(0,0,25,0);
+        posicao.insets = new Insets(0,0,20,0);
         caixasDados.add(campoDistrito,posicao);
         Integer[] lista0a59 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59};
         Integer[] lista0a179 = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,25,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,125,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179};
@@ -741,65 +858,65 @@ public class UserInterface extends JFrame {
         posicao.gridx = 1;
         posicao.gridy = 3;
         JLabel textoLocalizacao = new JLabel("Localização:");
-        posicao.insets = new Insets(0,0,25,0);
+        posicao.insets = new Insets(0,0,20,0);
         caixasDados.add(textoLocalizacao,posicao);
         posicao.gridx = 1;
         posicao.gridy = 4;
-        posicao.insets = new Insets(0,0,25,240);
+        posicao.insets = new Insets(0,0,20,240);
         caixasDados.add(caixaHorasLong,posicao);
         JLabel textoHorasLong= new JLabel("°");
         textoHorasLong.setFont(new Font("Arial", Font.BOLD, 25));
         textoHorasLong.setLabelFor(caixaHorasLong);
-        posicao.insets = new Insets(0,0,25,170);
+        posicao.insets = new Insets(0,0,20,170);
         caixasDados.add(textoHorasLong,posicao);
         JLabel textoMinutosLong= new JLabel("'");
         textoMinutosLong.setFont(new Font("Arial", Font.BOLD, 25));
         textoMinutosLong.setLabelFor(caixaMinutosLong);
-        posicao.insets = new Insets(0,0,25,20);
+        posicao.insets = new Insets(0,0,20,20);
         caixasDados.add(textoMinutosLong,posicao);
-        posicao.insets = new Insets(0,0,25,80);
+        posicao.insets = new Insets(0,0,20,80);
         caixasDados.add(caixaMinutosLong,posicao);
         JLabel textoSegundosLong= new JLabel("\"");
         textoSegundosLong.setFont(new Font("Arial", Font.BOLD, 25));
         textoSegundosLong.setLabelFor(caixaSegundosLong);
-        posicao.insets = new Insets(0,140,25,0);
+        posicao.insets = new Insets(0,140,20,0);
         caixasDados.add(textoSegundosLong,posicao);
-        posicao.insets = new Insets(0,80,25,0);
+        posicao.insets = new Insets(0,80,20,0);
         caixasDados.add(caixaSegundosLong,posicao);
         JLabel textoDirecaoLong= new JLabel("→ Longitude");
         textoDirecaoLong.setLabelFor(caixaDirecaoLong);
-        posicao.insets = new Insets(0,385,25,0);
+        posicao.insets = new Insets(0,385,20,0);
         caixasDados.add(textoDirecaoLong,posicao);
-        posicao.insets = new Insets(0,240,25,0);
+        posicao.insets = new Insets(0,240,20,0);
         caixasDados.add(caixaDirecaoLong,posicao);
         posicao.gridx = 1;
         posicao.gridy = 5;
-        posicao.insets = new Insets(0,0,25,240);
+        posicao.insets = new Insets(0,0,20,240);
         caixasDados.add(caixaHorasLat,posicao);
         JLabel textoHorasLat = new JLabel("°");
         textoHorasLat.setFont(new Font("Arial", Font.BOLD, 25));
         textoHorasLat.setLabelFor(caixaHorasLat);
-        posicao.insets = new Insets(0,0,25,180);
+        posicao.insets = new Insets(0,0,20,180);
         caixasDados.add(textoHorasLat,posicao);
         JLabel textoMinutosLat = new JLabel("'");
         textoMinutosLat.setFont(new Font("Arial", Font.BOLD, 25));
         textoMinutosLat.setLabelFor(caixaMinutosLat);
-        posicao.insets = new Insets(0,0,25,20);
+        posicao.insets = new Insets(0,0,20,20);
         caixasDados.add(textoMinutosLat,posicao);
-        posicao.insets = new Insets(0,0,25,80);
+        posicao.insets = new Insets(0,0,20,80);
         caixasDados.add(caixaMinutosLat,posicao);
         JLabel textoSegundosLat = new JLabel("\"");
         textoSegundosLat.setFont(new Font("Arial", Font.BOLD, 25));
         textoSegundosLat.setLabelFor(caixaSegundosLat);
-        posicao.insets = new Insets(0,140,25,0);
+        posicao.insets = new Insets(0,140,20,0);
         caixasDados.add(textoSegundosLat,posicao);
-        posicao.insets = new Insets(0,80,25,0);
+        posicao.insets = new Insets(0,80,20,0);
         caixasDados.add(caixaSegundosLat,posicao);
         JLabel textoDirecaoLat = new JLabel("→ Latitude");
         textoDirecaoLat.setLabelFor(caixaDirecaoLat);
-        posicao.insets = new Insets(0,365,25,0);
+        posicao.insets = new Insets(0,365,20,0);
         caixasDados.add(textoDirecaoLat,posicao);
-        posicao.insets = new Insets(0,240,25,0);
+        posicao.insets = new Insets(0,240,20,0);
         caixasDados.add(caixaDirecaoLat,posicao);
         JLabel textoFaturacaoMedia = new JLabel("Faturação média:");
         campoFaturacaoMedia = new JTextField(14);
@@ -807,10 +924,90 @@ public class UserInterface extends JFrame {
         textoFaturacaoMedia.setLabelFor(campoDistrito);
         posicao.gridx = 1;
         posicao.gridy = 6;
-        posicao.insets = new Insets(25,0,25,350);
+        posicao.insets = new Insets(5,0,20,350);
         caixasDados.add(textoFaturacaoMedia,posicao);
-        posicao.insets = new Insets(25,0,25,0);
+        posicao.insets = new Insets(5,0,20,0);
         caixasDados.add(campoFaturacaoMedia,posicao);
+        textoDoubleUm = new JLabel("");
+        campoDoubleUm = new JTextField(14);
+        campoDoubleUm.getDocument().addDocumentListener(escreverCampo);
+        textoDoubleUm.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 7;
+        posicao.insets = new Insets(0,0,20,390);
+        caixasDados.add(textoDoubleUm,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoDoubleUm,posicao);
+        textoDoubleDois = new JLabel("");
+        campoDoubleDois = new JTextField(14);
+        campoDoubleDois.getDocument().addDocumentListener(escreverCampo);
+        textoDoubleDois.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 8;
+        posicao.insets = new Insets(0,0,20,475);
+        caixasDados.add(textoDoubleDois,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoDoubleDois,posicao);
+        textoDoubleTres = new JLabel("");
+        campoDoubleTres = new JTextField(14);
+        campoDoubleTres.getDocument().addDocumentListener(escreverCampo);
+        textoDoubleTres.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 9;
+        posicao.insets = new Insets(0,0,20,400);
+        caixasDados.add(textoDoubleTres,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoDoubleTres,posicao);
+        textoDoubleQuatro = new JLabel("");
+        campoDoubleQuatro = new JTextField(14);
+        campoDoubleQuatro.getDocument().addDocumentListener(escreverCampo);
+        textoDoubleQuatro.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 10;
+        posicao.insets = new Insets(0,0,20,400);
+        caixasDados.add(textoDoubleQuatro,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoDoubleQuatro,posicao);
+        textoIntUm = new JLabel("");
+        campoIntUm = new JTextField(14);
+        campoIntUm.getDocument().addDocumentListener(escreverCampo);
+        textoIntUm.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 11;
+        posicao.insets = new Insets(0,0,20,470);
+        caixasDados.add(textoIntUm,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoIntUm,posicao);
+        textoIntDois = new JLabel("");
+        campoIntDois = new JTextField(14);
+        campoIntDois.getDocument().addDocumentListener(escreverCampo);
+        textoIntDois.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 12;
+        posicao.insets = new Insets(0,0,20,550);
+        caixasDados.add(textoIntDois,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoIntDois,posicao);
+        textoIntTres = new JLabel("");
+        campoIntTres = new JTextField(14);
+        campoIntTres.getDocument().addDocumentListener(escreverCampo);
+        textoIntTres.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 13;
+        posicao.insets = new Insets(0,0,20,550);
+        caixasDados.add(textoIntTres,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoIntTres,posicao);
+        textoIntQuatro = new JLabel("");
+        campoIntQuatro = new JTextField(14);
+        campoIntQuatro.getDocument().addDocumentListener(escreverCampo);
+        textoIntQuatro.setLabelFor(campoDistrito);
+        posicao.gridx = 1;
+        posicao.gridy = 14;
+        posicao.insets = new Insets(0,0,20,550);
+        caixasDados.add(textoIntQuatro,posicao);
+        posicao.insets = new Insets(0,0,20,0);
+        caixasDados.add(campoIntQuatro,posicao);
         posicao.gridx = 0;
         posicao.gridy = 0;
         posicao.insets = new Insets(0,0,0,0);
@@ -824,6 +1021,81 @@ public class UserInterface extends JFrame {
         botaoTerminarCriar.addActionListener(premirBotao);
         botaoTerminarEditar = new JButton("Aplicar alterações");
         botaoTerminarEditar.addActionListener(premirBotao);
+    }
+
+    private boolean verificaCampoString(JTextField campo){
+        if(campo.getText().isEmpty()){
+            campo.setToolTipText("Este campo não pode ficar vazio!");
+            campo.setBackground(new Color(255,114,111));
+            return true;
+        } else {
+            campo.setBackground(Color.WHITE);
+            campo.setToolTipText(null);
+            return false;
+        }
+    }
+
+    private boolean verificaCampoDouble(JTextField campo){
+        try{
+            Double.parseDouble(campo.getText());
+            campo.setBackground(Color.WHITE);
+            campo.setToolTipText(null);
+            return true;
+        } catch (NumberFormatException ex) {
+            campo.setToolTipText("Este campo apenas aceita valores númericos!");
+            campo.setBackground(new Color(255,114,111));
+            return false;
+        }
+    }
+
+    private boolean verificaCampoInt(JTextField campo){
+        try{
+            Integer.parseInt(campo.getText());
+            campo.setBackground(Color.WHITE);
+            campo.setToolTipText(null);
+            return true;
+        } catch (NumberFormatException ex) {
+            campo.setToolTipText("Este campo apenas aceita valores númericos inteiros!");
+            campo.setBackground(new Color(255,114,111));
+            return false;
+        }
+    }
+
+    private boolean verificaCampos(){
+        return verificaCampoString(campoNome) && verificaCampoString(campoDistrito) && verificaCampoDouble(campoFaturacaoMedia) &&
+        verificaCampoDouble(campoDoubleUm) && verificaCampoDouble(campoDoubleDois) && verificaCampoDouble(campoDoubleTres) &&
+        verificaCampoDouble(campoDoubleQuatro) && verificaCampoInt(campoIntUm) && verificaCampoInt(campoIntDois) &&
+        verificaCampoInt(campoIntTres) && verificaCampoInt(campoIntQuatro);
+    }
+
+    private boolean verificaCaixaChar(JComboBox<Character> caixa) {
+        if (caixa.getSelectedIndex() == -1) {
+            caixa.setBackground(new Color(255,114,111));
+            caixa.setToolTipText("Este campo não pode ficar vazio!");
+            return false;
+        } else {
+            caixa.setBackground(Color.WHITE);
+            caixa.setToolTipText(null);
+            return true;
+        }
+    }
+
+    private boolean verificaCaixaInt(JComboBox<Integer> caixa) {
+        if (caixa.getSelectedIndex() == -1) {
+            caixa.setBackground(new Color(255,114,111));
+            caixa.setToolTipText("Este campo não pode ficar vazio!");
+            return false;
+        } else {
+            caixa.setBackground(Color.WHITE);
+            caixa.setToolTipText(null);
+            return true;
+        }
+    }
+
+    private boolean verificaCaixas() {
+        return verificaCaixaInt(caixaHorasLat) && verificaCaixaInt(caixaHorasLong) && verificaCaixaInt(caixaMinutosLat) &&
+        verificaCaixaInt(caixaMinutosLong) && verificaCaixaInt(caixaSegundosLat) && verificaCaixaInt(caixaSegundosLong) &&
+        verificaCaixaChar(caixaDirecaoLong) && verificaCaixaChar(caixaDirecaoLat);
     }
 
     private void construirBaseDados() {
