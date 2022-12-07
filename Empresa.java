@@ -1,17 +1,36 @@
-
-
 import java.io.Serializable;
 /**
  * Classe abstrata Empresa
  */
 
 public abstract class Empresa implements Serializable {
+    /**
+     * Nome da empresa
+     */
     protected String nome;
+    /**
+     * Tipo da empresa
+     */
     protected String tipo;
+    /**
+     * Subcategoria da empresa
+     */
     protected String subCategoria;
+    /**
+     * Categoria da empresa
+     */
     protected String categoria;
+    /**
+     * Localização da empresa
+     */
     protected Localizacao local;
+    /**
+     * Distrito da empresa
+     */
     protected String distrito;
+    /**
+     * Faturação média da empresa
+     */
     protected double faturacaoMedia;
 
     /**
@@ -40,7 +59,7 @@ public abstract class Empresa implements Serializable {
     }
 
     /**
-     * Método que altera o nome da Empresa
+     * Método que define o nome da Empresa
      * @param nome Nome da Empresa
      */
 
@@ -72,7 +91,7 @@ public abstract class Empresa implements Serializable {
         return local;
     }
     /**
-     * Método que altera o local da Empresa
+     * Método que define o local da Empresa
      * @param local Localização da Empresa
      */
 
@@ -88,7 +107,7 @@ public abstract class Empresa implements Serializable {
         return distrito;
     }
     /**
-     * Método que altera o distrito da Empresa
+     * Método que define o distrito da Empresa
      * @param distrito Distrito da Empresa
      */
 
@@ -104,7 +123,7 @@ public abstract class Empresa implements Serializable {
         return faturacaoMedia;
     }
     /**
-     * Método que altera a faturação média da Empresa
+     * Método que define a faturação média da Empresa
      * @param faturacaoMedia Faturação média da Empresa
      */
 
@@ -120,7 +139,7 @@ public abstract class Empresa implements Serializable {
         return tipo;
     }
     /**
-     * Método que altera o tipo da Empresa
+     * Método que define o tipo da Empresa
      * @param tipo Tipo da Empresa
      */
 

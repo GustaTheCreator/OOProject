@@ -2,7 +2,9 @@
 
 import java.util.*;
 import java.io.*;
-
+/**
+ * Classe que representa um Gestor de Empresas
+ */
 public class GestorEmpresas implements Serializable {
     private ArrayList<Empresa> empresas;
 

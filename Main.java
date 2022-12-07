@@ -1,4 +1,6 @@
-
+/**
+ * @author Diogo Simões e Gustavo Alves
+ */
 
 public class Main {
     public static void main(String[] args) {
