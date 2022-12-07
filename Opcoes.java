@@ -5,15 +5,15 @@ import java.io.Serializable;
  */
 public class Opcoes implements Serializable{
     /**
-     * Inteiro para o tema
+     * Inteiro para guardar o tema selecionado
      */
     private int tema;
      /**
-     * Inteiro para o estoçp
+     * Inteiro para guardar o estilo selecionado
      */
     private int estilo;
      /**
-     * Booleano para confirmar se confirma antes de sair
+     * Booleano para se confirma antes de sair
      */
     private boolean confirmarSair;
      /**
