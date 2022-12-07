@@ -2,36 +2,99 @@
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
+import java.io.*;
 
-
+/**
+ * Classe UserInterface
+ * Contém toda a interface gráfica do programa, bem como as operações
+ * que ocorrem quando se interage com a mesma
+ * @author Diogo Simões e Gustavo Alves
+ * @version 1.0
+ */
 
 public class UserInterface extends JFrame {
+    /**
+     * Irá atuar pela interface ao longo do programa
+     */
     private GestorEmpresas gestor;
+    /**
+     * Guarda as opções da interface alteradas pelo utilizador
+     */
     private Opcoes opcoesGuardadas;
+    /**
+     *  Guarda o posicionamento dos elementos na interface antes de serem adicionados
+     */
     private GridBagConstraints posicao;
+    /**
+     * Contém os respetivos componentes dessa parte da interface
+     */
     private JPanel menu, baseDados, opcoes, caixasOpcoes, filtrar, listar,  gerir, criarEditar, caixasDados, voltarBD,
                     voltarOpc, voltarCE;
+    /**
+     * Botão
+     */
     private JButton botaoBaseDados, botaoOpcoes, botaoSair, botaoCriar, botaoApagar, botaoDetalhes,
                     botaoEditar, botaoGuardar, botaoVoltarBD, botaoVoltarOpc, botaoVoltarCE, botaoTerminarCriar,botaoTerminarEditar;
+    /**
+     * Checkbox
+     */
     private JCheckBox caixaConfirmar,caixaAutoGuardar, caixaFullscreen;
+    /**
+     * Campo de texto
+     */
     private JTextField campoNome, campoDistrito, campoFaturacaoMedia, campoIntUm, campoIntDois, campoIntTres, campoIntQuatro,
                         campoDoubleUm, campoDoubleDois, campoDoubleTres, campoDoubleQuatro;
+    /**
+     * Texto
+     */
     private JLabel textoIntUm, textoIntDois, textoIntTres, textoIntQuatro, textoDoubleUm, textoDoubleDois,
                     textoDoubleTres, textoDoubleQuatro;
+    /**
+     * ComboBox
+     */
     private JComboBox<String> caixaFiltrar, caixaOrdenar, caixaEstilo, caixaTema, caixaTipo;
+    /**
+     * ComboBox
+     */
     private JComboBox<Integer> caixaHorasLat, caixaMinutosLat,caixaSegundosLat, caixaHorasLong, caixaMinutosLong, caixaSegundosLong;
+    /**
+     * ComboBox
+     */
     private JComboBox<Character> caixaDirecaoLat, caixaDirecaoLong;
+    /**
+     * ComboBox
+     */
     private JTable tabela;
+    /**
+     * Contém os elementos que estão atualmente adicionados à tabela da base de dados
+     */
     private DefaultTableModel elementos;
+    /**
+     * Listener para as ComboBox
+     */
     private InteracoesCaixa selecElemento;
+    /**
+     * Listener para os botões
+     */
     private InteracoesBotao premirBotao;
+    /**
+     * Listener para os campos de texto
+     */
     private InteracoesCampo escreverCampo;
+    /**
+     * Permite a interface saber quando há alterações por guardar ou não
+     */
     private boolean alteracoesPorGuardar;
+
+    /**
+     * Construtor da classe UserInterface
+     * Carrega os dados necessários e inicializa todos os componentes
+     * da interface gráfica pela respectiva ordem, divididindo as várias
+     * etapas deste processo em métodos separados
+     */
 
     public UserInterface() {
         // criar o listener para os clicks nos botões
@@ -68,6 +131,10 @@ public class UserInterface extends JFrame {
         add(menu,BorderLayout.CENTER);
     }
 
+    /**
+    * Nested Class InteracoesBotao
+    * Listener personalizado para as ações com os vário botões e checkBox que o implementam
+    */
     private class InteracoesBotao implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
@@ -244,7 +311,6 @@ public class UserInterface extends JFrame {
                 mostrarBaseDados();
             }
             if(evento.getSource() == botaoSair) {
-                // confirmar saída e terminar
                 sair();
             }
             if(evento.getSource() == caixaConfirmar)
@@ -280,8 +346,15 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Nested Class InteracoesCampo
+    * Listener personalizado para as ações efetudaos nas caixas de texto que o implementam
+    */
     private class InteracoesCampo implements DocumentListener{
         public void changedUpdate(DocumentEvent evento) {}
+        // quando o utilizador escreve ou apaga nas caixas de texto da secção
+        // criar/editar verifica se todos os campos que o tipo de empresa ncessita
+        // estão corretamente preenchidos
         public void removeUpdate(DocumentEvent evento) {
             if(verificaCampos(caixaTipo.getSelectedItem().toString()) == 0) {
                 botaoTerminarEditar.setEnabled(true);
@@ -302,6 +375,10 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Nested Class InteracoesCaixa
+    * Listener personalizado para as ações com as várias comboBox que o implementam
+    */
     private class InteracoesCaixa implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evento) {
@@ -336,6 +413,10 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que retira todos outros painéis de onde é possivel voltar ao menu
+    * e adiciona o painel do menu
+    */
     private void mostrarMenu() {
         remove(baseDados);
         remove(opcoes);
@@ -344,6 +425,10 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
+    /**
+    * Método que retira todos os paineis de onde é possível aceder à base de dados
+    * e adiciona o painel da base de dados
+    */
     private void mostrarBaseDados() {
         remove(menu);
         remove(criarEditar);
@@ -352,6 +437,10 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
+    /**
+    * Método que retira to painel de onde é possível aceder às opções (menu) e adiciona o painel
+    * das opções
+    */
     private void mostrarOpcoes() {
         remove(menu);
         add(opcoes,BorderLayout.CENTER);
@@ -359,6 +448,11 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
+    /**
+    * Método que retira o painel de onde é possível aceder à secção de criar/editar (base de dados)
+    * e adiciona o painel da secção de criar  além de também atribuir os valores default aos
+    * campos de texto para criar a empresa e adicionar o respetivo botão de terminar a criação à secçãp
+    */
     private void mostrarCriar()  {
         tabela.clearSelection();
         caixasDados.remove(botaoTerminarEditar);
@@ -394,6 +488,11 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
+    /**
+    * Método que retira o painel de onde é possível aceder à secção de criar/editar (base de dados)
+    * e adiciona o painel da secção de editar além de também atribuir os valores atuais do tipo da empresa
+    * que se escolheu editar aos campos de texto e adicionar o respetivo botão de terminar a edição à secção
+    */
     private void mostrarEditar(int indexEmpresa) {
         Empresa empresa = gestor.getEmpresas().get(indexEmpresa);
         caixasDados.remove(botaoTerminarCriar);
@@ -479,7 +578,10 @@ public class UserInterface extends JFrame {
         repaint();
     }
 
-
+    /**
+    * Método que atualiza a quantidade e nome dos campos de texto da secção criar/editar em relação
+    * ao que é necessário para o tipo de empresa que se encontra escolhido na comboBox
+    */
     private void recarregarCriarEditar() {
         campoDoubleUm.setVisible(false);
         campoDoubleDois.setVisible(false);
@@ -597,17 +699,22 @@ public class UserInterface extends JFrame {
         criarEditar.validate();
     }
 
+    /**
+    * Método que atualiza os elementos da tabela de acordo com o filtro selecionado.
+    * Também é utilizado após ser escolhida uma opção de ordernar para atualizar a ordenação
+    * das empresas demonstrada na tabela.
+    */
     private void recarregarTabela() {
         int caixaSelect = caixaFiltrar.getSelectedIndex();
         ArrayList<Empresa> registo = gestor.getEmpresas();
         elementos.setRowCount(0);
         String[] tipos = {"Todas","Restauração","Pastelaria","Cafe","Restaurante","Restaurante Fast-Food","Restaurante Local","Mercearia","Frutaria","Mercado","Minimercado","Supermercado","Hipermercado"};
-        if(caixaSelect != 1 && caixaOrdenar.getSelectedIndex() == 10)
-        {
-            caixaOrdenar.setSelectedIndex(0);
-            gestor.ordenarLista(0);
+        if(caixaSelect != 1 && caixaOrdenar.getSelectedIndex() == 10) // se tentar mudar o tipo de filtração para outro que não restauração
+        {                                                             // enquanto está selecionada a ordenação por num médio clientes dia
+            caixaOrdenar.setSelectedIndex(0);               // remova essa ordenação e volta a ser por nome (pois o num medio de
+            gestor.ordenarLista(0);                         // clientes apenas se aplica à restauração)
         }
-        else if(caixaSelect==0) {
+        else if(caixaSelect==0) { // sem filtro, mostrar todas
             for (Empresa empresa : registo)
                 if (empresa.lucro() > 0)
                     elementos.addRow(new Object[]{empresa.getNome(), empresa.getTipo(), empresa.getDistrito(), empresa.despesaAnual(), empresa.receitaAnual(), "Sim"});
@@ -615,7 +722,7 @@ public class UserInterface extends JFrame {
                     elementos.addRow(new Object[]{empresa.getNome(), empresa.getTipo(), empresa.getDistrito(), empresa.despesaAnual(), empresa.receitaAnual(), "Não"});
         }
         else{
-            for (Empresa empresa : registo) {
+            for (Empresa empresa : registo) { // com filtro, apenas mostrar as que a categoria, subcategoria, ou tipo, seja o selecionado
                 if(empresa.getTipo().equals(tipos[caixaSelect]) || empresa.getCategoria().equals(tipos[caixaSelect]) || empresa.getSubCategoria().equals(tipos[caixaSelect])) {
                     if (empresa.lucro()>0)
                         elementos.addRow(new Object[]{empresa.getNome(),empresa.getTipo(),empresa.getDistrito(),empresa.despesaAnual(),empresa.receitaAnual(),"Sim"});
@@ -626,6 +733,10 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que define a aparência da janela bem como o estilo dos
+    * componentes, a partir das opções guardadas
+    */
     private void construirAparencia() {
         // definir o estilo da janela
         setTitle("StarThrive");
@@ -655,13 +766,19 @@ public class UserInterface extends JFrame {
         personalizarUI();
     }
 
-    private void mudarEstilo(int estilo, boolean serConstruido) {
+    /**
+    * Método que altera o estilo dos componentes
+    * @param estilo O estilo a aplicar
+    * @param serConstruida Se está a ser chamado durante a construção da interface
+    * (se não estiver, é necessário atualizar certos componentes para mostrar as alterações)
+    */
+    private void mudarEstilo(int estilo, boolean serConstruida) {
         try {
             if(estilo == 0)
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             else
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            if(!serConstruido){
+            if(!serConstruida){
                 SwingUtilities.updateComponentTreeUI(UserInterface.this);
                 SwingUtilities.updateComponentTreeUI(menu);
                 SwingUtilities.updateComponentTreeUI(baseDados);
@@ -676,7 +793,13 @@ public class UserInterface extends JFrame {
         guardarOpcoes();
     }
 
-    private void mudarTema(int tema, boolean serConstruido) {
+    /**
+    * Método que altera o tema da interface
+    * @param tema O tema a aplicar
+    * @param serConstruida Se está a ser chamado durante a construção da interface
+    * (se não estiver, é necessário recriar certos componentes para mostrar as alterações)
+    */
+    private void mudarTema(int tema, boolean serConstruida) {
         Color cinza = new Color(33,33,33);
         if(tema == 0) {
             UIManager.put("Panel.background",Color.WHITE); // light mode
@@ -696,7 +819,7 @@ public class UserInterface extends JFrame {
         }
         opcoesGuardadas.setTema(tema);
         guardarOpcoes();
-        if(!serConstruido)  // reconstrói tudo para aplicar o tema
+        if(!serConstruida)  // reconstrói tudo para aplicar o tema
         {
             construirMenu();
             construirVoltar();
@@ -710,6 +833,10 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que aplica os partes do UI personalizadas que são comuns a todos
+    * os temas e estilos à interface
+    */
     private void personalizarUI() {
         Color invisivel = new Color(0,0,0,0);
         Color azul =  new Color(118,221,221);
@@ -741,6 +868,10 @@ public class UserInterface extends JFrame {
         UIManager.put("Table.focusCellForeground",Color.BLACK);
     }
 
+    /**
+    * Método que verifica se a opção de autoguardar está ativa, se sim guarda os dados
+    * se não, atualiza que existem alterações por guardar e ativa o botão de guardar para o permitir
+    */
     private void autoGuardar() {
         if(caixaAutoGuardar.isSelected()) {
             gestor.guardarDados();
@@ -753,6 +884,11 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que carrega os dados das empresas do ficheiro de objetos utilizando o método carregarDadosObjeto da classe Gestor
+    * e mostra um popup com a mensagem de erro devolvida pelo mesmo caso ocorra um
+    * @see GestorEmpresas#carregarDadosObjeto()
+    */
     private void carregarDados() {
         String informacao = gestor.carregarDadosObjeto();
         // Se os dados forem carregados de um ficheiro objeto não se mostra a mensagem pois esta é a situação ótima de
@@ -765,6 +901,9 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que cria o painel do menu e todos os seus componentes
+    */
     private void construirMenu() {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
@@ -799,6 +938,10 @@ public class UserInterface extends JFrame {
         menu.add(botaoSair,posicao);
     }
 
+    /**
+    * Método que cria os painéis com os respetivos botões para voltar
+    * às secções anteriores
+    */
     private void construirVoltar() {
         voltarBD = new JPanel();
         voltarBD.setLayout(new GridBagLayout());
@@ -826,6 +969,10 @@ public class UserInterface extends JFrame {
         voltarCE.add(botaoVoltarCE, posicao);
     }
 
+    /**
+    * Método que cria o painel com os respetivos botões para efetuar
+    * operações sobre as empresas da tabela
+    */
     private void construirGerir() {
         gerir = new JPanel();
         gerir.setLayout(new GridBagLayout());
@@ -852,6 +999,9 @@ public class UserInterface extends JFrame {
     }
 
 
+    /**
+    * Método que cria o painel e a respetiva tabela para a secção da base de dados
+    */
     private void construirListar() {
         listar = new JPanel();
         listar.setLayout(new GridBagLayout());
@@ -874,7 +1024,7 @@ public class UserInterface extends JFrame {
 		tabela = new JTable(elementos) {
         public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
         {
-            // Fazer um clique na tabela selecionar a linha toda (remove a borda de foco no elemento da coluna selecionado)
+            // Fazer um clique na tabela selecionar a linha toda e não apenas uma célula
             JComponent Jcomponente = (JComponent)super.prepareRenderer(renderer, row, column);
             if (isRowSelected(row))
                 Jcomponente.setBorder(null);
@@ -904,6 +1054,10 @@ public class UserInterface extends JFrame {
         posicao.fill = GridBagConstraints.CENTER;
     }
 
+    /**
+    * Método que cria o painel com os respetivos botões para filtrar
+    * e ordenar as empresas da tabela
+    */
     private void construirFiltrar() {
         filtrar = new JPanel();
         filtrar.setLayout(new GridBagLayout());
@@ -954,7 +1108,11 @@ public class UserInterface extends JFrame {
         filtrar.add(botaoGuardar, posicao);
     }
 
-        private void construirCriarEditar(){
+    /**
+    * Método que cria o painel com os respetivos campos de textos e comboBox
+    * para a criação e edição das empresas
+    */
+    private void construirCriarEditar(){
         criarEditar = new JPanel();
         criarEditar.setLayout(new GridBagLayout());
         caixasDados = new JPanel();
@@ -1179,6 +1337,13 @@ public class UserInterface extends JFrame {
         botaoTerminarEditar.addActionListener(premirBotao);
     }
 
+    /**
+    * Método que verifica se um campo de texto contém informação válida (não estar vazio), se não
+    * coloca o a vermelho e define uma mensagem a avisar o utilizador caso este
+    * coloque o rato em cima do campo
+    * @param campo O campo a verificar
+    * @return 0 se o campo estiver válido, 1 se estiver inválido
+    */
     private int verificaCampoString(JTextField campo){
         if(campo.getText().isEmpty()){
             campo.setToolTipText("Este campo não pode ficar vazio!");
@@ -1191,6 +1356,13 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que verifica se um campo de texto contém informação válida (ser um double), se não
+    * coloca o a vermelho e define uma mensagem a avisar o utilizador caso este
+    * coloque o rato em cima do campo
+    * @param campo O campo a verificar
+    * @return 0 se o campo estiver válido, 1 se estiver inválido
+    */
     private int verificaCampoDouble(JTextField campo){
         try{
             double valor = Double.parseDouble(campo.getText());
@@ -1209,6 +1381,13 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que verifica se um campo de texto contém informação válida (ser um inteiro), se não
+    * coloca o a vermelho e define uma mensagem a avisar o utilizador caso este
+    * coloque o rato em cima do campo
+    * @param campo O campo a verificar
+    * @return 0 se o campo estiver válido, 1 se estiver inválido
+    */
     private int verificaCampoInt(JTextField campo){
         try{
             int valor = Integer.parseInt(campo.getText());
@@ -1227,6 +1406,15 @@ public class UserInterface extends JFrame {
         }
     }
 
+    /**
+    * Método que verifica se todos os campos que este tipo de empresa necessita estão
+    * corretamente preenchidos utilizando os verificadores para os 3 diferentes tipos
+    * @see #verificaCampoString
+    * @see #verificaCampoDouble
+    * @see #verificaCampoInt
+    * @param tipoSelecionado O tipo de empresa selecionado na caixa
+    * @return O número de campos inválidos (devolve 0 se nenhum)
+    */
     private int verificaCampos(String tipoSelecionado){
         switch (tipoSelecionado) {
             case "Cafe":
@@ -1257,6 +1445,14 @@ public class UserInterface extends JFrame {
         }
     }
 
+     /**
+    * Método que cria o painel da base de dados utilizando os outros painéis
+    * que a constitutem
+    * @see #construirFiltrar
+    * @see #construirGerir
+    * @see #construirListar
+    * @see #construirCriarEditar
+    */
     private void construirBaseDados() {
         // construir o painel com a tabela
         construirFiltrar();
@@ -1286,6 +1482,12 @@ public class UserInterface extends JFrame {
         posicao.fill = GridBagConstraints.NONE;
     }
 
+     /**
+    * Método que carrega as opções da interface personalizadas pelo utlizador
+    * para a variável criada para as guardar, caso ocorra um erro ou o ficheiro
+    * não existe (nunca foram alteradas as opções) utiliza as default
+    * @see #opcoesGuardadas
+    */
     private void carregarOpcoes() {
         File ficheiro = new File("Opcoes.dat");
         if(ficheiro.exists() && ficheiro.isFile()) {
@@ -1294,15 +1496,19 @@ public class UserInterface extends JFrame {
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 opcoesGuardadas = (Opcoes)ois.readObject();
                 ois.close();
-                return;
             } catch (IOException | ClassNotFoundException ex ) {
                 opcoesGuardadas = new Opcoes();
-                return;
             }
         }
-        opcoesGuardadas = new Opcoes();
+        else
+            opcoesGuardadas = new Opcoes();
     }
 
+    /**
+     * Método que guarda as opções da interface personalizadas pelo utlizador
+     * no respetivo ficheiro de objetos, caso ocorra um erro mostraa um popup
+     * com uma mensagem a descrevê-lo
+     */
     private void guardarOpcoes() {
         File ficheiro = new File("Opcoes.dat");
         String informacao;
@@ -1320,6 +1526,10 @@ public class UserInterface extends JFrame {
         JOptionPane.showMessageDialog(null, informacao,null, JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Método que constroi o Painel com os respetivos botões, comboBox e
+     * checkBox para personalizar as opções da interface
+     */
     private void construirOpcoes()
     {
         opcoes = new JPanel();
@@ -1386,6 +1596,11 @@ public class UserInterface extends JFrame {
         opcoes.add(caixasOpcoes,posicao);
     }
 
+     /**
+     * Método chamado pelo listener, caso esteja ativa a confirmação ao sair, mostra
+     * um popup diferente dependendo se o utilizador tiver ou não alterações por guardar
+     * e permite ainda guardar, não guardar e cancelar a ação de sair antes de terminar
+     */
     private void sair() {
         int resposta;
         if(alteracoesPorGuardar) {

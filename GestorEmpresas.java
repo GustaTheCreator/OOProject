@@ -164,16 +164,17 @@ public class GestorEmpresas implements Serializable {
     /**
      * Método que ordena o arraylist de empresas
      * @param opcao Opção de ordenação
-     *              1 - Ordena por nome A-Z
-     *              2 - Ordena por nome Z-A
-     *              3 - Ordena por distrito A-Z
-     *              4 - Ordena por distrito Z-A
-     *              5 - Ordena por despesas anuais crescente
-     *              6 - Ordena por despesas anuais decrescente
-     *              7 - Ordena por receitas anuais crescente
-     *              8 - Ordena por receitas anuais decrescente
-     *              9 - Ordena por lucro anual crescente
-     *              10 - Ordena por lucro anual decrescente
+     *              0 - Ordena por nome A-Z
+     *              1 - Ordena por nome Z-A
+     *              2 - Ordena por distrito A-Z
+     *              3 - Ordena por distrito Z-A
+     *              4 - Ordena por despesas anuais crescente
+     *              5 - Ordena por despesas anuais decrescente
+     *              6 - Ordena por receitas anuais crescente
+     *              7 - Ordena por receitas anuais decrescente
+     *              8 - Ordena por lucro anual crescente
+     *              9 - Ordena por lucro anual decrescente
+     *              10 - Ordena por número médio de clientes diário decrescente
      */
 
     public void ordenarLista(int opcao) {
@@ -298,8 +299,6 @@ public class GestorEmpresas implements Serializable {
         else
             return "\nO programa procurou um ficheiro de texto mas também este também não foi encontrado!\nSe for a primeira vez que utiliza o programa, um ficheiro de objetos será criado na primeira vez que guardar!";
     }
-
-    // create txt file and save empresas
 
     /**
      * Método para guardar os dados no ficheiro de objetos
