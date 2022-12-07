@@ -8,16 +8,36 @@ public class Opcoes implements Serializable{
      * Inteiro para o tema
      */
     private int tema;
+     /**
+     * Inteiro para o estoçp
+     */
     private int estilo;
+     /**
+     * Booleano para confirmar se confirma antes de sair
+     */
     private boolean confirmarSair;
+     /**
+     * Booleano para se guarda automaticamente depois de uma alteracao
+     */
     private boolean AutoGuardar;
+    /**
+     * Booleano para se a janela dever ser ou nao preencher o ecra sem bordas
+     */
     private boolean fullscreen;
 
+    /**
+     * Construtor da class Opcoes
+     * Coloca o tema por defeito a claro
+     * Coloca o estilo por defeito ao clássico
+     * Coloca o confirmarSair por defeito a true
+     * Coloca o AutoGuardar por defeito a true
+     * Coloca o fullscreen por defeito a false
+     */
     public Opcoes() {
         this.tema = 0;
         this.estilo = 0;
         this.confirmarSair = true;
-        this.AutoGuardar = false;
+        this.AutoGuardar = true;
         this.fullscreen = false;
     }
     public int getEstilo() {
