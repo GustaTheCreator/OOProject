@@ -3,19 +3,39 @@
 import java.util.*;
 import java.io.*;
 /**
- * Classe que representa um Gestor de Empresas
+ * Classe para gerir as Empresas
  */
 public class GestorEmpresas implements Serializable {
+    /**
+     * Arraylist de empresas
+     */
     private ArrayList<Empresa> empresas;
 
+    /**
+     * Construtor da classe GestorEmpresas
+     */
     public GestorEmpresas() {
         this.empresas = new ArrayList<>();
     }
-
+    /**
+     * Método que retorna o arraylist de empresas
+     * @return Arraylist de empresas
+     */
     public ArrayList<Empresa> getEmpresas() {
         return empresas;
     }
 
+    /**
+     * Método que adiciona um Café ao arraylist de empresas
+     * @param nome Nome do Café
+     * @param local Localização do Café
+     * @param distrito Distrito do Café
+     * @param fatMediaAnual Fatuação media anual por café por dia do Café
+     * @param salarioMedAnual Salário médio anual dos empregados do Café
+     * @param numMedCafes Número médio de cafés vendidos por dia
+     * @param numMedClientesDia Número médio de clientes por dia
+     * @param numEmpMesa Número de empregados por mesa
+     */
     public void addCafe(String nome, Localizacao local, String distrito, double fatMediaAnual,
                         double salarioMedAnual, double numMedCafes,double numMedClientesDia, int numEmpMesa) {
         Cafe empresa = new Cafe(nome, local, distrito,fatMediaAnual,numEmpMesa,salarioMedAnual,numMedClientesDia,numMedCafes);

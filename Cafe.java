@@ -11,7 +11,7 @@ public class Cafe extends Restauracao {
      * @param nome Nome do Café
      * @param local Localização do Café
      * @param distrito Distrito do Café
-     * @param faturacaoMedia Facturação média anual do Café
+     * @param faturacaoMedia Facturação média anual por café vendido do Café
      * @param numEmpMesa Número de empregados por mesa
      * @param salarioMedAnual Salário médio anual dos empregados
      * @param numMedClientesDiario Número médio de clientes por dia
