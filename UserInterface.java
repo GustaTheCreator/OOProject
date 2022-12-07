@@ -9,6 +9,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 
+
 public class UserInterface extends JFrame {
     private GestorEmpresas gestor;
     private Opcoes opcoesGuardadas;
