@@ -41,12 +41,38 @@ public class GestorEmpresas implements Serializable {
         Cafe empresa = new Cafe(nome, local, distrito,fatMediaAnual,numEmpMesa,salarioMedAnual,numMedClientesDia,numMedCafes);
         this.empresas.add(empresa);
     }
+    /**
+     * Método que adiciona um Pastelaria ao arraylist de empresas
+     * @param nome Nome da Pastelaria
+     * @param local Localização da Pastelaria
+     * @param distrito Distrito da Pastelaria
+     * @param fatMediaAnual Fatuação media anual por bolo por dia da Pastelaria
+     * @param salarioMedAnual Salário médio anual dos empregados da Pastelaria
+     * @param numMedBolos Número médio de bolos vendidos por dia
+     * @param numMedClientesDia Número médio de clientes por dia
+     * @param numEmpMesa Número de empregados por mesa
+     */
 
     public void addPastelaria(String nome, Localizacao local, String distrito, double fatMediaAnual,
                               double salarioMedAnual, double numMedBolos,double numMedClientesDia, int numEmpMesa) {
         Pastelaria empresa = new Pastelaria(nome, local, distrito, fatMediaAnual, numEmpMesa, salarioMedAnual, numMedClientesDia, numMedBolos);
         this.empresas.add(empresa);
     }
+
+    /**
+     * Método que adiciona um Restaurante Fast Food ao arraylist de empresas
+     * @param nome Nome do Restaurante Fast Food
+     * @param local Localização do Restaurante Fast Food
+     * @param distrito Distrito do Restaurante Fast Food
+     * @param fatMediaAnual Faturação média de cada mesa por dia do restaurante Fast Food
+     * @param numEmpMesa Número de empregados por mesa
+     * @param salarioMedAnual Salário médio anual dos empregados do Restaurante Fast Food
+     * @param numMedClientesDia Número médio de clientes por dia
+     * @param numDiasFunc Número de dias que o Restaurante Fast Food funciona anualmente
+     * @param numMesasInteriores Número de mesas interiores do Restaurante Fast Food
+     * @param numMedClietesDrive Número médio de clientes Drive Thru por dia
+     * @param faturacaoMediaDrive Faturação média por cliente Drive-Thru diário do restaurante Fast Food
+     */
 
     public void addRestFastFood(String nome, Localizacao local, String distrito, double fatMediaAnual,int numEmpMesa, double salarioMedAnual,
                                 double numMedClientesDia,int numDiasFunc, int numMesasInteriores, double numMedClietesDrive,double faturacaoMediaDrive ) {
@@ -55,6 +81,21 @@ public class GestorEmpresas implements Serializable {
         this.empresas.add(empresa);
     }
 
+    /**
+     * Método que adiciona um Restaurante Local ao arraylist de empresas
+     * @param nome Nome do Restaurante Local
+     * @param local Localização do Restaurante Local
+     * @param distrito Distrito do Restaurante Local
+     * @param fatMediaAnual Faturação média por mesa por dia
+     * @param numEmpMesa Número de empregados por mesa
+     * @param salarioMedAnual Salário médio anual dos empregados do Restaurante Local
+     * @param numMedClientesDia Número médio de clientes por dia
+     * @param numDiasFunc Número de dias que o Restaurante Local funciona anualmente
+     * @param numMesasInteriores Número de mesas interiores do Restaurante Local
+     * @param numMesasEsplanada Número de mesas de esplanada do Restaurante Local
+     * @param custoLicencaAnoPMesasEsp Custo da licença anual por mesa de esplanada do Restaurante Local
+     */
+
     public void addRestLocal(String nome, Localizacao local, String distrito, double fatMediaAnual,int numEmpMesa, double salarioMedAnual,
                              double numMedClientesDia,int numDiasFunc, int numMesasInteriores, int numMesasEsplanada,double custoLicencaAnoPMesasEsp ){
         RestLocal empresa = new RestLocal(nome, local, distrito, fatMediaAnual,numEmpMesa,salarioMedAnual, numMedClientesDia, numDiasFunc,
@@ -62,25 +103,78 @@ public class GestorEmpresas implements Serializable {
         this.empresas.add(empresa);
     }
 
+    /**
+     * Método que adiciona um Minimercado ao arraylist de empresas
+     * @param nome Nome do Minimercado
+     * @param local Localização do Minimercado
+     * @param distrito Distrito do Minimercado
+     * @param fatMediaAnual Faturação média anual por m^2
+     * @param custoLimpezaAno Custo de limpeza anual do Minimercado
+     * @param areaCorredores Área dos corredores do Minimercado
+     */
     public void addMiniMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
         Minimercado empresa = new Minimercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
+    /**
+     * Método que adiciona um Supermercado ao arraylist de empresas
+     * @param nome Nome do Supermercado
+     * @param local Localização do Supermercado
+     * @param distrito Distrito do Supermercado
+     * @param fatMediaAnual Faturação média anual por m^2
+     * @param custoLimpezaAno Custo de limpeza anual do Supermercado
+     * @param areaCorredores Área dos corredores do Supermercado
+     */
     public void addSuperMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
         Supermercado empresa = new Supermercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
+
+    /**
+     * Método que adiciona um Hipermercado ao arraylist de empresas
+     * @param nome Nome do Hipermercado
+     * @param local Localização do Hipermercado
+     * @param distrito Distrito do Hipermercado
+     * @param fatMediaAnual Faturação média anual por m^2
+     * @param custoLimpezaAno Custo de limpeza anual do Hipermercado
+     * @param areaCorredores Área dos corredores do Hipermercado
+     */
 
     public void addHiperMercado(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, double areaCorredores) {
         Hipermercado empresa = new Hipermercado(nome, local, distrito, fatMediaAnual, custoLimpezaAno, areaCorredores);
         this.empresas.add(empresa);
     }
 
+    /**
+     * Método que adiciona um Frutaria ao arraylist de empresas
+     * @param nome Nome da Frutaria
+     * @param local Localização da Frutaria
+     * @param distrito Distrito da Frutaria
+     * @param fatMediaAnual Faturação média anual por m^2
+     * @param custoLimpezaAno Custo de limpeza anual da Frutaria
+     * @param numProdutos Número de produtos da Frutaria
+     */
+
     public void addFrutaria(String nome, Localizacao local, String distrito, double fatMediaAnual, double custoLimpezaAno, int numProdutos) {
         Frutaria empresa = new Frutaria(nome, local, distrito, fatMediaAnual, custoLimpezaAno, numProdutos);
         this.empresas.add(empresa);
     }
+
+    /**
+     * Método que ordena o arraylist de empresas
+     * @param opcao Opção de ordenação
+     *              1 - Ordena por nome A-Z
+     *              2 - Ordena por nome Z-A
+     *              3 - Ordena por distrito A-Z
+     *              4 - Ordena por distrito Z-A
+     *              5 - Ordena por despesas anuais crescente
+     *              6 - Ordena por despesas anuais decrescente
+     *              7 - Ordena por receitas anuais crescente
+     *              8 - Ordena por receitas anuais decrescente
+     *              9 - Ordena por lucro anual crescente
+     *              10 - Ordena por lucro anual decrescente
+     */
 
     public void ordenarLista(int opcao) {
         switch (opcao) {
@@ -121,6 +215,10 @@ public class GestorEmpresas implements Serializable {
             default -> {}
         }
     }
+    /**
+     * Método para carregar os dados do ficheiro de objetos
+     * @return Mensagem de erro ou sucesso
+     */
 
     @SuppressWarnings("unchecked")
     public String carregarDadosObjeto() {
@@ -145,6 +243,10 @@ public class GestorEmpresas implements Serializable {
             return "Não foi encontrado um ficheiro de objetos para carregar dados!" + carregarDadosTexto();
     }
 
+    /**
+     * Método para carregar os dados do ficheiro de texto
+     * @return Mensagem de erro ou sucesso
+     */
     public String carregarDadosTexto() {
         File ficheiro = new File("StarThrive.txt");
         if(ficheiro.exists() && ficheiro.isFile()) {
@@ -198,6 +300,11 @@ public class GestorEmpresas implements Serializable {
     }
 
     // create txt file and save empresas
+
+    /**
+     * Método para guardar os dados no ficheiro de objetos
+     * @return Mensagem de erro ou sucesso
+     */
     public String guardarDados() {
         ordenarLista(0); // ordenar pela opção default para que a lista seja carregada por essa ordem na proxima sessão
         File ficheiro = new File("StarThrive.dat");
@@ -214,6 +321,10 @@ public class GestorEmpresas implements Serializable {
         }
     }
 
+    /**
+     * Método para remover uma empresa do arraylist
+     * @param indexLinha indice da linha a ser removida
+     */
     public void remove(int indexLinha) {
         empresas.remove(indexLinha);
     }

@@ -1,8 +1,12 @@
-
-
 import java.io.Serializable;
 
+/**
+ * Classe das opcoes da interface grafica.
+ */
 public class Opcoes implements Serializable{
+    /**
+     * Inteiro para o tema
+     */
     private int tema;
     private int estilo;
     private boolean confirmarSair;

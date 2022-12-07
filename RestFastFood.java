@@ -18,7 +18,7 @@ public class RestFastFood extends Restaurante {
      * @param local Localização do restaurante Fast Food
      * @param distrito Distrito do restaurante Fast Food
      * @param faturacaoMedia Faturação média de cada mesa por dia do restaurante Fast Food
-     * @param numEmpMesa Nùmero de empregados de mesa do restaurante Fast Food
+     * @param numEmpMesa Número de empregados de mesa do restaurante Fast Food
      * @param salarioMedAnual Salário médio anual dos empregados do restaurante Fast Food
      * @param numMedClientesDiario Número médio de clientes por dia do restaurante Fast Food
      * @param numDiasFuncAnual Número de dias de funcionamento anual do restaurante Fast Food
