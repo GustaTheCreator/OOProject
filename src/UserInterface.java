@@ -1,3 +1,4 @@
+package src;
 
 import java.util.*;
 import java.awt.*;
@@ -5,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
+
 import java.io.*;
 
 /**
@@ -744,7 +746,7 @@ public class UserInterface extends JFrame {
         setUndecorated(opcoesGuardadas.isFullscreen());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
-        setIconImage(new ImageIcon("icon.png").getImage());
+        setIconImage(new ImageIcon("src/resources/icon.png").getImage());
         // criar um listener personalizado para chamar a confirmação quando o utilizador tenta fechar, caso a opção esteja ativa
         if(opcoesGuardadas.isConfirmarSair()){
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -859,9 +861,9 @@ public class UserInterface extends JFrame {
         UIManager.put("OptionPane.okButtonMnemonic", "0");
         UIManager.put("OptionPane.cancelButtonMnemonic", "0");
         UIManager.put("OptionPane.noButtonMnemonic", "0");
-        UIManager.put("OptionPane.questionIcon",new ImageIcon("question.gif"));
-        UIManager.put("OptionPane.warningIcon",new ImageIcon("warning.gif"));
-        UIManager.put("OptionPane.errorIcon",new ImageIcon("error.gif"));
+        UIManager.put("OptionPane.questionIcon",new ImageIcon("src/resources/question.gif"));
+        UIManager.put("OptionPane.warningIcon",new ImageIcon("src/resources/warning.gif"));
+        UIManager.put("OptionPane.errorIcon",new ImageIcon("src/resources/error.gif"));
         UIManager.put("Table.selectionBackground",azul);
         UIManager.put("Table.selectionForeground",Color.BLACK);
         UIManager.put("Table.focusCellBackground",azul);
@@ -908,7 +910,7 @@ public class UserInterface extends JFrame {
         menu = new JPanel();
         menu.setLayout(new GridBagLayout());
         JLabel textoTitulo1 = new JLabel("St");
-        JLabel textoTituloImagem = new JLabel(new ImageIcon("star.gif"));
+        JLabel textoTituloImagem = new JLabel(new ImageIcon("src/resources/star.gif"));
         JLabel textoTitulo2 = new JLabel("rThrive");
         textoTitulo1.setFont(new Font("Arial", Font.BOLD, 100));
         textoTitulo2.setFont(new Font("Arial", Font.BOLD, 100));
@@ -1489,7 +1491,7 @@ public class UserInterface extends JFrame {
     * @see #opcoesGuardadas
     */
     private void carregarOpcoes() {
-        File ficheiro = new File("Opcoes.dat");
+        File ficheiro = new File("src/data/Opcoes.dat");
         if(ficheiro.exists() && ficheiro.isFile()) {
             try {
                 FileInputStream fis = new FileInputStream(ficheiro);
@@ -1510,7 +1512,7 @@ public class UserInterface extends JFrame {
      * com uma mensagem a descrevê-lo
      */
     private void guardarOpcoes() {
-        File ficheiro = new File("Opcoes.dat");
+        File ficheiro = new File("src/data/Opcoes.dat");
         String informacao;
         try {
             FileOutputStream fos = new FileOutputStream(ficheiro);

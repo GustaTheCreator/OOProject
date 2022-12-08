@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Classe abstrata Mercearia
  */

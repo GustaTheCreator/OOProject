@@ -1,3 +1,4 @@
+package src;
 
 
 import java.util.*;
@@ -223,7 +224,7 @@ public class GestorEmpresas implements Serializable {
 
     @SuppressWarnings("unchecked")
     public String carregarDadosObjeto() {
-        File ficheiro = new File("StarThrive.dat"); // se o ficheiro de objetos não estiver criado ou ocorrer um erro
+        File ficheiro = new File("src/data/StarThrive.dat"); // se o ficheiro de objetos não estiver criado ou ocorrer um erro
         if(ficheiro.exists() && ficheiro.isFile()) {         // durante o carregamento então recorre ao ficheiro de texto
             try {
                 FileInputStream fis = new FileInputStream(ficheiro);
@@ -249,7 +250,7 @@ public class GestorEmpresas implements Serializable {
      * @return Mensagem de erro ou sucesso
      */
     public String carregarDadosTexto() {
-        File ficheiro = new File("StarThrive.txt");
+        File ficheiro = new File("src/data/StarThrive.txt");
         if(ficheiro.exists() && ficheiro.isFile()) {
             try {
                 FileReader fr = new FileReader(ficheiro);
@@ -307,7 +308,7 @@ public class GestorEmpresas implements Serializable {
      */
     public String guardarDados() {
         ordenarLista(0); // ordenar pela opção default para que a lista seja carregada por essa ordem na proxima sessão
-        File ficheiro = new File("StarThrive.dat");
+        File ficheiro = new File("src/data/StarThrive.dat");
         try {
             FileOutputStream fos = new FileOutputStream(ficheiro);
             ObjectOutputStream oos = new ObjectOutputStream(fos);

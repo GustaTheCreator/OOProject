@@ -1,4 +1,4 @@
-
+package src;
 /**
  * Classe Main, contém apenas o método main isolado
  * @author Diogo Simões e Gustavo Alves
