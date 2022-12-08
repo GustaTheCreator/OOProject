@@ -292,6 +292,7 @@ public class GestorEmpresas implements Serializable {
                 empresas.clear();
                 return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro durante a leitura!";
             } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException ex) {
+                ex.printStackTrace();
                 empresas.clear();
                 return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro ao tentar converter a sua informação!";
             }
