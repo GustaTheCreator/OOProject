@@ -258,30 +258,32 @@ public class GestorEmpresas implements Serializable {
                 String linha;
                 while((linha = br.readLine()) != null) {
                     String[] dados = linha.split("/");
+                    String nome = dados[1];
                     Coordenada latitude = new Coordenada(Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4]),dados[5].charAt(0));
                     Coordenada longitude = new Coordenada(Integer.parseInt(dados[6]), Integer.parseInt(dados[7]), Integer.parseInt(dados[8]),dados[9].charAt(0));
                     Localizacao local = new Localizacao(latitude, longitude);
+                    String distrito = dados[10];
                     switch (dados[0]) {
-                        case "Cafe" -> addCafe(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]),
+                        case "Cafe" -> addCafe(nome, local, distrito, Double.parseDouble(dados[11]), Double.parseDouble(dados[12]),
                                 Integer.parseInt(dados[13]), Double.parseDouble(dados[14]), Integer.parseInt(dados[15]));
 
-                        case "Pastelaria" -> addPastelaria(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]),
+                        case "Pastelaria" -> addPastelaria(nome, local, distrito, Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]),
                                 Double.parseDouble(dados[14]), Integer.parseInt(dados[15]));
 
-                        case "Restaurante Fast-Food" -> addRestFastFood(dados[1], local, dados[10], Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]),
+                        case "Restaurante Fast-Food" -> addRestFastFood(nome, local, distrito, Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]),
                                 Double.parseDouble(dados[14]), Integer.parseInt(dados[15]), Integer.parseInt(dados[16]), Integer.parseInt(dados[17]),
                                 Double.parseDouble(dados[18]));
 
-                        case "Restaurante Local" -> addRestLocal(dados[1], local, dados[10],Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]), Double.parseDouble(dados[14]),
+                        case "Restaurante Local" -> addRestLocal(nome, local, distrito,Double.parseDouble(dados[11]), Integer.parseInt(dados[12]), Integer.parseInt(dados[13]), Double.parseDouble(dados[14]),
                                 Integer.parseInt(dados[15]), Integer.parseInt(dados[16]), Integer.parseInt(dados[17]), Double.parseDouble(dados[18]));
 
-                        case "Frutaria" -> addFrutaria(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
+                        case "Frutaria" -> addFrutaria(nome, local, distrito, Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Integer.parseInt(dados[13]));
 
-                        case "Minimercado" -> addMiniMercado(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        case "Minimercado" -> addMiniMercado(nome, local, distrito, Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
 
-                        case "Supermercado" -> addSuperMercado(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        case "Supermercado" -> addSuperMercado(nome, local, distrito, Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
 
-                        case "Hipermercado" -> addHiperMercado(dados[1], local, dados[10], Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
+                        case "Hipermercado" -> addHiperMercado(nome, local, distrito, Double.parseDouble(dados[11]), Double.parseDouble(dados[12]), Double.parseDouble(dados[13]));
                         default -> {}
                     }
                 }
@@ -293,7 +295,6 @@ public class GestorEmpresas implements Serializable {
                 empresas.clear();
                 return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro durante a leitura!";
             } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException ex) {
-                ex.printStackTrace();
                 empresas.clear();
                 return "\nO programa procurou e encontrou um ficheiro de texto mas também ocorreu um erro ao tentar converter a sua informação!";
             }
