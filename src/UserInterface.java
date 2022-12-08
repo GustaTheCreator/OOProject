@@ -1280,7 +1280,7 @@ public class UserInterface extends JFrame {
         textoDoubleQuatro.setLabelFor(campoDistrito);
         posicao.gridx = 1;
         posicao.gridy = 10;
-        posicao.insets = new Insets(0,0,20,400);
+        posicao.insets = new Insets(0,0,20,475);
         caixasDados.add(textoDoubleQuatro,posicao);
         posicao.insets = new Insets(0,0,20,0);
         caixasDados.add(campoDoubleQuatro,posicao);
