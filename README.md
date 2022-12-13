@@ -6,12 +6,9 @@ The objective was to create a database system, using Java object principles (wit
 
 ## Preview
 
-![Menu Panel Light Mode](/screenshots/menuLight.png)
-![Menu Panel Dark Mode](/screenshots/menuDark.png)
-![BD Panel Light Mode](/screenshots/BDLight.png)
-![BD Panel Dark Mode](/screenshots/BDDark.png)
-![Edit Panel Light Mode](/screenshots/EditLight.png)
-![Edit Panel Dark Mode](/screenshots/EditDark.png)
+![Menu Panel](/screenshots/menu.png)
+![List Panel](/screenshots/list.png)
+![Edit Panel](/screenshots/edit.png)
 
 ## Running the code
 
@@ -27,6 +24,6 @@ In the database panel you can perfom a large variety of operations to the compan
 
 In the options panel you can change the theme and style of the aplication as well as toggle the fullscreen mode on or off. You can also enable/disable autosaving and exit confirmation.
 
-### Asset credits
+## Asset credits
 
 The gifs included were made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) from [www.flaticon.com](http://www.flaticon.com/)
