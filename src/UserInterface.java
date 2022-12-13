@@ -201,7 +201,14 @@ public class UserInterface extends JFrame {
             }
             if(evento.getSource() == botaoTerminarEditar) {
                 Empresa empresa = gestor.getEmpresas().get(tabela.getSelectedRow());
-                String tipo = empresa.getTipo();
+                empresa.setNome(campoNome.getText());
+                Coordenada latitude = new Coordenada(caixaSegundosLat.getSelectedIndex(),caixaMinutosLat.getSelectedIndex(),caixaHorasLat.getSelectedIndex(),caixaDirecaoLat.getSelectedItem().toString().charAt(0));
+                Coordenada longitude = new Coordenada(caixaSegundosLong.getSelectedIndex(),caixaMinutosLong.getSelectedIndex(),caixaHorasLong.getSelectedIndex(),caixaDirecaoLong.getSelectedItem().toString().charAt(0));
+                Localizacao local = new Localizacao(latitude,longitude);
+                empresa.setLocal(local);
+                empresa.setDistrito(campoDistrito.getText());
+                empresa.setFaturacaoMedia(Double.parseDouble(campoFaturacaoMedia.getText()));
+                String tipo = caixaTipo.getSelectedItem().toString();
                 switch(tipo){
                     case "Cafe" -> {
                         Cafe cafe = (Cafe)empresa;

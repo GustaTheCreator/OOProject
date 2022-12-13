@@ -38,7 +38,7 @@ public class Opcoes implements Serializable{
         this.tema = 0;
         this.estilo = 0;
         this.confirmarSair = true;
-        this.AutoGuardar = true;
+        this.AutoGuardar = false;
         this.fullscreen = false;
     }
     public int getEstilo() {

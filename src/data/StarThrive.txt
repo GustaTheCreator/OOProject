@@ -16,4 +16,3 @@ Restaurante Fast-Food/Telepizza/30/12/30/N/10/5/20/W/Porto/321.32/32/321/42.32/3
 Restaurante Local/La em Casa/30/12/20/N/10/5/20/W/Coimbra/3213.3232/31/342/321.32/32/13/32/32.32
 Pastelaria/Pao Doce/30/12/20/N/10/5/20/W/Faro/3123.32/3213.32/13/32.32/53
 Cafe/Almeida/30/12/20/N/10/5/20/W/Porto/4321.54/4131.32/32/313.3/14
-
