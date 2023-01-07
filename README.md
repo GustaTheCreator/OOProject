@@ -1,5 +1,3 @@
-# Object Oriented Programming - Final Project
-
 This repository contains the final project for the Object Oriented Programming class in my Computer Engineering course made in the 2022/2023 school year.
 
 The objective was to create a database system, using Java object principles (with a heavy focus on polymorfism), to aid a fictional company, "StarThrive", in it's work of managing other companies' profits, losses etc...
