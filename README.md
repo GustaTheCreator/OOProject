@@ -10,8 +10,9 @@ The objective was to create a database system, using Java object principles (wit
 
 ## Running the code
 
-1 - Make sure you have the JDK (Java Development Kit) installed, this project was created and tested on version 17.0.4.1 so check if you have a compatible version.
-2 - Download the code files and and extract the "src" folder, then run the [main.java](/src/Main.java) inside.
+Make sure you have the JDK (Java Development Kit) installed, this project was created and tested on version 17.0.4.1 so check if you have a compatible version.
+
+Download the code files and and extract the "src" folder, then run the [main.java](/src/Main.java) inside.
 
 ## How to use
 
