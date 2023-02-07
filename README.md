@@ -8,7 +8,7 @@ The objective was to create a database system, using Java object principles (wit
 ![List Panel](/screenshots/list.png)
 ![Edit Panel](/screenshots/edit.png)
 
-## Running the code
+## Get Started
 
 Make sure you have the JDK (Java Development Kit) installed, this project was created and tested on version 17.0.4.1 so check if you have a compatible version.
 
